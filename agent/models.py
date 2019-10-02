@@ -10,6 +10,7 @@ class Agent(models.Model):
     tel = models.CharField(max_length=15)
     fax = models.CharField(max_length=15)
     mobile = models.CharField(max_length=15)
+    admin = models.BooleanField(default=False)
     id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE)
 
     class Meta:

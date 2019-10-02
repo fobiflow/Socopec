@@ -1,6 +1,7 @@
 from django.db import models
 from vehicule.models import Photo
 
+#  TODO : penser à ajouter une agence "générale" Socopec pour admin
 
 class Agence(models.Model):
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
