@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Vehicule(models.Model):
+    immatriculation = models.CharField(max_length=9)
     modele = models.CharField(max_length=25)
     date_fabrication = models.DateField()
     hauteur = models.FloatField()

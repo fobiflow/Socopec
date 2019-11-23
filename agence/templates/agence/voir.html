@@ -1,0 +1,7 @@
+<h1>Voir une agence</h1>
+<p>Agence : {{ agence.nom }}</p>
+<p>{{ agence.photo }}</p>
+<p>Adresse: {{ agence.adresse }}</p>
+<p>Tel: {{ agence.tel }}</p>
+<p>Fax: {{ agence.fax }}</p>
+<a href="{% url 'lister_agence' %}">Retour à la liste des agences</a>

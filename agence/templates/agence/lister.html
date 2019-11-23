@@ -1,0 +1,11 @@
+<h1>Liste des agences : </h1>
+
+<ul>
+    {% for agence in agences %}
+        <li>{{ agence.nom }}, {{ agence.adresse }}
+            <a href="{% url 'voir_agence' agence.id %}">Voir</a>
+            <a href="{% url 'modifier_agence' agence.id %}">Modifier</a>
+            <a href="{% url 'supprimer_agence' agence.id %}">Supprimer</a>
+        </li>
+    {% endfor %}
+</ul>

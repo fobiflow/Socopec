@@ -1,0 +1,8 @@
+<h1>Voir un agent</h1>
+<p>Nom : {{ agent.nom }}</p>
+<p>Prenom: {{ agent.prenom }}</p>
+<p>Telephone: {{ agent.tel }}</p>
+<p>Fax: {{ agent.fax }}</p>
+<p>Mobile: {{ agent.mobile }}</p>
+<p>Admin? : {{ agent.admin }}</p>
+<a href="{% url 'lister_agent' %}">Retour à la liste des agents</a>

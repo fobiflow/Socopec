@@ -1,0 +1,11 @@
+<h1>Liste des véhicules : </h1>
+
+<ul>
+    {% for vehicule in vehicules %}
+        <li>{{ vehicule.modele }}, {{ vehicule.immatriculation }}
+            <a href="{% url 'voir_vehicule' vehicule.id %}">Voir</a>
+            <a href="{% url 'modifier_vehicule' vehicule.id %}">Modifier</a>
+            <a href="{% url 'supprimer_vehicule' vehicule.id %}">Supprimer</a>
+        </li>
+    {% endfor %}
+</ul>
