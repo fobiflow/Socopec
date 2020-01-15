@@ -1,9 +1,0 @@
-<h1>Modification d'une agence : </h1>
-
-{#Formulaire avec nom, photo, adresse, tel et fax#}
-
-<form action="{% url "modifier_agence" id_agence %}" method="post">
-    {%  csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Valider">
-</form>
