@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'connexion',
+    'agence',
+    'agent',
+    'historique',
+    'vehicule',
 ]
 
 MIDDLEWARE = [
@@ -76,12 +81,12 @@ WSGI_APPLICATION = 'Socopec.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',   # Backends disponibles : 'postgresql', 'mysql', 'sqlite3' et 'oracle'.
-        'NAME': 'socopec',                      # Nom de la base de données
-        'USER': 'laurence',
-        'PASSWORD': 'mdp',
-        'HOST': 'localhost',                    # Utile si votre base de données est sur une autre machine
-        'PORT': '3307',                         # ... et si elle utilise un autre port que celui par défaut
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'socopec',
+        'USER': 'helene',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': ''
     }
 }
 
