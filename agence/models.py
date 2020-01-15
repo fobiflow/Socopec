@@ -1,13 +1,15 @@
 from django.db import models
-from vehicule.models import Photo
 
 
 class Agence(models.Model):
-    # photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
-    nom = models.CharField(max_length=50)
+    nom = models.CharField(max_length=30)
     adresse = models.TextField()
-    tel = models.CharField(max_length=15)
-    fax = models.CharField(max_length=15)
+    complement_adresse = models.TextField(blank=True, null=True)
+    code_postal = models.IntegerField()
+    ville = models.CharField(max_length=20)
+    telephone = models.CharField(max_length=15)
+    fax = models.CharField(max_length=15, blank=True, null=True)
+    photo = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = "agence"

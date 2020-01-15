@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AgentForm
 from .models import Agent
+from .models import Agence
 
 
 def lister(request):
-    agents = Agent.objects.all()
-    return render(request, 'agent/lister.html', {'agents': agents})
+    data['agents'] = Agent.objects.all()
+    data['agences'] = Agence.objects.all()
+    return render(request, 'agent/lister.html', {'data': data})
 
 
 def creer(request):

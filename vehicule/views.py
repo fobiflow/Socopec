@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .forms import VehiculeForm
 from .models import Vehicule
 
-
+@login_required
 def lister(request):
     vehicules = Vehicule.objects.all()
     return render(request, 'vehicule/lister.html', {'vehicules': vehicules})

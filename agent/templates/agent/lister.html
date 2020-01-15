@@ -1,8 +1,8 @@
 <h1>Liste des agents : </h1>
 
 <ul>
-    {% for agent in agents %}
-        <li>{{ agent.nom }}, {{ agent.prenom }}
+    {% for d in data %}
+        <li>{{ d.agent.nom }}, {{ d.agent.prenom }}, agence: {{ d.agence.nom }}
             <a href="{% url 'voir_agent' agent.id %}">Voir</a>
             <a href="{% url 'modifier_agent' agent.id %}">Modifier</a>
             <a href="{% url 'supprimer_agent' agent.id %}">Supprimer</a>

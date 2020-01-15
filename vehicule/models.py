@@ -1,14 +1,16 @@
 from django.db import models
+from agence.models import Agence
 
 
 class Vehicule(models.Model):
     immatriculation = models.CharField(max_length=9)
-    modele = models.CharField(max_length=25)
+    modele = models.CharField(max_length=20)
     date_fabrication = models.DateField()
     hauteur = models.FloatField()
     largeur = models.FloatField()
     poids = models.FloatField()
     puissance = models.IntegerField()
+    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "vehicule"
