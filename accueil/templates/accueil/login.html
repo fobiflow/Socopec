@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titre %}Page de connexion{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-header">
+                        <h1>SOCOPEC - connexion</h1>
+                    </div>
+                    <div class="card-body">
+                        {% if error %}
+                            <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+                        {% endif %}
+
+                        {% if user.is_authenticated %}
+                            Vous êtes connecté, {{ user.username }} !
+                        {% else %}
+                        <form method="post" action=".">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <a href="mdp_oublie.html">Mot de passe oublié</a>
+                            <input type="submit" value="Se connecter" />
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
