@@ -84,9 +84,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'socopec',
         'USER': 'laurence',
-        'PASSWORD': 'mdp',
+        'PASSWORD': 'laurenceMDP',
         'HOST': 'localhost',
-        'PORT': ''
+        'PORT': '3307'
     }
 }
 

@@ -1,31 +1,39 @@
 {% extends "base.html" %}
 {% block titre %}Page de connexion{% endblock %}
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5">
-                    <div class="card-header">
-                        <h1>SOCOPEC - connexion</h1>
-                    </div>
-                    <div class="card-body">
-                        {% if error %}
-                            <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
-                        {% endif %}
 
-                        {% if user.is_authenticated %}
+<section class="container col-sm-9 col-md-7 col-lg-5 mx-auto mt-5" >
+<div class="card card-signin">
+    <div class="card-header pt-2 pb-0">
+        <h5 class="card-title font-weight-bold">SOCOPEC - connexion</h5>
+    </div>
+    <form method="post" action=".">
+        <div class="card-body">
+        {% if error %} <div class="alert alert-danger" role="alert">Utilisateur inconnu ou mauvais de mot de passe.</div>{% endif %}
+        {% if user.is_authenticated %}
                             Vous êtes connecté, {{ user.username }} !
                         {% else %}
-                        <form method="post" action=".">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <a href="password">Mot de passe oublié</a>
-                            <input type="submit" value="Se connecter" />
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="idConnection">Identifiant de connection</label>
+            <input type="text" class="form-control" id="idConnection">
+        </div>
+        <div class="form-group mb-0">
+            <label for="mdpConnection">Mot de passe</label>
+            <input type="password" class="form-control" id="mdpConnection">
+        </div>
+        <div class="text-right mt-0">
+            <small id="mdpOublie"><a href="password" class="text-decoration-none">Mot de passe oublié</a></small>
         </div>
     </div>
+    <div class="card-footer form-group container m-0">
+        <div class="row align-items-center justify-content-between pr-3 pl-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="resterConnecte">
+                <label class="form-check-label" for="resterConnecte">Rester connecté</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Connection</button>
+        </div>
+     </div></form>
+</div>
+</section>
 {% endblock %}
