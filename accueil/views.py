@@ -15,23 +15,26 @@ def accueil(request):
 
 
 def connect(request):
-    error = False
-
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                return HttpResponseRedirect('accueil')
-            else:
-                error = True
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('accueil')
     else:
-        form = LoginForm()
+        error = False
 
-    return render(request, 'accueil/login.html', locals())
+        if request.method == "POST":
+            form = LoginForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data["username"]
+                password = form.cleaned_data["password"]
+                user = authenticate(username=username, password=password)
+                if user:
+                    login(request, user)
+                    return HttpResponseRedirect('accueil')
+                else:
+                    error = True
+        else:
+            form = LoginForm()
+
+        return render(request, 'accueil/login.html', locals())
 
 
 def disconnect(request):
