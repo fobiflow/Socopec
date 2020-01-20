@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import LoginForm
+from .forms import LoginForm, PasswordForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
@@ -36,4 +36,15 @@ def connect(request):
 
 def disconnect(request):
     logout(request)
-    return HttpResponseRedirect('logout/')
+    return HttpResponseRedirect('connect')
+
+
+def password(request):
+    if request.method == "POST":
+        form = PasswordForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect('/')
+    else:
+        form = PasswordForm()
+
+    return render(request, 'accueil/password.html', locals())
