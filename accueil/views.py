@@ -36,7 +36,7 @@ def connect(request):
 
 def disconnect(request):
     logout(request)
-    return HttpResponseRedirect('connect')
+    return HttpResponseRedirect('/')
 
 
 def password(request):

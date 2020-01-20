@@ -21,7 +21,7 @@ urlpatterns = [
     path('', include('accueil.urls')),
     path('accueil/', include('accueil.urls')),
     path('password/', include('accueil.urls')),
-    path('logout/', include('accueil.urls')),
+    path('disconnect', include('accueil.urls')),
     path('vehicule/', include('vehicule.urls')),
     path('agent/', include('agent.urls')),
     path('agence/', include('agence.urls')),
