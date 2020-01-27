@@ -1,0 +1,229 @@
+[
+ {
+   "pk": 1,
+   "model": "agence.agence",
+   "fields": {
+     "id": 1,
+     "nom": "Agence de Brest",
+     "adresse": "25 rue Jean Jaurès",
+     "complement_adresse": "",
+     "code_postal": 29200,
+     "ville": "Brest",
+     "telephone": "02 98 46 90 75",
+     "fax": "02 98 46 90 76",
+     "photo": "https://cdn.pixabay.com/photo/2020/01/11/13/22/freedom-4757533_960_720.jpg"
+   }
+ },
+ {
+   "pk": 2,
+   "model": "agence.agence",
+   "fields": {
+     "id": 2,
+     "nom": "Agence de Paris",
+     "adresse": "85 rue Lecourbe",
+     "complement_adresse": "",
+     "code_postal": 75000,
+     "ville": "Paris",
+     "telephone": "01 98 45 64 21",
+     "fax": "01 98 45 64 22",
+     "photo": "https://cdn.pixabay.com/photo/2019/12/30/18/20/road-4730238_960_720.jpg"
+   }
+ },
+  {
+    "pk": 3,
+    "model": "agence.agence",
+    "fields": {
+      "id": 3,
+      "nom": "Agence de Lille",
+      "adresse": "254 avenue Colbert",
+      "complement_adresse": "",
+      "code_postal": 59000,
+      "ville": "Lille",
+      "telephone": "03 20 13 56 48",
+      "fax": "03 20 13 56 49",
+      "photo": "https://cdn.pixabay.com/photo/2020/01/22/18/29/water-4785991_960_720.jpg"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "agence.agence",
+    "fields": {
+      "id": 4,
+      "nom": "Agence de Strasbourg",
+      "adresse": "15 Quai Louis Pasteur",
+      "complement_adresse": "",
+      "code_postal": 67000,
+      "ville": "Strasbourg",
+      "telephone": "03 88 36 45 98",
+      "fax": "03 88 36 45 99",
+      "photo": "https://cdn.pixabay.com/photo/2020/01/22/18/24/venice-4785972_960_720.jpg"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "agence.agence",
+    "fields": {
+      "id": 5,
+      "nom": "Agence de Genève",
+      "adresse": "156 Boulevard de Saint-Georges",
+      "complement_adresse": "",
+      "code_postal": 1201,
+      "ville": "Genève",
+      "telephone": "01 22 45 65 78",
+      "fax": "01 22 45 65 79",
+      "photo": "https://cdn.pixabay.com/photo/2015/08/02/22/10/television-tower-871949_960_720.jpg"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "agence.agence",
+    "fields": {
+      "id": 6,
+      "nom": "Agence de Grenoble",
+      "adresse": "65 rue Marcel Peretto",
+      "complement_adresse": "",
+      "code_postal": 38000,
+      "ville": "Grenoble",
+      "telephone": "04 38 45 98 65",
+      "fax": "04 38 45 98 66",
+      "photo": "https://cdn.pixabay.com/photo/2017/03/29/15/18/tianjin-2185510_960_720.jpg"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "agence.agence",
+    "fields": {
+      "id": 7,
+      "nom": "Agence de Lyon",
+      "adresse": "675 avenue Bethelot",
+      "complement_adresse": "",
+      "code_postal": 69000,
+      "ville": "Lyon",
+      "telephone": "04 72 45 35 54",
+      "fax": "04 72 45 35 55",
+      "photo": "https://cdn.pixabay.com/photo/2013/03/02/02/41/city-89197_960_720.jpg"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "agence.agence",
+    "fields": {
+      "id": 8,
+      "nom": "Agence de Clermont-Ferrand",
+      "adresse": "78 rue Sous les Vignes",
+      "complement_adresse": "",
+      "code_postal": 63000,
+      "ville": "Clermont-Ferrand",
+      "telephone": "04 73 65 23 88",
+      "fax": "04 73 65 23 89",
+      "photo": "https://cdn.pixabay.com/photo/2017/01/18/16/46/hong-kong-1990268_960_720.jpg"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "agence.agence",
+    "fields": {
+      "id": 9,
+      "nom": "Agence de Nice",
+      "adresse": "458 Boulevard François Grosso",
+      "complement_adresse": "",
+      "code_postal": 6000,
+      "ville": "Nice",
+      "telephone": "04 94 12 35 78",
+      "fax": "04 94 12 35 79",
+      "photo": "https://cdn.pixabay.com/photo/2018/01/11/19/02/architecture-3076685_960_720.jpg"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "agence.agence",
+    "fields": {
+      "id": 10,
+      "nom": "Agence de Marseille",
+      "adresse": "125 rue de Crimée",
+      "complement_adresse": "",
+      "code_postal": 13000,
+      "ville": "Marseille",
+      "telephone": "04 95 35 54 86",
+      "fax": "04 95 35 54 87",
+      "photo": "https://cdn.pixabay.com/photo/2015/03/26/09/48/chicago-690364_960_720.jpg"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "agence.agence",
+    "fields": {
+      "id": 11,
+      "nom": "Agence de Montpellier",
+      "adresse": "65 Avenue de la Liberté",
+      "complement_adresse": "",
+      "code_postal": 34000,
+      "ville": "Montpellier",
+      "telephone": "04 11 56 23 54",
+      "fax": "04 11 56 23 55",
+      "photo": "https://cdn.pixabay.com/photo/2014/09/07/21/52/urban-438393_960_720.jpg"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "agence.agence",
+    "fields": {
+      "id": 12,
+      "nom": "Agence de Toulouse",
+      "adresse": "15 Avenue de Muret",
+      "complement_adresse": "",
+      "code_postal": 31000,
+      "ville": "Toulouse",
+      "telephone": "05 61 35 45 68",
+      "fax": "05 61 35 45 69",
+      "photo": "https://cdn.pixabay.com/photo/2017/07/19/01/41/clouds-2517653_960_720.jpg"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "agence.agence",
+    "fields": {
+      "id": 13,
+      "nom": "Agence de Bordeaux",
+      "adresse": "56 rue Camille Gaudard",
+      "complement_adresse": "",
+      "code_postal": 33000,
+      "ville": "Bordeaux",
+      "telephone": "05 33 45 16 12",
+      "fax": "05 33 45 16 13",
+      "photo": "https://cdn.pixabay.com/photo/2015/09/21/13/17/road-949832_960_720.jpg"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "agence.agence",
+    "fields": {
+      "id": 14,
+      "nom": "Agence de Limoges",
+      "adresse": "78 avenue Albert Thomas",
+      "complement_adresse": "",
+      "code_postal": 87000,
+      "ville": "Limoges",
+      "telephone": "09 87 56 42 35",
+      "fax": "09 87 56 42 36",
+      "photo": "https://cdn.pixabay.com/photo/2017/12/10/17/40/prague-3010407_960_720.jpg"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "agence.agence",
+    "fields": {
+      "id": 15,
+      "nom": "Agence de Nantes",
+      "adresse": "852 Boulevard Jules Verne",
+      "complement_adresse": "",
+      "code_postal": 44000,
+      "ville": "Nantes",
+      "telephone": "02 56 32 54 98",
+      "fax": "02 56 32 54 99",
+      "photo": "https://cdn.pixabay.com/photo/2018/01/31/12/16/architecture-3121009_960_720.jpg"
+    }
+  }
+]
+
+

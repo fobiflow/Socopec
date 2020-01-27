@@ -4,23 +4,23 @@ import datetime
 
 
 class Agent(models.Model):
-    nom = models.CharField(max_length=30)
-    prenom = models.CharField(max_length=30)
-    adresse = models.TextField()
-    complement_adresse = models.TextField(blank=True, null=True)
-    code_postal = models.IntegerField()
-    ville = models.CharField(max_length=20)
-    tel = models.CharField(max_length=15)
-    fax = models.CharField(max_length=15, blank=True, null=True)
-    mobile = models.CharField(max_length=15, blank=True, null=True)
-    email = models.CharField(max_length=50)
+    nom = models.CharField(max_length=30, default="àremplir")
+    prenom = models.CharField(max_length=30, default="àremplir")
+    adresse = models.TextField(default="àremplir")
+    complement_adresse = models.TextField(blank=True, null=True, default="null")
+    code_postal = models.IntegerField(default=00000)
+    ville = models.CharField(max_length=20, default="àremplir")
+    tel = models.CharField(max_length=15, default="àremplir")
+    fax = models.CharField(max_length=15, blank=True, null=True, default="null")
+    mobile = models.CharField(max_length=15, blank=True, null=True, default="null")
+    email = models.CharField(max_length=50, default="àremplir")
     date_entree_socopec = models.DateField(default=datetime.date.today)
-    poste_socopec = models.CharField(max_length=30)
+    poste_socopec = models.CharField(max_length=30, default="àremplir")
     admin = models.BooleanField(default=False)
-    identifiant = models.CharField(max_length=20)
-    mot_de_passe = models.CharField(max_length=20)
-    photo = models.CharField(max_length=255, blank=True, null=True)
-    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE)
+    identifiant = models.CharField(max_length=20, default="àremplir")
+    mot_de_passe = models.CharField(max_length=20, default="àremplir")
+    photo = models.CharField(max_length=255, blank=True, null=True, default="null")
+    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE, default=1)
 
     class Meta:
         verbose_name = "agent"

@@ -6,7 +6,7 @@ import datetime
 
 
 class Statut(models.Model):
-    statut = models.CharField(max_length=20)
+    statut = models.CharField(max_length=20, default="àremplir")
 
     class Meta:
         verbose_name = "statut"
@@ -17,13 +17,13 @@ class Statut(models.Model):
 
 
 class Historique(models.Model):
-    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE)
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
-    id_statut = models.ForeignKey(Statut, on_delete=models.CASCADE)
-    id_agent = models.ForeignKey(Agent, on_delete=models.CASCADE)
+    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE, default=1)
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE, default=1)
+    id_statut = models.ForeignKey(Statut, on_delete=models.CASCADE, default=1)
+    id_agent = models.ForeignKey(Agent, on_delete=models.CASCADE, default=1)
     date_debut = models.DateTimeField(default=datetime.date.today)
-    date_fin = models.DateTimeField(blank=True, null=True)
-    localisation = models.CharField(max_length=50)
+    date_fin = models.DateTimeField(blank=True, null=True, default="null")
+    localisation = models.CharField(max_length=50, default="àremplir")
 
     class Meta:
         verbose_name = "historique"
@@ -34,12 +34,12 @@ class Historique(models.Model):
 
 
 class Probleme(models.Model):
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
-    id_agent_ouverture = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='id_agent_ouverture')
-    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='id_agent_resolution')
-    probleme = models.TextField(blank=True, null=True)
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE, default=1)
+    id_agent_ouverture = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='id_agent_ouverture', default=1)
+    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='id_agent_resolution', default=1)
+    probleme = models.TextField(blank=True, null=True, default="null")
     date_signalement = models.DateTimeField(default=datetime.date.today)
-    date_resolution = models.DateTimeField(blank=True, null=True)
+    date_resolution = models.DateTimeField(blank=True, null=True, default="null")
 
     class Meta:
         verbose_name = "probleme"
