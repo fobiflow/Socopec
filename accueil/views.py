@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def accueil(request):
     if request.user.groups.filter(name="administrateur").exists():
-        return render(request, 'accueil/accueilAdmin.html')
+        return render(request, '../templates/accueilAdmin.html')
     else:
-        return render(request, 'accueil/accueilUser.html')
+        return render(request, '../templates/accueilUser.html')
 
 
 def connect(request):

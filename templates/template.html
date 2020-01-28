@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="body-block">
+        {% block header %}
+            <div class="header-block">
+                <a href="{% url 'accueil' %}">
+                    <div class="header-logo">
+                        <img src="../static/images/logo.png" alt="Logo Socopec" class="logo">
+                        <h1>Socopec</h1>
+                    </div>
+                </a>
+                <p><a href="{% url 'disconnect' %}">Se déconnecter</a></p>
+            </div>
+        {% endblock %}
+        {% block main %}
+            <div class="main-block">
+                {% block menu %}
+                    <ul class="main-nav">
+{#                        <a href="{% url vehicules %}"><li>Véhicules</li></a>#}
+                        <li>Véhicules</li>
+                        <a href="{% url 'agences' %}"><li>Agences</li></a>
+{#                        <a href="{% url agents %}"><li>Agents</li></a>#}
+                        <li>Agents</li>
+{#                        <a href="{% url compte %}"><li>Compte</li></a>#}
+                        <li>Compte</li>
+                    </ul>
+                {% endblock %}
+                <div class="corpus-block">
+                    {% block corpus %}
+
+
+
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

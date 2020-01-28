@@ -18,11 +18,14 @@
             <header>
                 {% block header %}{% endblock %}
             </header>
-            <nav>
-                {% block menu %}{% endblock %}
-            </nav>
             <main>
                 {% block main %}
+                     <nav>
+                        {% block menu %}{% endblock %}
+                     </nav>
+                    <section>
+                        {%  block corpus %}{% endblock %}
+                    </section>
                 {% endblock %}
             </main>
             <footer>
