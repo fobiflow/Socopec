@@ -16,13 +16,10 @@
             <div class="main-block">
                 {% block menu %}
                     <ul class="main-nav">
-{#                        <a href="{% url vehicules %}"><li>Véhicules</li></a>#}
-                        <li>Véhicules</li>
+                        <a href="{% url 'vehicules' %}"><li>Véhicules</li></a>
                         <a href="{% url 'agences' %}"><li>Agences</li></a>
-{#                        <a href="{% url agents %}"><li>Agents</li></a>#}
-                        <li>Agents</li>
-{#                        <a href="{% url compte %}"><li>Compte</li></a>#}
-                        <li>Compte</li>
+                        <a href="{% url 'agents' %}"><li>Agents</li></a>
+                        <a href="{% url 'modifier_agents' %}"><li>Compte</li></a>
                     </ul>
                 {% endblock %}
                 <div class="corpus-block">

@@ -6,6 +6,7 @@ import datetime
 class Agent(models.Model):
     nom = models.CharField(max_length=30, default="àremplir")
     prenom = models.CharField(max_length=30, default="àremplir")
+    sexe = models.CharField(max_length=1)
     adresse = models.TextField(default="àremplir")
     complement_adresse = models.TextField(blank=True, null=True, default="null")
     code_postal = models.IntegerField(default=00000)

@@ -25,5 +25,5 @@ urlpatterns = [
     path('vehicule/', include('vehicule.urls')),
     path('agent/', include('agent.urls')),
     path('agence/', include('agence.urls')),
-    path('historique/', include('historique.urls')),
+    path('agent/modifier', include('agent.urls'))
 ]
