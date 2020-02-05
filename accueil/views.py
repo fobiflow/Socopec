@@ -2,14 +2,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from agent.models import Agent
 
 
 @login_required
 def accueil(request):
+    # TODO : ajout des éléments User
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
     if request.user.groups.filter(name="administrateur").exists():
-        return render(request, '../templates/accueilAdmin.html')
+        return render(request, '../templates/accueilAdmin.html', {'agent': agent})
     else:
-        return render(request, '../templates/accueilUser.html')
+        return render(request, '../templates/accueilUser.html', {'agent': agent})
 
 
 def connect(request):

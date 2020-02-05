@@ -1,52 +1,5 @@
 {% extends "template.html" %}
 {% block block-corpus %}
-    <div class="container-fluid">
-        <div class="row justify-content-around p-2">
-            <section class="border border-secondary p-2 m-2 col">
-                <h3>{% block titleSection %}Ajouter une agence{% endblock %}</h3>
-                    {% block bodySection %}
-                    <form>
-                        <input id="agencesAjoutNom" type="text" placeholder="Nom de l'agence">
-                        <input id="agencesAjoutResponsable" type="text" placeholder="Responsable de l'agence">
-                        <input id="agencesAjoutAdresse" type="text" placeholder="Adresse de l'agence">
-                        <input id="agencesAjoutsuiteAdresse" type="text" placeholder="Suite de l'adresse">
-                        <div>
-                            <input id="agencesAjoutCP" type="text" placeholder="Code postal">
-                            <input id="agencesAjoutVille"  type="text" placeholder="Ville">
-                        </div>
-                        <div>
-                            <input id="agencesAjoutTel" type="tel" placeholder="Téléphone">
-                            <input id="agencesAjoutFax" type="tel" placeholder="Fax">
-                        </div>
-                        <input id="agencesAjoutMail" type="email" placeholder="Email">
-                        <input id="agencesAjoutPhoto" type="url" placeholder="Ajouter une photo">
-                    </form>
-                    {% endblock %}
-                {% block footerSection %}
-                    <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Envoyer{% endblock %}</button>
-                {% endblock %}
-            </section>
-            <section id="test" class="border border-secondary p-2 m-2 col">
-                <h3>Actuellement</h3>
-                <div class="flexColumn center">
-                    <div>
-                        <p><span class="agencesVehiculesVendusMois orange">15</span><span class="agencesVehiculesVendusMoisPrec"> / 17</span></p>
-                        <p class="agencesVehiculesVendusMoisPhrase">Véhicules vendus en {{Février}}</p>
-                    </div>
-                    <div class="flexRow">
-                        <div>
-                            <p><span class="agencesVehiculesVendusAnnee vert">15</span><span class="agencesVehiculesVendusAnneePrec"> / 17</span></p>
-                            <p class="agencesVehiculesVendusAnneePhrase">Véhicules vendus en</br>{{2019}}</p>
-                        </div>
-                        <div>
-                            <p class="agencesNbFrance">15</p>
-                            <p class="agencesNbFrancePhrase">Agences en </br>France</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
      <div class="container-fluid">
         <div class="row justify-content-around p-2">
             <section class="border border-secondary p-2 m-2 col">
@@ -70,7 +23,7 @@
         var vm = new Vue({
             el: '#menu',
             data: {
-                user: 'admin',
+                user: 'user',
                 vehicules : false,
                 agents: false,
                 agences: true

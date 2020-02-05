@@ -6,7 +6,9 @@ from .models import Agence
 
 @login_required
 def generate(request):
-    return render(request, '../templates/agents.html')
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
+    return render(request, '../templates/agents.html', {'agent': agent})
 
 
 @login_required

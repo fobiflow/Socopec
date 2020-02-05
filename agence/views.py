@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Agence
+from agent.models import Agent
 
 
 @login_required()
 def generate(request):
-    return render(request, '../templates/agences.html')
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
+    if request.user.groups.filter(name="administrateur").exists():
+        return render(request, '../templates/agence/agenceAdmin.html', {'agent': agent})
+    else:
+        return render(request, '../templates/agence/agenceUser.html', {'agent': agent})
 
 
 @login_required()

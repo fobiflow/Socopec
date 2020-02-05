@@ -1,0 +1,17 @@
+{% extends 'template.html' %}
+{% block block-corpus %}
+
+
+    <!-- vue.js pour affichage menu -->
+    <script>
+        var vm = new Vue({
+            el: '#menu',
+            data: {
+                user: 'admin',
+                vehicules : true,
+                agents: false,
+                agences: false
+            }
+        });
+    </script>
+{% endblock %}

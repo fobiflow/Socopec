@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Vehicule
-
+from agent.models import Agent
 
 @login_required
 def generate(request):
-    return render(request, '../templates/vehicules.html')
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
+    return render(request, '../templates/vehicules.html', {'agent': agent})
 #
 # @login_required
 # def lister(request):

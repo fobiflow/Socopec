@@ -4,8 +4,8 @@
     "model": "agent.agent",
     "fields": {
       "id": 1,
-      "nom": "Hélène",
-      "prenom": "Leblanc",
+      "nom": "Leblanc",
+      "prenom": "Hélène",
       "sexe": "F",
       "adresse": "3 rue du Bois de la Champelle",
       "complement_adresse": "",
