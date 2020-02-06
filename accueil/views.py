@@ -11,9 +11,9 @@ def accueil(request):
     identifiant = request.user.username
     agent = Agent.objects.get(identifiant=identifiant)
     if request.user.groups.filter(name="administrateur").exists():
-        return render(request, '../templates/accueilAdmin.html', {'agent': agent})
+        return render(request, '../templates/accueil/accueilAdmin.html', {'agent': agent})
     else:
-        return render(request, '../templates/accueilUser.html', {'agent': agent})
+        return render(request, '../templates/accueil/accueilUser.html', {'agent': agent})
 
 
 def connect(request):

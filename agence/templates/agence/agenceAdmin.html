@@ -1,4 +1,5 @@
 {% extends "template.html" %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/agence.css">{% endblock %}
 {% block block-corpus %}
     <div class="container-fluid">
         <div class="row justify-content-around p-2">
@@ -31,15 +32,15 @@
                 <div class="flexColumn center">
                     <div>
                         <p><span class="agencesVehiculesVendusMois orange">15</span><span class="agencesVehiculesVendusMoisPrec"> / 17</span></p>
-                        <p class="agencesVehiculesVendusMoisPhrase">Véhicules vendus en {{Février}}</p>
+                        <p class="agencesVehiculesVendusMoisPhrase">Véhicules vendus en {{ this_month }}</p>
                     </div>
                     <div class="flexRow">
-                        <div>
+                        <div id="first-actu">
                             <p><span class="agencesVehiculesVendusAnnee vert">15</span><span class="agencesVehiculesVendusAnneePrec"> / 17</span></p>
-                            <p class="agencesVehiculesVendusAnneePhrase">Véhicules vendus en</br>{{2019}}</p>
+                            <p class="agencesVehiculesVendusAnneePhrase">Véhicules vendus en</br>{{ this_year }}</p>
                         </div>
                         <div>
-                            <p class="agencesNbFrance">15</p>
+                            <p class="agencesNbFrance">{{ nombre_agences }}</p>
                             <p class="agencesNbFrancePhrase">Agences en </br>France</p>
                         </div>
                     </div>
