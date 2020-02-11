@@ -5,27 +5,30 @@
         <div class="row justify-content-around p-2">
             <section class="border border-secondary p-2 m-2 col">
                 <h3>{% block titleSection %}Ajouter une agence{% endblock %}</h3>
+                <form action="" method="post">
                     {% block bodySection %}
-                    <form>
-                        <input id="agencesAjoutNom" type="text" placeholder="Nom de l'agence">
-                        <input id="agencesAjoutResponsable" type="text" placeholder="Responsable de l'agence">
-                        <input id="agencesAjoutAdresse" type="text" placeholder="Adresse de l'agence">
-                        <input id="agencesAjoutsuiteAdresse" type="text" placeholder="Suite de l'adresse">
+                        {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                        {% if confirmation %}<div class="alert alert-success" role="alert">L'agence {{ confirmation_name }} a bien été enregistrée</div>{% endif %}
+                        {% csrf_token %}
+                        <input name="nom" id="agencesAjoutNom" type="text" placeholder="Nom de l'agence">
+{#                        <input id="agencesAjoutResponsable" type="text" placeholder="Responsable de l'agence">#}
+                        <input name="adresse" id="agencesAjoutAdresse" type="text" placeholder="Adresse de l'agence">
+                        <input name="complement_adresse" id="agencesAjoutsuiteAdresse" type="text" placeholder="Suite de l'adresse">
                         <div>
-                            <input id="agencesAjoutCP" type="text" placeholder="Code postal">
-                            <input id="agencesAjoutVille"  type="text" placeholder="Ville">
+                            <input name="code_postal" id="agencesAjoutCP" type="text" placeholder="Code postal">
+                            <input name="ville" id="agencesAjoutVille"  type="text" placeholder="Ville">
                         </div>
                         <div>
-                            <input id="agencesAjoutTel" type="tel" placeholder="Téléphone">
-                            <input id="agencesAjoutFax" type="tel" placeholder="Fax">
+                            <input name="telephone" id="agencesAjoutTel" type="text" placeholder="Téléphone">
+                            <input name="fax" id="agencesAjoutFax" type="text" placeholder="Fax">
                         </div>
-                        <input id="agencesAjoutMail" type="email" placeholder="Email">
-                        <input id="agencesAjoutPhoto" type="url" placeholder="Ajouter une photo">
-                    </form>
+{#                        <input id="agencesAjoutMail" type="text" placeholder="Email">#}
+                        <input name="photo" id="agencesAjoutPhoto" type="text" placeholder="Ajouter des photos">
                     {% endblock %}
-                {% block footerSection %}
-                    <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Envoyer{% endblock %}</button>
-                {% endblock %}
+                    {% block footerSection %}
+                        <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Envoyer{% endblock %}</button>
+                    {% endblock %}
+                </form>
             </section>
             <section id="test" class="border border-secondary p-2 m-2 col">
                 <h3>Actuellement</h3>
@@ -138,10 +141,7 @@
             data: {
                 searchQuery: '',
                 gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de véhicules', 'Probleme en cours', 'Véhicules vendus', 'Responsable de l\'agence', 'Téléphone', 'Mail', ''],
-                gridData: [
-                    {Ville: '', Agence: '', Nb_de_personne:'', Nb_de_véhicules: '', Probleme_en_cours : '', Véhicules_vendus : '', Responsable_de_l_agence :'', Téléphone : '', Mail:'', vue :''}
-
-                ]
+                gridData: {{ agences_table }}
             }
         })
 

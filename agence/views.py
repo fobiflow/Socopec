@@ -11,6 +11,19 @@ def generate(request):
     agent = Agent.objects.get(identifiant=identifiant)
     # Pour le tableau :
     agences = Agence.objects.all()
+    agences_table = []
+    for item in agences:
+        agences_table.append({
+            'Ville': item.ville,
+            'Agence': item.nom,
+            'Nb_de_vehicules': '',
+            'Probleme_en_cours': '',
+            'Vehicules_vendus': '',
+            'Responsable_de_l_agence': '',
+            'Telephone': item.telephone,
+            'Mail': '',
+            'Vue': ''
+        })
     # TODO : ajouter nb de personnes, nb de véhicules, problèmes en cours, nb de véhicules vendus, responsable de l'agence avec mail
     # nb_personnes =
     # nb_vehicules =
@@ -31,48 +44,62 @@ def generate(request):
         this_month = mois[int_month - 1]
         nombre_agences = Agence.objects.all().count()
         # Pour le formulaire
-        if request.method == "POST":
-            nom = request.POST.get("nom")
-            adresse = request.POST.get("adresse")
-            complement_adresse = request.POST.get("complement_adresse")
-            code_postal = request.POST.get("code_postal")
-            ville = request.POST.get("ville")
-            telephone = request.POST.get("telephone")
-            fax = request.POST.get("fax")
-            photo = request.POST.get("photo")
-            new_agence = Agence(nom=nom, adresse=adresse, complement_adresse=complement_adresse, code_postal=code_postal, ville=ville, telephone=telephone, fax=fax, photo=photo)
-            new_agence.save()
-            # TODO : page agence avec message de confirmation d'enregistrement d'agence
-            return redirect('confirmation_enregistrement_agence')
-        return render(request,
-                      '../templates/agence/agenceAdmin.html',
-                      {'agent': agent,
-                       'nombre_agences': nombre_agences,
-                       'agences': agences,
-                       'this_year': this_year,
-                       'this_month': this_month})
+        if request.method == 'POST':
+            if request.POST.get('nom') and \
+                    request.POST.get('adresse') and \
+                    request.POST.get('code_postal') and \
+                    request.POST.get('ville') and \
+                    request.POST.get('telephone') and \
+                    request.POST.get('photo'):
+                new_agence = Agence(
+                    nom=request.POST.get('nom'),
+                    adresse=request.POST.get('adresse'),
+                    complement_adresse=request.POST.get('complement_adresse'),
+                    code_postal=request.POST.get('code_postal'),
+                    ville=request.POST.get('ville'),
+                    telephone=request.POST.get('telephone'),
+                    fax=request.POST.get('fax'),
+                    photo=request.POST.get('photo')
+                )
+                new_agence.save()
+                return render(request,
+                              '../templates/agence/agenceAdmin.html',
+                              {'error': False,
+                               'confirmation': True,
+                               'confirmation_name': request.POST.get('nom'),
+                               'agent': agent,
+                               'nombre_agences': nombre_agences,
+                               'agences_table': str(agences_table),
+                               'this_year': this_year,
+                               'this_month': this_month})
+            else:
+                return render(request,
+                              '../templates/agence/agenceAdmin.html',
+                              {'error': True,
+                               'agent': agent,
+                               'nombre_agences': nombre_agences,
+                               'agences_table': str(agences_table),
+                               'this_year': this_year,
+                               'this_month': this_month})
+        else:
+            return render(request,
+                          '../templates/agence/agenceAdmin.html',
+                          {'error': False,
+                           'confirmation': False,
+                           'agent': agent,
+                           'nombre_agences': nombre_agences,
+                           'agences_table': str(agences_table),
+                           'this_year': this_year,
+                           'this_month': this_month})
     else:
         # USER :
-        return render(request, '../templates/agence/agenceUser.html', {'agent': agent, 'agences': agences})
+        return render(request, '../templates/agence/agenceUser.html', {'agent': agent, 'agences_table': str(agences_table)})
 
 
-# @login_required()
-# def ajouter_une_agence(request):
-#     if request.user.groups.filter(name="administrateur").exists():
-#         if request.method == "POST":
-#             nom = request.POST.get("nom")
-#             adresse = request.POST.get("adresse")
-#             complement_adresse = request.POST.get("complement_adresse")
-#             code_postal = request.POST.get("code_postal")
-#             ville = request.POST.get("ville")
-#             telephone = request.POST.get("telephone")
-#             fax = request.POST.get("fax")
-#             photo = request.POST.get("photo")
-#             new_agence = Agence(nom=nom, adresse=adresse, complement_adresse=complement_adresse, code_postal=code_postal, ville=ville, telephone=telephone, fax=fax, photo=photo)
-#             new_agence.save()
-#             # TODO : page agence avec message de confirmation d'enregistrement d'agence
-#             return redirect('confirmation_enregistrement_agence')
-#         return render(request, 'agence/ajouter_une_agence.html', locals())
+@login_required()
+def fiche(request, id_agence):
+    agence = Agence.objects.get(id=id_agence)
+    return render(request, '../templates/agence/fiche_agence.html', {'agence': agence})
 
 
 # @login_required()
@@ -98,39 +125,39 @@ def generate(request):
 #     return render(request, 'agence/rechercher_une_agence.html', {'agences': agences})
 
 
-@login_required()
-def fiche_agence(request, id_agence):
-    agence = Agence.objects.get(id=id_agence)
-    # TODO : ajouter problèmes sur véhicules de l'agence, historique des ventes de l'agence, liste du personnel de l'agence
-    return render(request, 'agence/fiche_agence.html', {'agence': agence})
-
-
-@login_required()
-def supprimer_agence(request, id_agence):
-    if request.user.groups.filter(name="administrateur").exists():
-        agence = Agence.objects.get(id=id_agence)
-        agence.delete()
-        # TODO: ajouter un message de confirmation de suppression de l'agence
-        return render(request, '../templates/agences.html')
-
-
-@login_required()
-def modifier_agence(request, id_agence):
-    if request.user.groups.filter(name="administrateur").exists():
-        agence = get_object_or_404(Agence, id=id_agence)
-        if request.method == "POST":
-            nom = request.POST.get("nom")
-            adresse = request.POST.get("adresse")
-            complement_adresse = request.POST.get("complement_adresse")
-            code_postal = request.POST.get("code_postal")
-            ville = request.POST.get("ville")
-            telephone = request.POST.get("telephone")
-            fax = request.POST.get("fax")
-            photo = request.POST.get("photo")
-            updated_agence = Agence(nom=nom, adresse=adresse, complement_adresse=complement_adresse, code_postal=code_postal, ville=ville, telephone=telephone, fax=fax, photo=photo)
-            updated_agence.save()
-            # TODO : page agence avec message de confirmation de mise à jour d'agence
-            return redirect('confirmation_maj_agence')
-        return render(request, 'agence/fiche_modifier_agence.html', {'agence': agence})
+# @login_required()
+# def fiche_agence(request, id_agence):
+#     agence = Agence.objects.get(id=id_agence)
+#     # TODO : ajouter problèmes sur véhicules de l'agence, historique des ventes de l'agence, liste du personnel de l'agence
+#     return render(request, 'agence/fiche_agence.html', {'agence': agence})
+#
+#
+# @login_required()
+# def supprimer_agence(request, id_agence):
+#     if request.user.groups.filter(name="administrateur").exists():
+#         agence = Agence.objects.get(id=id_agence)
+#         agence.delete()
+#         # TODO: ajouter un message de confirmation de suppression de l'agence
+#         return render(request, '../templates/agences.html')
+#
+#
+# @login_required()
+# def modifier_agence(request, id_agence):
+#     if request.user.groups.filter(name="administrateur").exists():
+#         agence = get_object_or_404(Agence, id=id_agence)
+#         if request.method == "POST":
+#             nom = request.POST.get("nom")
+#             adresse = request.POST.get("adresse")
+#             complement_adresse = request.POST.get("complement_adresse")
+#             code_postal = request.POST.get("code_postal")
+#             ville = request.POST.get("ville")
+#             telephone = request.POST.get("telephone")
+#             fax = request.POST.get("fax")
+#             photo = request.POST.get("photo")
+#             updated_agence = Agence(nom=nom, adresse=adresse, complement_adresse=complement_adresse, code_postal=code_postal, ville=ville, telephone=telephone, fax=fax, photo=photo)
+#             updated_agence.save()
+#             # TODO : page agence avec message de confirmation de mise à jour d'agence
+#             return redirect('confirmation_maj_agence')
+#         return render(request, 'agence/fiche_modifier_agence.html', {'agence': agence})
 
 
