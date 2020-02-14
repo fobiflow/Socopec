@@ -19,15 +19,41 @@
         </div>
      </div>
 
+    {% verbatim %}
+        <script type="text/x-template" id="grid-template">
+        <table>
+            <thead>
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entry in filteredHeroes">
+                <td v-for="key in columns">
+                    {{ entry[key] }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    {% endverbatim %}
+
     <!-- vue.js pour affichage menu -->
-    <script>
+    <script type="text/javascript">
         var vm = new Vue({
             el: '#menu',
             data: {
                 user: 'user',
                 vehicules : false,
                 agents: false,
-                agences: true
+                agences: true,
+                compte: false
             }
         });
 
@@ -90,37 +116,12 @@
             el: '#demo',
             data: {
                 searchQuery: '',
-                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de véhicules', 'Probleme en cours', 'Véhicules vendus', 'Responsable de l\'agence', 'Téléphone', 'Mail', ''],
-                gridData: [
-                    {Ville: '', Agence: '', Nb_de_personne:'', Nb_de_véhicules: '', Probleme_en_cours : '', Véhicules_vendus : '', Responsable_de_l_agence :'', Téléphone : '', Mail:'', vue :''}
-
-                ]
+                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de vehicules', 'Probleme en cours', 'Vehicules vendus', 'Responsable de l\'agence', 'Telephone', 'Mail', ''],
+                gridData: {{ agences_table | safe }}
             }
         })
 
     </script>
-    <script type="text/x-template" id="grid-template">
-        <table>
-            <thead>
-            <tr>
-                <th v-for="key in columns"
-                    @click="sortBy(key)"
-                    :class="{ active: sortKey == key }">
-                    {{ key  }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-          </span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
-                    {{ entry.key }}
-{#                    {{ entry[key] }}#}
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </script>
+
 
 {% endblock %}

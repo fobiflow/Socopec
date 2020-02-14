@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/base.css">{% endblock %}
+{% block titre %}Confirmation de suppression de l'agence {{ agence.nom }}{% endblock %}
+{% block body %}
+    <section class="container col-sm-9 col-md-7 col-lg-5 mx-auto mt-5" >
+        <div class="card card-signin">
+            <div class="card-header pt-2 pb-0">
+                <h5 class="card-title font-weight-bold">Confirmation de suppression d'une agence</h5>
+            </div>
+            <form method="post" action="">
+                <div class="card-body">
+                    <p>Etes-vous sûr de vouloir supprimer l'agence {{ agence.nom }}?</p>
+                     <div class="alert alert-danger" role="alert">La suppression d'une agence entraine la suppression de tous les agents, véhicules, et historiques associés à cette agence!</div>
+                </div>
+                <div class="card-footer form-group container m-0">
+                    <div class="row align-items-center justify-content-between pr-3 pl-3">
+                        {% csrf_token %}
+                        <a href={% url 'fiche_agence' id_agence=agence.id %}><input type="button" class="btn btn-primary" value="Non"></a>
+                        <button type="submit" class="btn btn-primary">Oui</button>
+                    </div>
+                 </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

@@ -17,7 +17,7 @@ section{
 .flexColumn{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 90%;
 }
 .flexColumn > div , .flexRow > div{
     text-align: center;
@@ -31,8 +31,8 @@ section{
     align-items: center;
 }
 .btn-primary{
-    background-color: #5c5fff;
-    border-color: #5c5fff;
+    background-color: #5c5fff !important;
+    border-color: #5c5fff !important;
 }
 nav a, nav a:hover{
     outline: none;
@@ -113,6 +113,27 @@ a, a:hover{
     font-family: 'Arial Gras', 'Arial Normal', 'Arial';
     font-size: 25px;
 }
+main section{
+    background-color: white;
+}
+#first-actu {
+    margin-right: 70px;
+}
+.vert{
+    color: #28A745;
+}
+.rouge{
+    color: #D9001B;
+}
+.gris{
+    color: #D9D9D9;
+}
+.jaune{
+    color: #FFC107;
+}
+.orange{
+    color: #F59A23;
+}
 #logo {
     display: flex;
     color: white;
@@ -120,4 +141,62 @@ a, a:hover{
 #logo img {
     width: 40px;
     height: 35px;
+}
+.agencesVehiculesVendusMois{
+    font-family: 'Segoe UI Semibold', 'Segoe UI';
+    font-size: 150px;
+}
+.agencesVehiculesVendusMoisPrec{
+    font-family: 'Segoe UI Semibold', 'Segoe UI';
+    font-size: 20px;
+}
+.agencesVehiculesVendusMoisPhrase{
+    margin-top: 0;
+    font-family: 'Segoe UI Normal', 'Segoe UI';
+    font-size: 30px;
+}
+.agencesVehiculesVendusAnnee{
+    font-family: 'Segoe UI Semibold', 'Segoe UI';
+    font-size: 50px;
+}
+.agencesVehiculesVendusAnneePrec{
+    font-family: 'Segoe UI Semibold', 'Segoe UI';
+    font-size: 15px;
+}
+.agencesVehiculesVendusAnneePhrase{
+    font-family: 'Segoe UI Normal', 'Segoe UI';
+    font-size: 20px;
+}
+.agencesNbFrance{
+    font-family: 'Segoe UI Semibold', 'Segoe UI';
+    font-size: 50px;
+}
+.agencesNbFrancePhrase{
+    font-family: 'Segoe UI Normal', 'Segoe UI';
+    font-size: 20px;
+}
+#agentsAjoutDateEntree {
+    max-width: 240px;
+    color: #777777;
+}
+.agentsFemmes, .agentsHommes{
+    height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.agentsFemmes {
+    background-color: #EC808D;
+    text-align: center;
+}
+.agentsHommes {
+    background-color: #81D3F8;
+    text-align: center;
+}
+.agentsDansGroupe {
+    font-size: 150px;
+}
+.agentsDansGroupePhrase{
+    font-size: 40px;
 }

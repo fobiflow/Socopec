@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required
 from .models import Vehicule
 from agent.models import Agent
 
+
 @login_required
 def generate(request):
     identifiant = request.user.username
     agent = Agent.objects.get(identifiant=identifiant)
-    return render(request, '../templates/vehicules.html', {'agent': agent})
+    return render(request, '../templates/vehicule/vehiculeAdmin.html', {'agent': agent})
 #
 # @login_required
 # def lister(request):

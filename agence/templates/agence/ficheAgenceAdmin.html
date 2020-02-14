@@ -2,24 +2,26 @@
 {% block css %}<link rel="stylesheet" href="../../../static/css/fiche_agence.css">{% endblock %}
 {% block body %}
 <article>
-    <h1>Fiche de l'agence {{ agence.nom }}</h1>
+    <h1>Fiche agence</h1>
     <section class="d-flex flex-row align-items-end">
         <img id="photoAgence" src="{{ agence.photo }}" alt="photo de l'agence">
-        <form>
+        <form action="" method="post">
+            {% csrf_token %}
             <div>
-                <input id="agenceResponsable" type="text" placeholder="Responsable : ">
-                <img class="icon" src="../../../static/images/modifier.svg">
-                <img class="icon" src="../../../static/images/supprimer.svg">
+                <input name="nom" id="agenceNom" type="text" placeholder="Nom : {{ agence.nom }}">
+                <button type="submit"><img class="icon" src="../../../static/images/modifier.svg"></button>
+                <a href="{% url 'supprimer_agence' id_agence=agence.id %}"><img class="icon" src="../../../static/images/supprimer.svg"></a>
             </div>
-            <input id="agenceAdresse" type="text" placeholder="Adresse : {{ agence.adresse }}">
-            <input id="agenceAgenceSuite" type="text" placeholder="Adresse suite : {{ agence.complement_adresse }}">
+            <input id="agenceResponsable" type="text" placeholder="Responsable : ">
+            <input name="adresse" id="agenceAdresse" type="text" placeholder="Adresse : {{ agence.adresse }}">
+            <input name="complement_adresse" id="agenceAgenceSuite" type="text" placeholder="Adresse suite : {{ agence.complement_adresse }}">
             <div>
-                <input id="agenceCP" type="text" placeholder="Code postal :  {{ agence.code_postal }}">
-                <input id="agenceVille" type="text" placeholder="Ville : {{ agence.ville }}">
+                <input name="code_postal" id="agenceCP" type="text" placeholder="Code postal :  {{ agence.code_postal }}">
+                <input name="ville" id="agenceVille" type="text" placeholder="Ville : {{ agence.ville }}">
             </div>
             <div>
-                <input id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}">
-                <input id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}">
+                <input name="telephone" id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}">
+                <input name="fax" id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}">
             </div>
             <input id="agenceEmail" type="text" placeholder="Email :">
         </form>
@@ -63,6 +65,7 @@
 
 
 <!-- vue.js probleme -->
+{% verbatim %}
 <script type="text/x-template" id="probleme-template">
     <table>
         <thead>
@@ -70,7 +73,7 @@
             <th v-for="key in columns"
                 @click="sortBy(key)"
                 :class="{ active: sortKey == key }">
-                {{ key }}
+                {{ key | capitalize }}
                 <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
           </span>
             </th>
@@ -79,12 +82,13 @@
         <tbody>
         <tr v-for="entry in filteredHeroes">
             <td v-for="key in columns">
-{#                {{entry[key]}}#}
+                {{entry[key]}}
             </td>
         </tr>
         </tbody>
     </table>
 </script>
+{% endverbatim %}
 
 <script type="text/javascript">
     Vue.component('probleme-grid', {
@@ -139,7 +143,7 @@
     })
 </script>
 
-
+{% verbatim %}
         <!-- vue.js historique -->
         <script type="text/x-template" id="historique-template">
         <table>
@@ -148,7 +152,7 @@
         <th v-for="key in columns"
     @click="sortBy(key)"
     :class="{ active: sortKey == key }">
-        {{ key  }}
+        {{ key|capialize }}
     <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
         </span>
         </th>
@@ -157,12 +161,13 @@
         <tbody>
         <tr v-for="entry in filteredHeroes">
         <td v-for="key in columns">
-{#        {{entry[key]}}#}
+        {{entry[key]}}
     </td>
     </tr>
     </tbody>
     </table>
 </script>
+{% endverbatim %}
 
 <script type="text/javascript">
     Vue.component('historique-grid', {
@@ -217,6 +222,7 @@
     })
 </script>
 <!-- vue.js personnel -->
+    {% verbatim %}
 <script type="text/x-template" id="personnel-template">
     <table>
         <thead>
@@ -224,7 +230,7 @@
             <th v-for="key in columns"
                 @click="sortBy(key)"
                 :class="{ active: sortKey == key }">
-                {{ key  }}
+                {{ key | capitalize }}
                 <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
         </span>
             </th>
@@ -233,13 +239,13 @@
         <tbody>
         <tr v-for="entry in filteredHeroes">
             <td v-for="key in columns">
-{#                {{entry[key]}}#}
+                {{entry[key]}}
             </td>
         </tr>
         </tbody>
     </table>
 </script>
-
+{% endverbatim %}
 <script type="text/javascript">
     Vue.component('personnel-grid', {
         template: '#personnel-template',

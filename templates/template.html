@@ -44,7 +44,7 @@
                                 <li><img src="" alt="|">Liste</li>
                             </ul>
                         </li></a>
-                        <a href="{% url 'modifier_agents' %}"><li class="firstMenu" v-bind:class="{selectMenu: compte }">
+                        <a href="{% url 'modifier_agent' id_agent=agent.id %}"><li class="firstMenu" v-bind:class="{selectMenu: compte }">
                             <img src="../static/images/compte.svg" alt="C"><span class="titreOngletNav">Compte</span>
                         </li></a>
                     </ul>

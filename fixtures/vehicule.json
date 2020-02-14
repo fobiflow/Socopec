@@ -1,0 +1,452 @@
+[
+  {
+    "pk": 1,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 1,
+      "immatriculation": "AA-111-AA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 1
+    }
+  },
+    {
+    "pk": 2,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 2,
+      "immatriculation": "BB-222-BB",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 2
+    }
+  },
+    {
+    "pk": 3,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 3,
+      "immatriculation": "CC-333-CC",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 3
+    }
+  },
+    {
+    "pk": 4,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 4,
+      "immatriculation": "DD-444-DD",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 4
+    }
+  },
+    {
+    "pk": 5,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 5,
+      "immatriculation": "EE-555-EE",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 5
+    }
+  },
+    {
+    "pk": 6,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 6,
+      "immatriculation": "FF-666-FF",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 6
+    }
+  },
+    {
+    "pk": 7,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 7,
+      "immatriculation": "GG-777-GG",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 7
+    }
+  },
+    {
+    "pk": 8,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 8,
+      "immatriculation": "HH-888-HH",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 8
+    }
+  },
+    {
+    "pk": 9,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 9,
+      "immatriculation": "JJ-999-JJ",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 9
+    }
+  },
+    {
+    "pk": 10,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 10,
+      "immatriculation": "KK-888-KK",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 10
+    }
+  },
+    {
+    "pk": 11,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 11,
+      "immatriculation": "LL-777-LL",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 11
+    }
+  },
+    {
+    "pk": 12,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 12,
+      "immatriculation": "MM-666-MM",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 12
+    }
+  },
+    {
+    "pk": 13,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 13,
+      "immatriculation": "NN-555-NN",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 13
+    }
+  },
+    {
+    "pk": 14,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 14,
+      "immatriculation": "PP-444-PP",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 14
+    }
+  },
+    {
+    "pk": 15,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 15,
+      "immatriculation": "AB-123-CD",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 15
+    }
+  },
+    {
+    "pk": 16,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 16,
+      "immatriculation": "AC-456-DE",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 1
+    }
+  },
+    {
+    "pk": 17,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 17,
+      "immatriculation": "AD-879-DA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 2
+    }
+  },
+    {
+    "pk": 18,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 18,
+      "immatriculation": "AE-456-EA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 3
+    }
+  },
+    {
+    "pk": 19,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 19,
+      "immatriculation": "AF-987-FA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 4
+    }
+  },
+    {
+    "pk": 20,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 20,
+      "immatriculation": "AG-456-GA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 5
+    }
+  },
+    {
+    "pk": 21,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 21,
+      "immatriculation": "AH-354-HA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 6
+    }
+  },
+    {
+    "pk": 22,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 22,
+      "immatriculation": "AJ-987-JA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 7
+    }
+  },
+    {
+    "pk": 23,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 23,
+      "immatriculation": "AK-321-KA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 8
+    }
+  },
+    {
+    "pk": 24,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 24,
+      "immatriculation": "AL-321-LA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 9
+    }
+  },
+    {
+    "pk": 25,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 25,
+      "immatriculation": "AM-321-MA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 10
+    }
+  },
+    {
+    "pk": 26,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 26,
+      "immatriculation": "AN-456-NA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 11
+    }
+  },
+    {
+    "pk": 27,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 27,
+      "immatriculation": "AP-321-PA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 94,
+      "id_agence": 12
+    }
+  },
+    {
+    "pk": 28,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 28,
+      "immatriculation": "AQ-752-QA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 13
+    }
+  },
+    {
+    "pk": 29,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 29,
+      "immatriculation": "AR-156-RA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 14
+    }
+  },
+    {
+    "pk": 30,
+    "model": "vehicule.vehicule",
+    "fields": {
+      "id": 30,
+      "immatriculation": "AS-156-SA",
+      "modele": "Renault",
+      "date_fabrication": "2010-05-20",
+      "hauteur": 2.73,
+      "largeur": 2.00,
+      "poids": 3.5,
+      "puissance": 90,
+      "id_agence": 15
+    }
+  }
+]
