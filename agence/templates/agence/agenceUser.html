@@ -1,0 +1,127 @@
+{% extends "template.html" %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/agence.css">{% endblock %}
+{% block block-corpus %}
+     <div class="container-fluid">
+        <div class="row justify-content-around p-2">
+            <section class="border border-secondary p-2 m-2 col">
+                <h3>Rechercher une agence</h3>
+                <div id="demo">
+                    <form id="search">
+                        <input name="query" v-model="searchQuery" tyope="text" placeholder="Rechercher une agence">
+                    </form>
+                    <demo-grid
+                            :heroes="gridData"
+                            :columns="gridColumns"
+                            :filter-key="searchQuery">
+                    </demo-grid>
+                </div>
+            </section>
+        </div>
+     </div>
+
+    {% verbatim %}
+        <script type="text/x-template" id="grid-template">
+        <table>
+            <thead>
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entry in filteredHeroes">
+                <td v-for="key in columns">
+                    {{ entry[key] }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    {% endverbatim %}
+
+    <!-- vue.js pour affichage menu -->
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#menu',
+            data: {
+                user: 'user',
+                vehicules : false,
+                agents: false,
+                agences: true,
+                compte: false
+            }
+        });
+
+        <!-- javascript the demo pour rechercher une agence -->
+        Vue.component('demo-grid', {
+            template: '#grid-template',
+            props: {
+                heroes: Array,
+                columns: Array,
+                filterKey: String
+            },
+            data: function () {
+                let sortOrders = {};
+                this.columns.forEach(function (key) {
+                    sortOrders[key] = 1
+                });
+                return {
+                    sortKey: '',
+                    sortOrders: sortOrders
+                }
+            },
+            computed: {
+                filteredHeroes: function () {
+                    let sortKey = this.sortKey;
+                    let filterKey = this.filterKey && this.filterKey.toLowerCase();
+                    let order = this.sortOrders[sortKey] || 1;
+                    let heroes = this.heroes;
+                    if (filterKey) {
+                        heroes = heroes.filter(function (row) {
+                            return Object.keys(row).some(function (key) {
+                                return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                            })
+                        })
+                    }
+                    if (sortKey) {
+                        heroes = heroes.slice().sort(function (a, b) {
+                            a = a[sortKey];
+                            b = b[sortKey];
+                            return (a === b ? 0 : a > b ? 1 : -1) * order
+                        })
+                    }
+                    return heroes
+                }
+            },
+            filters: {
+                capitalize: function (str) {
+                    return str.charAt(0).toUpperCase() + str.slice(1)
+                }
+            },
+            methods: {
+                sortBy: function (key) {
+                    this.sortKey = key;
+                    this.sortOrders[key] = this.sortOrders[key] * -1
+                }
+            }
+        });
+
+        <!-- bootstrap the demo pour rechercher une agence -->
+        var demo = new Vue({
+            el: '#demo',
+            data: {
+                searchQuery: '',
+                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de vehicules', 'Probleme en cours', 'Vehicules vendus', 'Responsable de l\'agence', 'Telephone', 'Mail', ''],
+                gridData: {{ agences_table | safe }}
+            }
+        })
+
+    </script>
+
+
+{% endblock %}

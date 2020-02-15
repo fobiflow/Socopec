@@ -1,0 +1,53 @@
+{% extends "template.html" %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/accueil.css">{% endblock %}
+{% block block-corpus %}
+    <div class="container-fluid">
+        <div class="row justify-content-around p-2">
+            <section class="border border-secondary p-2 m-2 col">
+                <h3>Actuellement</h3>
+            </section>
+            <section id="test" class="border border-secondary p-2 m-2 col">
+                <h3>Actuellement</h3>
+                <div class="flexColumn center">
+                    <div>
+                        <p><span class="agencesVehiculesVendusMois orange">1</span><span class="agencesVehiculesVendusMoisPrec"> / {{ total_vehicules }}</span></p>
+                        <p class="agencesVehiculesVendusMoisPhrase">Véhicule(s) vendu(s) en {{ this_month }}</p>
+                    </div>
+                    <div class="flexRow">
+                        <div id="first-actu">
+                            <p><span class="agencesVehiculesVendusAnnee vert">15</span><span class="agencesVehiculesVendusAnneePrec"> / {{ total_vehicules }}</span></p>
+                            <p class="agencesVehiculesVendusAnneePhrase">Véhicule(s) vendu(s) en</br>{{ this_year }}</p>
+                        </div>
+                        <div>
+                            <p class="agencesNbFrance">{{ nombre_agences }}</p>
+                            <p class="agencesNbFrancePhrase">Agences en </br>France</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="row justify-content-around p-2">
+            <section class="border border-secondary p-2 m-2 col">
+                <h3>Aujourd'hui</h3>
+            </section>
+            <section id="test" class="border border-secondary p-2 m-2 col">
+                <h3>Actuellement</h3>
+                <div class="flexColumn center">
+                    <div>
+                        <p><span class="agentsDansGroupe">{{ total }}</span></p>
+                        <p class="agentsDansGroupePhrase">Collaborateurs</p>
+                    </div>
+                    <div class="flexRow">
+                        <div>
+                            <p class="agentsFemmes">{{ femmes }} femmes</p>
+                        </div>
+                        <div>
+                            <p class="agentsHommes">{{ hommes }} hommes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends "template.html" %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/agents.css">{% endblock %}
+{% block block-corpus %}
+    <div class="container-fluid">
+        <div class="row justify-content-around p-2">
+            <section class="border border-secondary p-2 m-2 col">
+                <h3>{% block titleSection %}Ajouter un collaborateur{% endblock %}</h3>
+                <form action="" method="post">
+                {% block bodySection %}
+                    {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                    {% if errPassword %} <div class="alert alert-danger" role="alert">Le mot de passe doit contenir au moins 8 caractères</div> {% endif %}
+                    {% if confirmation %}<div class="alert alert-success" role="alert">L'agent {{ confirmation_firstname }} {{ confirmation_name }} a bien été enregistré</div>{% endif %}
+                    {% csrf_token %}
+                   <div>
+                        <input name="nom" id="agentsAjoutNom" type="text" placeholder="Nom">
+                        <input name="prenom" id="agentsAjoutPrénom" type="text" placeholder="Prénom">
+                   </div>
+                   <div>
+                       <label for="sexe">Sexe : </label><select name="sexe" id="agentsAjoutSexe">
+                                <option value="H">Homme</option>
+                                <option value="F">Femme</option>
+                        </select>
+                        <label for="agence">Agence : </label><select name="agence" id="agentsAjoutAgence">
+                           {% for option in options %}
+                                <option>{{ option }}</option>
+                           {% endfor %}
+                       </select>
+                       <label for="date_entree_socopec">Date d'entrée : </label><input name="date_entree_socopec" id="agentsAjoutDateEntree" type="date">
+                   </div>
+                    <input name="adresse" id="agencesAjoutAdresse" type="text" placeholder="Adresse de l'agent">
+                    <input name="complement_adresse" id="agencesAjoutAdresseSuite" type="text" placeholder="Suite de l'adresse">
+                    <div>
+                        <input name="code_postal" id="agentsAjoutCP" type="text" placeholder="Code postal">
+                        <input name="ville" id="agentsAjoutVille"  type="text" placeholder="Ville">
+                    </div>
+                    <div>
+                        <input name="tel" id="agentsAjoutTel" type="text" placeholder="Téléphone">
+                        <input name="mobile" id="agentsAjoutMobile" type="text" placeholder="Mobile">
+                    </div>
+                    <input name="poste_socopec" id="agentsAjoutFonction" type="text" placeholder="Fonction">
+                    <div>
+                        <input name="identifiant" id="agentsAjoutIdentifiant" type="text" placeholder="Identifiant de connexion">
+                        <input name="mot_de_passe" id="agentsAjoutMdp" type="password" placeholder="Mot de passe">
+                    </div>
+                    <input name="email" id="agentsAjoutMail" type="text" placeholder="Email">
+                {% endblock %}
+                {% block footerSection %}
+                    <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Envoyer{% endblock %}</button>
+                {% endblock %}
+                </form>
+            </section>
+
+            <section id="test" class="border border-secondary p-2 m-2 col">
+                <h3>Actuellement</h3>
+                <div class="flexColumn center">
+                    <div>
+                        <p><span class="agentsDansGroupe">{{ total }}</span></p>
+                        <p class="agentsDansGroupePhrase">Collaborateurs</p>
+                    </div>
+                    <div class="flexRow">
+                        <div>
+                            <p class="agentsFemmes">{{ femmes }} femmes</p>
+                        </div>
+                        <div>
+                            <p class="agentsHommes">{{ hommes }} hommes</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-around p-2">
+            <section class="border border-secondary p-2 m-2 col">
+                <h3>Liste du personnel</h3>
+                <div id="demo">
+                    <form id="search">
+                        <input name="query" v-model="searchQuery" tyope="text" placeholder="Rechercher un collaborateur">
+                    </form>
+                    <demo-grid
+                            :heroes="gridData"
+                            :columns="gridColumns"
+                            :filter-key="searchQuery">
+                    </demo-grid>
+                </div>
+            </section>
+        </div>
+    </div>
+    {% verbatim %}
+    <!-- vue.js pour rechercher une agence -->
+    <script type="text/x-template" id="grid-template">
+        <table>
+            <thead>
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+              </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entry in filteredHeroes">
+                <td v-for="key in columns">
+                    {{entry[key]}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    {% endverbatim %}
+<!-- javascript pour rechercher une agence -->
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#menu',
+            data: {
+                user: 'admin',
+                vehicules : false,
+                agences: false,
+                agents: true,
+                compte: false
+            }
+        });
+
+    Vue.component('demo-grid', {
+        template: '#grid-template',
+        props: {
+            heroes: Array,
+            columns: Array,
+            filterKey: String
+        },
+        data: function () {
+            var sortOrders = {}
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            })
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        computed: {
+            filteredHeroes: function () {
+                var sortKey = this.sortKey
+                var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                var order = this.sortOrders[sortKey] || 1
+                var heroes = this.heroes
+                if (filterKey) {
+                    heroes = heroes.filter(function (row) {
+                        return Object.keys(row).some(function (key) {
+                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        })
+                    })
+                }
+                if (sortKey) {
+                    heroes = heroes.slice().sort(function (a, b) {
+                        a = a[sortKey]
+                        b = b[sortKey]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                return heroes
+            }
+        },
+        filters: {
+            capitalize: function (str) {
+                return str.charAt(0).toUpperCase() + str.slice(1)
+            }
+        },
+        methods: {
+            sortBy: function (key) {
+                this.sortKey = key
+                this.sortOrders[key] = this.sortOrders[key] * -1
+            }
+        }
+    })
+
+    <!-- bootstrap pour rechercher une agence -->
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            searchQuery: '',
+            gridColumns: ['Agence', 'Fonction', 'Depuis', 'Nom', 'Prenom', 'Email pro', 'm', 's'],
+            gridData: {{ agents_table | safe }}
+        }
+    })
+
+</script>
+
+{% endblock %}

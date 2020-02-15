@@ -6,6 +6,7 @@ import datetime
 class Agent(models.Model):
     nom = models.CharField(max_length=30, default="àremplir")
     prenom = models.CharField(max_length=30, default="àremplir")
+    sexe = models.CharField(max_length=1)
     adresse = models.TextField(default="àremplir")
     complement_adresse = models.TextField(blank=True, null=True, default="null")
     code_postal = models.IntegerField(default=00000)
@@ -20,11 +21,11 @@ class Agent(models.Model):
     identifiant = models.CharField(max_length=20, default="àremplir")
     mot_de_passe = models.CharField(max_length=20, default="àremplir")
     photo = models.CharField(max_length=255, blank=True, null=True, default="null")
-    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE, default=1)
+    id_agence = models.ForeignKey(Agence, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "agent"
         ordering = ['id']
 
     def __str__(self):
-        return self.id
+        return str(self.id)

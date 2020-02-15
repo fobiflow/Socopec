@@ -1,38 +1,69 @@
 {% extends "base.html" %}
 {% block body %}
-    <div class="body-block">
+    <div class="body-block" xmlns:v-bind="http://www.w3.org/1999/xhtml">
         {% block header %}
-            <div class="header-block">
+            <div id="bandeau">
                 <a href="{% url 'accueil' %}">
-                    <div class="header-logo">
+                    <div id="logo">
                         <img src="../static/images/logo.png" alt="Logo Socopec" class="logo">
                         <h1>Socopec</h1>
                     </div>
                 </a>
-                <p><a href="{% url 'disconnect' %}">Se déconnecter</a></p>
+                <div>Bonjour {{ agent.prenom }} {{ agent.nom }} <a href="{% url 'disconnect' %}">Se déconnecter</a></div>
             </div>
         {% endblock %}
-        {% block main %}
-            <div class="main-block">
-                {% block menu %}
-                    <ul class="main-nav">
-{#                        <a href="{% url vehicules %}"><li>Véhicules</li></a>#}
-                        <li>Véhicules</li>
-                        <a href="{% url 'agences' %}"><li>Agences</li></a>
-{#                        <a href="{% url agents %}"><li>Agents</li></a>#}
-                        <li>Agents</li>
-{#                        <a href="{% url compte %}"><li>Compte</li></a>#}
-                        <li>Compte</li>
+        <section id="container">
+            <section id="sectionMenu" class="d-flex flex-column bd-highlight"> <!--flexbox vertical + largeur-->
+                <section class="d-flex flex-column align-items-center"><!--flexbox vertical + text centrer-->
+                    <div id="imgProfil" style="background-image:url({{ agent.photo }})"></div>
+                    <p class="mb-0"><b>{{ agent.prenom }} {{ agent.nom }}</b></p>
+                    <p class="mb-0" style="text-align:center">{{ agent.poste_socopec }}</p>
+                </section>
+                <nav id="menu" class="d-flex flex-column align-items-center">
+                    <ul>
+                        <a href="{% url 'vehicules' %}"><li class="firstMenu" v-bind:class="{selectMenu: vehicules }" >
+                            <img src="../static/images/vehicules.svg" alt="V"><span class="titreOngletNav">Véhicules</span>
+                            <ul v-show="vehicules" class="sousMenu">
+                               <li v-if="user == 'admin'"><img src="" alt="|  ">Ajouter</li>
+                                <li><img src="" alt="|">Réserver</li>
+                                <li><img src="" alt="|">Localiser</li>
+                                <li><img src="" alt="|">Rechercher</li>
+                            </ul>
+                        </li></a>
+                        <a href="{% url 'agences' %}"><li class="firstMenu" v-bind:class="{selectMenu: agences }">
+                            <img src="../static/images/agences.svg" alt="A"><span class="titreOngletNav">Agences</span>
+                            <ul v-show="agences" class="sousMenu">
+                                <li v-if="user == 'admin'"><img src="" alt="|">Ajouter</li>
+                                <li><img src="" alt="|">Rechercher</li>
+                            </ul>
+                        </li></a>
+                        <a href="{% url 'agents' %}"><li class="firstMenu" v-bind:class="{selectMenu: agents }">
+                           <img src="../static/images/agents.svg" alt="A"><span class="titreOngletNav">Agents</span>
+                            <ul v-show="agents" class="sousMenu">
+                                <li v-if="user == 'admin'"><img src="" alt="|">Ajouter</li>
+                                <li><img src="" alt="|">Liste</li>
+                            </ul>
+                        </li></a>
+                        <a href="{% url 'modifier_agent' id_agent=agent.id %}"><li class="firstMenu" v-bind:class="{selectMenu: compte }">
+                            <img src="../static/images/compte.svg" alt="C"><span class="titreOngletNav">Compte</span>
+                        </li></a>
                     </ul>
-                {% endblock %}
-                <div class="corpus-block">
-                    {% block corpus %}
-
-
-
-                    {% endblock %}
-                </div>
-            </div>
-        {% endblock %}
+                </nav>
+            </section>
+            <main>
+               {% block block-corpus %}{% endblock %}
+            </main>
+        </section>
     </div>
+    <script>
+        var vm = new Vue({
+            el: '#menu',
+            data: {
+                user: 'admin',
+                vehicules : false,
+                agents: false,
+                agences: false
+            }
+        });
+    </script>
 {% endblock %}
