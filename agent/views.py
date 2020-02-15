@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Agent
@@ -11,13 +12,14 @@ def generate(request):
     # Pour le tableau :
     data = Agent.objects.all()
     agents_table = []
+
     for item in data:
         # agence = Agence.objects.filter()[:int(item.id_agence)]
         # for agence in agences:
         #     if agence.id == item.id_agence:
         #         agence_nom = agence.nom
         agents_table.append({
-            # 'Agence': agence.nom,
+            'Agence': Agence.objects.get(id=item.id_agence.id).nom,
             'Fonction': item.poste_socopec,
             'Depuis': str(item.date_entree_socopec),
             'Nom': item.nom,
@@ -53,73 +55,77 @@ def generate(request):
                 request.POST.get("identifiant") and \
                 request.POST.get("mot_de_passe") and \
                 request.POST.get("agence"):
-                #  Création de l'agent pour Django Admin et attribution du bon groupe :
-                user = User.objects.create_user(request.POST.get("identifiant"), request.POST.get("email"),
-                                                request.POST.get("mot_de_passe"))
-                user.save()
-                if (request.POST.get("poste_socopec") == "Administrateur") or (request.POST.get("poste_socopec") == "administrateur"):
-                    admin = True
-                    group = Group.objects.get(name="administrateur")
-                    group.user_set.add(user)
+                if len(request.POST.get("mot_de_passe")) < 8:
+                    errPassword = True
+                    return HttpResponseRedirect('', errPassword)
                 else:
-                    admin = False
-                    group = Group.objects.get(name="utilisateur")
-                    group.user_set.add(user)
-                #     Création de l'utilisateur Agent dans la bdd :
-                agence = Agence.objects.get(nom=request.POST.get("agence"))
-                new_agent = Agent(
-                    nom=request.POST.get("nom"),
-                    prenom=request.POST.get("prenom"),
-                    sexe=request.POST.get("sexe"),
-                    adresse=request.POST.get("adresse"),
-                    complement_adresse=request.POST.get("complement_adresse"),
-                    code_postal=request.POST.get("code_postal"),
-                    ville=request.POST.get("ville"),
-                    tel=request.POST.get("tel"),
-                    fax=request.POST.get("fax"),
-                    mobile=request.POST.get("mobile"),
-                    email=request.POST.get("email"),
-                    date_entree_socopec=request.POST.get("date_entree_socopec"),
-                    poste_socopec=request.POST.get("poste_socopec"),
-                    admin=admin,
-                    identifiant=request.POST.get("identifiant"),
-                    mot_de_passe=request.POST.get("mot_de_passe"),
-                    photo="",
-                    id_agence=agence
-                )
-                new_agent.save()
-                total = Agent.objects.all().count()
-                femmes = Agent.objects.filter(sexe="F").count()
-                hommes = Agent.objects.filter(sexe="H").count()
-                data = Agent.objects.all()
-                agents_table = []
-                for item in data:
-                    # agence = Agence.objects.filter()[:int(item.id_agence)]
-                    # for agence in agences:
-                    #     if agence.id == item.id_agence:
-                    #         agence_nom = agence.nom
-                    agents_table.append({
-                        # 'Agence': agence.nom,
-                        'Fonction': item.poste_socopec,
-                        'Depuis': str(item.date_entree_socopec),
-                        'Nom': item.nom,
-                        'Prenom': item.prenom,
-                        'Email pro': item.email,
-                        'm': '<img alt="acces fiche agence" class="icon" src="../../../static/images/modifier.svg"/>',
-                        's': '<img alt="acces fiche agence" class="icon" src="../../../static/images/supprimer.svg"/>'
-                    })
-                return render(request, '../templates/agent/agentAdmin.html',
-                              {'error': False,
-                               'confirmation': True,
-                               'confirmation_firstname': request.POST.get('prenom'),
-                               'confirmation_name': request.POST.get('nom'),
-                               'agent': agent,
-                               'total': total,
-                               'femmes': femmes,
-                               'hommes': hommes,
-                               'agents_table': agents_table,
-                               'options': options
-                               })
+                    #  Création de l'agent pour Django Admin et attribution du bon groupe :
+                    user = User.objects.create_user(request.POST.get("identifiant"), request.POST.get("email"),
+                                                    request.POST.get("mot_de_passe"))
+                    user.save()
+                    if (request.POST.get("poste_socopec") == "Administrateur") or (request.POST.get("poste_socopec") == "administrateur"):
+                        admin = True
+                        group = Group.objects.get(name="administrateur")
+                        group.user_set.add(user)
+                    else:
+                        admin = False
+                        group = Group.objects.get(name="utilisateur")
+                        group.user_set.add(user)
+                    #     Création de l'utilisateur Agent dans la bdd :
+                    agence = Agence.objects.get(nom=request.POST.get("agence"))
+                    new_agent = Agent(
+                        nom=request.POST.get("nom"),
+                        prenom=request.POST.get("prenom"),
+                        sexe=request.POST.get("sexe"),
+                        adresse=request.POST.get("adresse"),
+                        complement_adresse=request.POST.get("complement_adresse"),
+                        code_postal=request.POST.get("code_postal"),
+                        ville=request.POST.get("ville"),
+                        tel=request.POST.get("tel"),
+                        fax=request.POST.get("fax"),
+                        mobile=request.POST.get("mobile"),
+                        email=request.POST.get("email"),
+                        date_entree_socopec=request.POST.get("date_entree_socopec"),
+                        poste_socopec=request.POST.get("poste_socopec"),
+                        admin=admin,
+                        identifiant=request.POST.get("identifiant"),
+                        mot_de_passe=request.POST.get("mot_de_passe"),
+                        photo="",
+                        id_agence=agence
+                    )
+                    new_agent.save()
+                    total = Agent.objects.all().count()
+                    femmes = Agent.objects.filter(sexe="F").count()
+                    hommes = Agent.objects.filter(sexe="H").count()
+                    data = Agent.objects.all()
+                    agents_table = []
+                    for item in data:
+                        # agence = Agence.objects.filter()[:int(item.id_agence)]
+                        # for agence in agences:
+                        #     if agence.id == item.id_agence:
+                        #         agence_nom = agence.nom
+                        agents_table.append({
+                            # 'Agence': agence.nom,
+                            'Fonction': item.poste_socopec,
+                            'Depuis': str(item.date_entree_socopec),
+                            'Nom': item.nom,
+                            'Prenom': item.prenom,
+                            'Email pro': item.email,
+                            'm': '<img alt="acces fiche agence" class="icon" src="../../../static/images/modifier.svg"/>',
+                            's': '<img alt="acces fiche agence" class="icon" src="../../../static/images/supprimer.svg"/>'
+                        })
+                    return render(request, '../templates/agent/agentAdmin.html',
+                                  {'error': False,
+                                   'confirmation': True,
+                                   'confirmation_firstname': request.POST.get('prenom'),
+                                   'confirmation_name': request.POST.get('nom'),
+                                   'agent': agent,
+                                   'total': total,
+                                   'femmes': femmes,
+                                   'hommes': hommes,
+                                   'agents_table': agents_table,
+                                   'options': options
+                                   })
             else:
                 return render(request, '../templates/agent/agentAdmin.html',
                               {'error': True,

@@ -8,6 +8,7 @@
                 <form action="" method="post">
                 {% block bodySection %}
                     {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                    {% if errPassword %} <div class="alert alert-danger" role="alert">Le mot de passe doit contenir au moins 8 caractères</div> {% endif %}
                     {% if confirmation %}<div class="alert alert-success" role="alert">L'agent {{ confirmation_firstname }} {{ confirmation_name }} a bien été enregistré</div>{% endif %}
                     {% csrf_token %}
                    <div>

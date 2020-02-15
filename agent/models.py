@@ -21,7 +21,7 @@ class Agent(models.Model):
     identifiant = models.CharField(max_length=20, default="àremplir")
     mot_de_passe = models.CharField(max_length=20, default="àremplir")
     photo = models.CharField(max_length=255, blank=True, null=True, default="null")
-    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE, default=1)
+    id_agence = models.ForeignKey(Agence, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "agent"
