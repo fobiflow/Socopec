@@ -8,25 +8,28 @@
                 <form action="" method="post">
                 {% block bodySection %}
                     {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
-                    {% if errPassword %} <div class="alert alert-danger" role="alert">Le mot de passe doit contenir au moins 8 caractères</div> {% endif %}
+                    {% if errorShortPw %} <div class="alert alert-danger" role="alert">Le mot de passe doit contenir au moins 8 caractères</div> {% endif %}
                     {% if confirmation %}<div class="alert alert-success" role="alert">L'agent {{ confirmation_firstname }} {{ confirmation_name }} a bien été enregistré</div>{% endif %}
                     {% csrf_token %}
-                   <div>
+                    <div>
                         <input name="nom" id="agentsAjoutNom" type="text" placeholder="Nom">
                         <input name="prenom" id="agentsAjoutPrénom" type="text" placeholder="Prénom">
-                   </div>
-                   <div>
-                       <label for="sexe">Sexe : </label><select name="sexe" id="agentsAjoutSexe">
+                    </div>
+                    <div>
+                        <label for="sexe">Sexe : </label><select name="sexe" id="agentsAjoutSexe">
                                 <option value="H">Homme</option>
                                 <option value="F">Femme</option>
                         </select>
-                        <label for="agence">Agence : </label><select name="agence" id="agentsAjoutAgence">
+                        <label for="date_entree_socopec">Date d'entrée : </label><input name="date_entree_socopec" id="agentsAjoutDateEntree" type="date">
+                    </div>
+                    <div>
+                        <input name="poste_socopec" id="agentsAjoutFonction" type="text" placeholder="Fonction">
+                        <select name="agence" id="agentsAjoutAgence">
                            {% for option in options %}
                                 <option>{{ option }}</option>
                            {% endfor %}
                        </select>
-                       <label for="date_entree_socopec">Date d'entrée : </label><input name="date_entree_socopec" id="agentsAjoutDateEntree" type="date">
-                   </div>
+                    </div>
                     <input name="adresse" id="agencesAjoutAdresse" type="text" placeholder="Adresse de l'agent">
                     <input name="complement_adresse" id="agencesAjoutAdresseSuite" type="text" placeholder="Suite de l'adresse">
                     <div>
@@ -37,7 +40,6 @@
                         <input name="tel" id="agentsAjoutTel" type="text" placeholder="Téléphone">
                         <input name="mobile" id="agentsAjoutMobile" type="text" placeholder="Mobile">
                     </div>
-                    <input name="poste_socopec" id="agentsAjoutFonction" type="text" placeholder="Fonction">
                     <div>
                         <input name="identifiant" id="agentsAjoutIdentifiant" type="text" placeholder="Identifiant de connexion">
                         <input name="mot_de_passe" id="agentsAjoutMdp" type="password" placeholder="Mot de passe">

@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Agent
@@ -56,8 +58,15 @@ def generate(request):
                 request.POST.get("mot_de_passe") and \
                 request.POST.get("agence"):
                 if len(request.POST.get("mot_de_passe")) < 8:
-                    errPassword = True
-                    return HttpResponseRedirect('', errPassword)
+                    context = {'errorShortPw': True,
+                               'agent': agent,
+                               'total': total,
+                               'femmes': femmes,
+                               'hommes': hommes,
+                               'agents_table': agents_table,
+                               'options': options}
+                    template = loader.get_template('../templates/agent/agentAdmin.html')
+                    return HttpResponse(template.render(context, request))
                 else:
                     #  Création de l'agent pour Django Admin et attribution du bon groupe :
                     user = User.objects.create_user(request.POST.get("identifiant"), request.POST.get("email"),
@@ -90,7 +99,7 @@ def generate(request):
                         admin=admin,
                         identifiant=request.POST.get("identifiant"),
                         mot_de_passe=request.POST.get("mot_de_passe"),
-                        photo="",
+                        photo="https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249_960_720.png",
                         id_agence=agence
                     )
                     new_agent.save()
@@ -164,38 +173,60 @@ def supprimer(request, id_agent):
 
 
 @login_required
-def modifier(request, id_agent):
-    agent = get_object_or_404(Agent, id=id_agent)
+def modifier(request):
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
     options = []
     agences = Agence.objects.all()
     for item in agences:
         options.append(item.nom)
     if request.method == "POST":
-        user = User.objects.get(identifiant=agent.identifiant)
+        if request.POST.get("mot_de_passe"):
+            if len(request.POST.get("mot_de_passe")) < 8:
+                context = {'errorShortPw': True, 'agent': agent, 'options': options}
+                template = loader.get_template('../templates/agent/compte.html')
+                return HttpResponse(template.render(context, request))
+            if request.POST.get("confirmation_mot_de_passe") and request.POST.get("mot_de_passe") != request.POST.get("confirmation_mot_de_passe"):
+                form = request.POST.get(all)
+                context = {'form': form, 'errorPw': True, 'agent': agent, 'options': options}
+                template = loader.get_template('../templates/agent/compte.html')
+                return HttpResponse(template.render(context, request))
+
+        user = User.objects.get(username=agent.identifiant)
         if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get("poste_socopec") == "administrateur":
-            group = Group.objects.get(name="administrateur")
-            group.user_set.add(user)
+            group_user = Group.objects.get(name="utilisateur")
+            group_user.user_set.remove(user)
+            group_admin = Group.objects.get(name="administrateur")
+            group_admin.user_set.add(user)
         else:
             group = Group.objects.get(name="utilisateur")
             group.user_set.add(user)
-        agent.nom = request.POST.get("nom")
-        agent.prenom = request.POST.get("prenom")
-        agent.sexe = request.POST.get("sexe")
-        agent.adresse = request.POST.get("adresse")
-        agent.complement_adresse = request.POST.get("complement_adresse")
-        agent.code_postal = request.POST.get("code_postal")
-        agent.ville = request.POST.get("ville")
-        agent.tel = request.POST.get("tel")
-        agent.fax = request.POST.get("fax")
-        agent.mobile = request.POST.get("mobile")
-        agent.email = request.POST.get("email")
-        agent.date_entree_socopec = request.POST.get("date_entree_socopec")
-        agent.poste_socopec = request.POST.get("poste_socopec")
-        agent.admin = request.POST.get("admin")
-        agent.identifiant = request.POST.get("identifiant")
-        agent.mot_de_passe = request.POST.get("mot_de_passe")
-        agent.photo = request.POST.get("photo")
-        agent.id_agence = Agence.objects.get(nom=request.POST.get("agence")).id
+        if request.POST.get("nom") and request.POST.get("nom") != agent.nom:
+            agent.nom = request.POST.get("nom")
+        if request.POST.get("adresse") and request.POST.get("adresse") != agent.adresse:
+            agent.adresse = request.POST.get("adresse")
+        if request.POST.get("complement_adresse") and request.POST.get("complement_adresse") != agent.complement_adresse:
+            agent.complement_adresse = request.POST.get("complement_adresse")
+        if request.POST.get("code_postal") and request.POST.get("code_postal") != agent.code_postal:
+            agent.code_postal = request.POST.get("code_postal")
+        if request.POST.get("ville") and request.POST.get("ville") != agent.ville:
+            agent.ville = request.POST.get("ville")
+        if request.POST.get("tel") and request.POST.get("tel") != agent.tel:
+            agent.tel = request.POST.get("tel")
+        if request.POST.get("mobile") and request.POST.get("mobile") != agent.mobile:
+            agent.mobile = request.POST.get("mobile")
+        if request.POST.get("email") and request.POST.get("email") != agent.email:
+            agent.email = request.POST.get("email")
+        if request.POST.get("poste_socopec") and request.POST.get("poste_socopec") != agent.poste_socopec:
+            agent.poste_socopec = request.POST.get("poste_socopec")
+        if request.POST.get("identifiant") and request.POST.get("identifiant") != agent.identifiant:
+            agent.identifiant = request.POST.get("identifiant")
+        if request.POST.get("mot_de_passe") and request.POST.get("mot_de_passe") != agent.mot_de_passe:
+            agent.mot_de_passe = request.POST.get("mot_de_passe")
+        if request.POST.get("photo") and request.POST.get("photo") != agent.photo:
+            agent.photo = request.POST.get("photo")
+        if request.POST.get("agence") != agent.id_agence.nom:
+            agent.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
         agent.save()
         return render(request, '../templates/agent/compte.html', {'agent': agent})
     return render(request, '../templates/agent/compte.html', {'agent': agent, 'options': options})

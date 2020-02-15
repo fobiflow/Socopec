@@ -1,9 +1,22 @@
+@font-face {
+    font-family: 'Segoe UI Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Regular'), url('../fonts/Segoe UI.woff') format('woff');
+}
+@font-face {
+    font-family: 'Segoe UI Semibold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Bold'), url('../fonts/Segoe UI Semibold.woff') format('woff');
+}
+
 body, nav ul
 {
     width: 100%;
     margin : 0;
     padding: 0;
-    font-family: 'Segoe UI Normal', 'Segoe UI';
+    font-family: 'Segoe UI Regular', serif;
 }
 section{
     display: flex;
@@ -82,7 +95,7 @@ nav li img[alt]{
     background-size: cover;
 }
 .titreOngletNav{
-    font-family: 'Arial Gras', 'Arial Normal', 'Arial';
+    font-family: 'Arial Gras', 'Arial Normal', 'Arial', serif;
     font-weight: 700;
     font-style: normal;
     font-size: 18px;
@@ -110,7 +123,7 @@ a, a:hover{
     width: 100%;
 }
 #bandeau h1{
-    font-family: 'Arial Gras', 'Arial Normal', 'Arial';
+    font-family: 'Arial Gras', 'Arial Normal', 'Arial', serif;
     font-size: 25px;
 }
 #logo {
