@@ -84,7 +84,6 @@ nav li img[alt]{
     padding : 0;
 }
 #imgProfil{
-    /*background-image: url("icons/id.png");*/
     width: 150px;
     Height: 150px;
     overflow:hidden;

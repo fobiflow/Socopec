@@ -10,7 +10,7 @@
                     {% if errorShortPw %} <div class="alert alert-danger" role="alert">Le mot de passe doit contenir au moins 8 caractères</div> {% endif %}
                     {% if errorPw %} <div class="alert alert-danger" role="alert">Le mot de passe et la confirmation du mot de passe ne sont pas identiques</div> {% endif %}
                     {% csrf_token %}
-                    <input name="nom" id="compteModifierNom" type="text" placeholder="Nom : {{ agent.nom }}">
+                    <input name="nom" id="compteModifierNom" type="text" placeholder="Nom : {{ agent.nom }}" readonly>
                     <input name="prenom" id="compteModifierPrenom" type="text" placeholder="Prénom : {{ agent.prenom }}" readonly>
                     <input name="adresse" id="compteModifierAdresse" type="text" placeholder="Adresse : {{ agent.adresse }}">
                     <input name="complement_adresse" id="compteModifierAdresseSuite" type="text" placeholder="Suite de l'adresse : {{ agent.complement_adresse }}">
@@ -20,8 +20,8 @@
                     </div>
                     <input name="telephone" id="compteModifierTel" type="text" placeholder="Téléphone : {{ agent.tel }}">
                     <input name="mobile" id="compteModifierMobile" type="text" placeholder="Mobile : {{ agent.mobile }}">
-                    <input name="email" id="compteModifierMail" type="text" placeholder="Email : {{ agent.email }}">
-                    <input name="poste_socopec" id="compteModifierFonction" type="text" placeholder="Fonction : {{ agent.poste_socopec }}">
+                    <input name="email" id="compteModifierMail" type="text" placeholder="Email : {{ agent.email }}" readonly>
+                    <input name="poste_socopec" id="compteModifierFonction" type="text" placeholder="Fonction : {{ agent.poste_socopec }}" readonly>
                     <input name="photo" id="compteModifierPhoto" type="text" placeholder="Modifier ma photo">
                     <input name="identifiant" id="compteModifierLogin" type="text" placeholder="Login : {{ agent.login }}">
                     <div>
@@ -29,16 +29,8 @@
                         <input name="confirmation_mot_de_passe" id="compteModifierMdpConfirmation"  type="password" placeholder="Confirmation">
                     </div>
                     <div>
-                        <label for="agence">Agence : </label><select name="agence" id="agentsChangeAgence">
-                           {% for option in options %}
-                               {% if option == agent.id_agence.nom %}
-                                    <option selected>{{ option }}</option>
-                               {% else %}
-                                    <option>{{ option }}</option>
-                               {% endif %}
-                           {% endfor %}
-                       </select>
-                       <label for="date_entree_socopec">Date d'entrée : </label><input name="date_entree_socopec" id="agentsChangeDateEntree" type="date">
+                       <input name="agence" id="agenceReadonly" type="text" placeholder="{{ agent.id_agence.nom }}" readonly>
+                       <input name="date_entree_socopec" id="agentsChangeDateEntree" type="text" placeholder="Date d'entrée dans la société : {{ agent.date_entree_socopec }}" readonly>
                     </div>
                 {% endblock %}
                     {% block footerSection %}

@@ -81,7 +81,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -160,7 +160,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-        <td v-for="key in columns">
+        <td v-for="key in columns" v-html="entry[key]">
         {{entry[key]}}
     </td>
     </tr>
@@ -238,7 +238,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -291,10 +291,7 @@
         el: '#ficheAgencePersonnel',
         data: {
             gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro', '', ' '],
-            gridData: [
-                {'Fonction': 'Responsable', 'Nom': 'M. Xxxxxx', 'Prénom': 'xxxxxx', "E-mail Pro" : 'xxxxxxx.xxxxxx@socopec.fr', '' :'/', ' ':'x'},
-                {'Fonction': 'Vendeur', 'Nom': 'M. Martin', 'Prénom': 'Jean-jacques', "E-mail Pro" : 'martin.jeanjacques@socopec.fr', '' :'/', ' ':'x'}
-            ]
+            gridData: {{ agents | safe }}
         }
     })
 </script>

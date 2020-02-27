@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block css %}<link rel="stylesheet" href="../../../static/css/base.css">{% endblock %}
-{% block titre %}Confirmation de suppression de l'agence {{ agence.nom }}{% endblock %}
+{% block titre %}Confirmation de suppression de l'agence {{ this_agence.nom }}{% endblock %}
 {% block body %}
     <section class="container col-sm-9 col-md-7 col-lg-5 mx-auto mt-5" >
         <div class="card card-signin">
@@ -9,13 +9,43 @@
             </div>
             <form method="post" action="">
                 <div class="card-body">
-                    <p>Etes-vous sûr de vouloir supprimer l'agence {{ agence.nom }}?</p>
-                     <div class="alert alert-danger" role="alert">Cette opération est irreversible!</div>
+                    <p>Si des agents et véhicules rattachés à l'agence {{ this_agence.nom }}, veuillez les réaffecter avant de la supprimer</p>
+                     <div class="alert alert-danger" role="alert">La suppression est irreversible!</div>
+                </div>
+                <div>
+                {% csrf_token %}
+                    {% if agents.count > 0 %}
+                        {% for agent in agents %}
+                            <label for="agence">Réaffecter l'agent {{ agent.prenom }} {{ agent.nom }} : </label>
+                            <select name="agent_{{ agent.id }}" id="agentsReaffAgence">
+                           {% for agence in agences %}
+                               {% if agence.id != this_agence.id  %}
+                                    <option>{{ agence.nom }}</option>
+                               {% endif %}
+                           {% endfor %}
+                       </select>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div>
+                    {% if vehicules.count > 0 %}
+                        {% for vehicule in vehicules %}
+                            <div>
+                                <label for="vehicule">Réaffecter le véhicule {{ vehicule.immatriculation }}, {{ vehicule.modele }} : </label>
+                                <select name="vehicule_{{ vehicule.id }}" id="vehiculeReaffAgence">
+                                {% for agence in agences %}
+                                    {%  if agence.id != this_agence.id %}
+                                        <option>{{ agence.nom }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                                </select>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <div class="card-footer form-group container m-0">
                     <div class="row align-items-center justify-content-between pr-3 pl-3">
-                        {% csrf_token %}
-                        <a href={% url 'fiche_agence' id_agence=agence.id %}><input type="button" class="btn btn-primary" value="Non"></a>
+                        <a href={% url 'fiche_agence' id_agence=this_agence.id %}><input type="button" class="btn btn-primary" value="Non"></a>
                         <button type="submit" class="btn btn-primary">Oui</button>
                     </div>
                  </div>

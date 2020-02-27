@@ -27,8 +27,8 @@ def generate(request):
             'Nom': item.nom,
             'Prenom': item.prenom,
             'Email pro': item.email,
-            'm': '<img alt="acces fiche agence" class="icon" src="../../../static/images/modifier.svg"/>',
-            's': '<img alt="acces fiche agence" class="icon" src="../../../static/images/supprimer.svg"/>'
+            'm': '<a href="modifierAdmin/' + str(item.id) + '"><img alt="modification agent" class="icon" src="../../../static/images/modifier.svg"/></a>',
+            's': '<a href="supprimer/' + str(item.id) + '"><img alt="suppression agent" class="icon" src="../../../static/images/supprimer.svg"/></a>'
         })
 
     # Vue pour Admin :
@@ -121,7 +121,7 @@ def generate(request):
                             'Prenom': item.prenom,
                             'Email pro': item.email,
                             'm': '<img alt="acces fiche agence" class="icon" src="../../../static/images/modifier.svg"/>',
-                            's': '<img alt="acces fiche agence" class="icon" src="../../../static/images/supprimer.svg"/>'
+                            's': '<a href="/supprimer/' + str(item.id) + '"><img alt="acces fiche agence" class="icon" src="../../../static/images/supprier.svg"/></a>'
                         })
                     return render(request, '../templates/agent/agentAdmin.html',
                                   {'error': False,
@@ -167,9 +167,45 @@ def supprimer(request, id_agent):
     if request.user.groups.filter(name="administrateur").exists():
         agent = Agent.objects.get(id=id_agent)
         if request.method == 'POST':
+            #  TODO : clôturer les problèmes / historique en cours pour cet agent
             agent.delete()
             return redirect('agents')
         return render(request, '../templates/agent/validationSuppressionAgent.html', {'agent': agent})
+
+
+@login_required
+def modifier_admin(request, id_agent):
+    agent = Agent.objects.get(id=id_agent)
+    options = []
+    agences = Agence.objects.all()
+    for item in agences:
+        options.append(item.nom)
+    if request.method == "POST":
+        user = User.objects.get(username=agent.identifiant)
+        if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get(
+                "poste_socopec") == "administrateur":
+            group_user = Group.objects.get(name="utilisateur")
+            group_user.user_set.remove(user)
+            group_admin = Group.objects.get(name="administrateur")
+            group_admin.user_set.add(user)
+        else:
+            group = Group.objects.get(name="utilisateur")
+            group.user_set.add(user)
+
+        if request.POST.get("nom") != agent.nom:
+            agent.nom = request.POST.get("nom")
+        if request.POST.get("prenom") != agent.prenom:
+            agent.prenom = request.POST.get("prenom")
+        if request.POST.get("email") != agent.email:
+            agent.email = request.POST.get("email")
+        if request.POST.get("poste_socopec") != agent.poste_socopec:
+            agent.poste_socopec = request.POST.get("poste_socopec")
+        if request.POST.get("date_entree_socopec") != agent.date_entree_socopec:
+            agent.date_entree_socopec = request.POST.get("date_entree_socopec")
+        if request.POST.get("agence") != agent.id_agence.nom:
+            agent.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
+        return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options, 'validation': True})
+    return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options})
 
 
 @login_required
@@ -192,17 +228,6 @@ def modifier(request):
                 template = loader.get_template('../templates/agent/compte.html')
                 return HttpResponse(template.render(context, request))
 
-        user = User.objects.get(username=agent.identifiant)
-        if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get("poste_socopec") == "administrateur":
-            group_user = Group.objects.get(name="utilisateur")
-            group_user.user_set.remove(user)
-            group_admin = Group.objects.get(name="administrateur")
-            group_admin.user_set.add(user)
-        else:
-            group = Group.objects.get(name="utilisateur")
-            group.user_set.add(user)
-        if request.POST.get("nom") and request.POST.get("nom") != agent.nom:
-            agent.nom = request.POST.get("nom")
         if request.POST.get("adresse") and request.POST.get("adresse") != agent.adresse:
             agent.adresse = request.POST.get("adresse")
         if request.POST.get("complement_adresse") and request.POST.get("complement_adresse") != agent.complement_adresse:
@@ -217,16 +242,12 @@ def modifier(request):
             agent.mobile = request.POST.get("mobile")
         if request.POST.get("email") and request.POST.get("email") != agent.email:
             agent.email = request.POST.get("email")
-        if request.POST.get("poste_socopec") and request.POST.get("poste_socopec") != agent.poste_socopec:
-            agent.poste_socopec = request.POST.get("poste_socopec")
         if request.POST.get("identifiant") and request.POST.get("identifiant") != agent.identifiant:
             agent.identifiant = request.POST.get("identifiant")
         if request.POST.get("mot_de_passe") and request.POST.get("mot_de_passe") != agent.mot_de_passe:
             agent.mot_de_passe = request.POST.get("mot_de_passe")
         if request.POST.get("photo") and request.POST.get("photo") != agent.photo:
             agent.photo = request.POST.get("photo")
-        if request.POST.get("agence") != agent.id_agence.nom:
-            agent.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
         agent.save()
         return render(request, '../templates/agent/compte.html', {'agent': agent})
     return render(request, '../templates/agent/compte.html', {'agent': agent, 'options': options})
