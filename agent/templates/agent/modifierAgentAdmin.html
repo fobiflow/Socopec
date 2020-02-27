@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_agence.css">{% endblock %}
+{% block body %}
+<article>
+    <h1>Fiche utilisateur</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if validation %}<div class="alert alert-success" role="alert">Vos modifications ont bien été enregistrées</div>{% endif %}
+            <div>
+                <label for="agence">Agence : </label><select name="agence" id="agentsChangeAgence">
+                {% for option in options %}
+                    {% if option == agent.id_agence.nom %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                <input name="poste_socopec" id="modifierPosteAgent" type="text" placeholder="Fonction : {{ agent.poste_socopec }}">
+                <input name="date_entree_socopec" id="modifierDateEntreeAgent" type="text" placeholder="Depuis le : {{ agent.date_entree_socopec }}">
+            </div>
+            <div>
+                <input name="nom" id="modifierNomAgent" type="text" placeholder="Nom : {{ agent.nom }}">
+                <input name="prenom" id="modifierPrenomAgent" type="text" placeholder="Prénom : {{ agent.prenom }}">
+            </div>
+            <input name="email" id="modifierAgentEmail" type="text" placeholder="Email : {{ agent.email }}">
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Modifier{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}
