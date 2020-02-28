@@ -7,7 +7,7 @@
                     <h3>Rechercher un véhicule</h3>
                     <div id="demo" >
                         <form id="search">
-                            <input name="query" v-model="searchQuery" tyope="text" placeholder="Rechercher un véhicule">
+                            <input name="query" v-model="searchQuery" type="text" placeholder="Rechercher un véhicule">
                         </form>
                         <demo-grid
                                 :heroes="gridData"
@@ -19,18 +19,6 @@
             </div>
         </div>
 
-    <script type="text/javascript">
-        var vm = new Vue({
-            el: '#menu',
-            data: {
-                user: 'admin',
-                vehicules : true,
-                agences: false,
-                agents: false,
-                compte: false
-            }
-        });
-    </script>
     {% verbatim %}
     <!-- vue.js pour rechercher une agence -->
         <script type="text/x-template" id="grid-template">
@@ -48,7 +36,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="entry in filteredHeroes">
-                    <td v-for="key in columns">
+                    <td v-for="key in columns" v-html="entry[key]">
                         {{entry[key]}}
                     </td>
                 </tr>
@@ -59,6 +47,17 @@
 
 <!-- javascript pour rechercher une agence -->
 <script type="text/javascript">
+    var vm = new Vue({
+        el: '#menu',
+        data: {
+            user: 'admin',
+            vehicules : true,
+            agences: false,
+            agents: false,
+            compte: false
+        }
+    });
+
     Vue.component('demo-grid', {
         template: '#grid-template',
         props: {
@@ -117,11 +116,8 @@
         el: '#demo',
         data: {
             searchQuery: '',
-            gridColumns: ['', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o', 'x'],
-            gridData: [
-                {'':'', Plaque: 'AB-123-CD', Agence: 'Paris 15ème', "Modèle": 'Misosky', Statut: 'Location', Localisation: 'Paris 15eme', Dates: '01-01-19 au 01/02/19', "Date de fab.":'01-01-01', CV:'6', Poids:'1105', H:'155', L:'255', 0:'', x:''},
-                {'':'', Plaque: 'ZY-987-WV', Agence: 'Nancy', "Modèle": 'Otto', Statut: 'Prêt', Localisation: 'Nancy', Dates: '07-03-19 au 01/02/20', "Date de fab.":'12-12-12', CV:'8', Poids:'3400', H:'123', L:'202', 0:'', x:''}
-            ]
+            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o', 'x'],
+            gridData: {{ vehicules_table | safe }}
         }
     })
 
