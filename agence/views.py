@@ -25,7 +25,7 @@ def generate(request):
             'Responsable de l\'agence': '',
             'Telephone': item.telephone,
             'Mail': '',
-            'Vue': '<img alt="acces fiche agence" class="icon" src="../../../static/images/oeuil.svg"/>'
+            'Vue': '<a href="' + str(item.id) + '"><img alt="acces fiche agence" class="icon" src="../../../static/images/oeuil.svg"/></a>'
         })
 
     # Vue pour admin :
@@ -102,6 +102,16 @@ def generate(request):
 @login_required()
 def fiche(request, id_agence):
     agence = Agence.objects.get(id=id_agence)
+    agents = []
+    if Agent.objects.filter(id_agence=agence).exists():
+        data = Agent.objects.filter(id_agence=agence)
+        for agent in data:
+            agents.append({
+                'Fonction': agent.poste_socopec,
+                'Nom': agent.nom,
+                'Prénom': agent.prenom,
+                'E-mail Pro': agent.email
+            })
     if request.user.groups.filter(name="administrateur").exists():
         if request.method == "POST":
             if request.POST.get("nom"):
@@ -122,17 +132,41 @@ def fiche(request, id_agence):
             # TODO : message de confirmation de mise à jour d'agence
 
             return redirect('fiche_agence', id_agence=agence.id)
-        return render(request, '../templates/agence/ficheAgenceAdmin.html', {'agence': agence})
+        return render(request, '../templates/agence/ficheAgenceAdmin.html', {'agence': agence, 'agents': agents})
     else:
-        return render(request, '../templates/agence/ficheAgenceUser.html', {'agence': agence})
+        return render(request, '../templates/agence/ficheAgenceUser.html', {'agence': agence, "agents": agents})
 
 
 @login_required()
 def supprimer(request, id_agence):
     if request.user.groups.filter(name="administrateur").exists():
-        agence = Agence.objects.get(id=id_agence)
+        this_agence = Agence.objects.get(id=id_agence)
+        agences = Agence.objects.all()
+        agents = []
+        if Agent.objects.filter(id_agence=this_agence).exists():
+            agents = Agent.objects.filter(id_agence=this_agence)
+        vehicules = []
+        if Vehicule.objects.filter(id_agence=this_agence).exists():
+            vehicules = Vehicule.objects.filter(id_agence=this_agence)
         if request.method == 'POST':
-            agence.delete()
+            # Réaffectation des agents dans d'autres agences :
+            for agent in agents:
+                if request.POST.get("agent_" + str(agent.id)):
+                    agence = Agence.objects.get(nom=request.POST.get("agent_"+str(agent.id)))
+                    agent.id_agence = agence
+                    agent.save()
+            # Réaffectation des véhicules dans d'autres agences :
+            for vehicule in vehicules:
+                if request.POST.get("vehicule_" + str(vehicule.id)):
+                    agence = Agence.objects.get(nom=request.POST.get("vehicule_"+str(vehicule.id)))
+                    vehicule.id_agence = agence
+                    vehicule.save()
+            this_agence.delete()
             return redirect('agences')
-        return render(request, '../templates/agence/validationSuppressionAgence.html', {'agence': agence})
+        return render(request, '../templates/agence/validationSuppressionAgence.html', {
+            'this_agence': this_agence,
+            'agences': agences,
+            'agents': agents,
+            'vehicules': vehicules
+        })
 

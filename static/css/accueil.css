@@ -213,3 +213,39 @@ main section{
 .agentsDansGroupePhrase{
     font-size: 40px;
 }
+.tailleXXL{
+    font-size: 100px;
+}
+.inputLight{
+    border: 0px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+}
+.inputLight:focus{
+    border: 0px solid #5C5FFF;
+    border-bottom: 1px solid #5C5FFF;
+}
+input[type=file]{
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    margin: 5px 0;
+    padding: 2px 5px;
+    color: rgba(0, 0, 0, 1);
+}
+.ligneProgress{
+    height: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+.ligneProgress > p{
+    width: 200px;
+    text-align: left;
+    padding: 0;
+}
+.progress{
+    width: 100%;
+    height: 15px;
+    border-radius: 0;
+}

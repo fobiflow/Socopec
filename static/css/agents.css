@@ -133,7 +133,7 @@ a, a:hover{
     font-family: 'Arial Gras', 'Arial Normal', 'Arial', serif;
     font-size: 25px;
 }
-main section{
+main section {
     background-color: white;
 }
 form{
@@ -195,4 +195,8 @@ label {
 }
 .agentsDansGroupePhrase{
     font-size: 40px;
+}
+.icon {
+    width: 29px;
+    height: 29px;
 }
