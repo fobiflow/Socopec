@@ -15,14 +15,21 @@ def generate(request):
     data = Agence.objects.all()
     agences_table = []
     for item in data:
+        administrateur = ""
+        if Agent.objects.filter(poste_socopec="administrateur", id_agence=item.id).exists():
+            ret = Agent.objects.get(poste_socopec="administrateur", id_agence=item.id)
+            administrateur = ret.prenom + " " + ret.nom
+        if Agent.objects.filter(poste_socopec="Administrateur", id_agence=item.id).exists():
+            ret = Agent.objects.get(poste_socopec="Administrateur", id_agence=item.id)
+            administrateur = ret.prenom + " " + ret.nom
         agences_table.append({
             'Ville': item.ville,
             'Agence': item.nom,
-            'Nb de personne': '',
+            'Nb de personne': Agent.objects.filter(id_agence=item.id).count(),
             'Nb de vehicules': Vehicule.objects.filter(id_agence=item.id).count(),
             'Probleme en cours': '',
             'Vehicules vendus': '',
-            'Responsable de l\'agence': '',
+            'Responsable de l\'agence': administrateur,
             'Telephone': item.telephone,
             'Mail': '',
             'Vue': '<a href="' + str(item.id) + '"><img alt="acces fiche agence" class="icon" src="../../../static/images/oeuil.svg"/></a>'
@@ -131,7 +138,7 @@ def fiche(request, id_agence):
             agence.save()
             # TODO : message de confirmation de mise à jour d'agence
 
-            return redirect('fiche_agence', id_agence=agence.id)
+            return render(request, '../templates/agence/ficheAgenceAdmin.html', {'confirmation': True, 'agence': agence, 'agents': agents})
         return render(request, '../templates/agence/ficheAgenceAdmin.html', {'agence': agence, 'agents': agents})
     else:
         return render(request, '../templates/agence/ficheAgenceUser.html', {'agence': agence, "agents": agents})

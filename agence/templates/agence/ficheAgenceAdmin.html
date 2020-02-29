@@ -7,9 +7,10 @@
         <img id="photoAgence" src="{{ agence.photo }}" alt="photo de l'agence">
         <form action="" method="post">
             {% csrf_token %}
+            {% if confirmation %}<div class="alert alert-success" role="alert">Les modifications de l'agence ont bien été enregistrées</div>{% endif %}
             <div>
                 <input name="nom" id="agenceNom" type="text" placeholder="Nom : {{ agence.nom }}">
-                <button type="submit"><img class="icon" src="../../../static/images/modifier.svg"></button>
+                <button type="submit" style="background-color:white;border:0px"><img class="icon" src="../../../static/images/modifier.svg"></button>
                 <a href="{% url 'supprimer_agence' id_agence=agence.id %}"><img class="icon" src="../../../static/images/supprimer.svg"></a>
             </div>
             <input id="agenceResponsable" type="text" placeholder="Responsable : ">
@@ -23,7 +24,6 @@
                 <input name="telephone" id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}">
                 <input name="fax" id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}">
             </div>
-            <input id="agenceEmail" type="text" placeholder="Email :">
         </form>
     </section>
 

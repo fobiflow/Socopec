@@ -129,3 +129,21 @@ th, td:first-child{
     color: white;
     background-color: #DC3545;
 }
+#vehiculeModifierStatut{
+    border-radius: 4px;
+    border: 1px solid #49dc73;
+    color: #49dc73;
+    background-color: white;
+    height: 30px;
+    flex: 1;
+}
+#vehiculeModifierStatut:hover{
+    color: white;
+    background-color: #49dc73;
+}
+#vehiculeUpdateAgence{
+    margin-right: 65%;
+}
+#vehiculeUpdateAgenceLabel{
+    color: #868E96;
+}
