@@ -4,18 +4,18 @@
     <div class="container-fluid">
         <div class="row justify-content-around p-2">
             <section class="border border-secondary p-2 m-2 col">
-                <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>24 février 2020</span></h3>
+                <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
                 <div class="flexRow justify-content-around align-items-center">
                     <div class="flexColumn m0">
-                        <span class="vert tailleXXL m-0">80</span>
+                        <span class="vert tailleXXL m-0">{{ total_vehicules }}</span>
                         <span>Véhicule(s)<br>dans le parc</span>
                     </div>
                     <div class="flexColumn m0">
-                        <span class="orange tailleXXL m-0">2</span>
+                        <span class="orange tailleXXL m-0">{{ problemes_orange }}</span>
                         <span>Problème(s)<br>non résolus</span>
                     </div>
                     <div class="flexColumn m0">
-                        <span class="rouge tailleXXL m-0">1</span>
+                        <span class="rouge tailleXXL m-0">{{ problemes_rouge }}</span>
                         <span>Nouveau(x)<br>problème(s)</span>
                     </div>
 
@@ -25,12 +25,12 @@
                 <h3>Actuellement</h3>
                 <div class="flexColumn center">
                     <div>
-                        <p><span class="agencesVehiculesVendusMois orange">1</span><span class="agencesVehiculesVendusMoisPrec"> / {{ total_vehicules }}</span></p>
+                        <p><span class="agencesVehiculesVendusMois orange">{{ vehicules_vendus_mois }}</span><span class="agencesVehiculesVendusMoisPrec"> / {{ total_vehicules }}</span></p>
                         <p class="agencesVehiculesVendusMoisPhrase">Véhicule(s) vendu(s) en {{ this_month }}</p>
                     </div>
                     <div class="flexRow">
                         <div id="first-actu">
-                            <p><span class="agencesVehiculesVendusAnnee vert">15</span><span class="agencesVehiculesVendusAnneePrec"> / {{ total_vehicules }}</span></p>
+                            <p><span class="agencesVehiculesVendusAnnee vert">{{ vehicules_vendus }}</span><span class="agencesVehiculesVendusAnneePrec"> / {{ total_vehicules }}</span></p>
                             <p class="agencesVehiculesVendusAnneePhrase">Véhicule(s) vendu(s) en</br>{{ this_year }}</p>
                         </div>
                         <div>
@@ -44,30 +44,23 @@
 
         <div class="row justify-content-around p-2">
             <section class="border border-secondary p-2 m-2 col">
-                <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>24 février 2020</span></h3>
+                <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
                     <div class="flexColumn justify-content-center">
-
-                        <div class="ligneProgress">
-                            <p>Démonstration</p>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                        {% for item in statuts %}
+                            <div class="ligneProgress">
+                                <p>{{ item.statut }}</p>
+                                <div class="progress">
+                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="ligneProgress">
-                            <p>Démonstration</p>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-
+                        {% endfor %}
                     </div>
             </section>
             <section id="test" class="border border-secondary p-2 m-2 col">
                 <h3>Actuellement</h3>
                 <div class="flexColumn center">
                     <div>
-                        <p><span class="agentsDansGroupe">{{ total }}</span></p>
+                        <p><span class="agentsDansGroupe">{{ total_agents }}</span></p>
                         <p class="agentsDansGroupePhrase">Collaborateurs</p>
                     </div>
                     <div class="flexRow">

@@ -54,7 +54,7 @@
     <section>
         <div class="d-flex align-items-baseline">
             <h3 class="mr-5">Historique du véhicule</h3>
-            <button id="vehiculeModifierStatut">Modifier le statut du véhicule</button>
+            <a href="{% url 'new_historique' id_vehicule=vehicule.id %}"><button id="vehiculeModifierStatut">Modifier le statut du véhicule</button></a>
         </div>
         <div id="ficheVehiculeHistorique">
             <historique-grid
@@ -98,7 +98,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -150,11 +150,8 @@
     var demo = new Vue({
         el: '#ficheVehiculeHistorique',
         data: {
-            gridColumns: ['Dates', 'Status', 'Agence', 'Agent', ' ', ''],
-            gridData: [
-                {'Dates': '03-06-19 au __-__-__', 'Status': 'En vente', 'Agence': 'Paris 15eme', 'Agent': 'Mme Martine G.', ' ' :'<img class="icon" src="icons/modifier.svg">', ' ' :'<img class="icon" src="icons/supprimer.svg">'},
-                {'Dates': '01-06-19 au 03-06-19 ', 'Status': 'Démonstration', 'Agence': 'Metz', 'Agent': 'M. Joe J.', ' ' :'<img class="icon" src="icons/modifier.svg">', ' ' :'<img class="icon" src="icons/supprimer.svg">'},
-            ]
+            gridColumns: ['Dates', 'Statut', 'Agence', 'Agent', 'M'],
+            gridData: {{ historiques_table | safe }}
         }
     })
     </script>
@@ -176,7 +173,7 @@
             </thead>
             <tbody>
             <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
+                <td v-for="key in columns"  v-html="entry[key]">
                     {{entry[key]}}
                 </td>
             </tr>
@@ -229,7 +226,7 @@
     var demo = new Vue({
         el: '#ficheVehiculeProbleme',
         data: {
-            gridColumns: [' ','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
+            gridColumns: ['C','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
             gridData: [
                 {' ': 'r', "Date du sinistre": '15-12-19', 'Agence': 'Paris 19eme','Agent': 'M. Martin J',  "Dernier message": 'Réparation longue. Véhicule indisponible pendant 1 mois', '' :'<img class="icon" src="icons/oeuil.svg">'},
                 {' ': 'o', "Date de vente": '05-12-19', 'Agence': 'Nancy', 'Agent': 'Mme Dupont A', "Dernier message": 'Dégradations durant le salon. RDV garage pris en attente du devis', '' :'<img class="icon" src="icons/oeuil.svg">'}

@@ -1,8 +1,11 @@
+from datetime import date
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Vehicule, Photo
 from agent.models import Agent
 from agence.models import Agence
+from historique.models import Statut, Historique, Probleme
 import locale
 locale.setlocale(locale.LC_TIME, '')
 import time
@@ -16,30 +19,53 @@ def generate(request):
     vehicules_table = []
     # TODO : ajout d'une couleur en fonction de l'historique (problème urgent ou pas, à revoir avec Laurence)
     # TODO 2 : ajout du statut, de la localisation et des dates
+    color = "white"
     for item in data:
-       vehicules_table.append({
-           'P': '',
+        if Probleme.objects.filter(statut="en cours").exists():
+            color = "orange"
+        if Probleme.objects.filter(statut="en cours", date_signalement__day=date.today().day).exists():
+            color = "red"
+        localisation = ""
+        statut = ""
+        dates = ""
+        if Historique.objects.filter(id_vehicule=item, statut="en cours").exists():
+            localisation = Historique.objects.get(id_vehicule=item, statut="en cours").localisation
+            statut = Historique.objects.get(id_vehicule=item, statut="en cours").id_statut.statut
+            if Historique.objects.get(id_vehicule=item, statut="en cours").date_fin:
+                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au " + str(Historique.objects.get(id_vehicule=item, statut="en cours").date_fin)
+            else:
+                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au --/--/----"
+        vehicules_table.append({
+           'P': '<div style="width:10px;height:25px;background-color:' + color + '"></div>',
            'Plaque': item.immatriculation,
            'Agence': item.id_agence.nom,
            'Modèle': item.modele,
-           'Statut': '',
-           'Localisation': '',
-           'Dates': '',
+           'Statut': statut,
+           'Localisation': localisation,
+           'Dates': dates,
            'Date de fab.': str(item.date_fabrication),
            'CV': item.puissance,
            'Poids': item.poids,
            'H': item.hauteur,
            'L': item.largeur,
            'o': '<a href="' + str(item.id) + '"><img alt="acces fiche vehicule" class="icon" src="../../../static/images/oeuil.svg"/></a>',
-       })
+        })
     # Vue pour Admin :
     if request.user.groups.filter(name="administrateur").exists():
-        date = time.strftime('%A %d-%m-%Y')
+        actu = time.strftime('%A %d-%m-%Y')
         # Pour les stats :
         total_vehicules = data.count()
-        #  TODO : ajouter les problèmes et nombre de véhicules en fonction du statut pour les barres de progression
-        problemes_orange = 0
-        problemes_rouge = 0
+        statuts = []
+        res = Statut.objects.all()
+        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
+        i = 0
+        for item in res:
+            statuts.append({
+                'statut': item.statut, 'value': Historique.objects.filter(id_statut=item.id).count(), "boots": boots[i]
+            })
+            i += 1
+        problemes_orange = Probleme.objects.filter(statut="en cours").count()
+        problemes_rouge = Probleme.objects.filter(date_signalement__day=date.today().day).count()
         options = []
         agences = Agence.objects.all()
         for item in agences:
@@ -89,9 +115,10 @@ def generate(request):
                                'agent': agent,
                                'options': options,
                                'total_vehicules': total_vehicules,
+                               'statuts': statuts,
                                'problemes_orange': problemes_orange,
                                'problemes_rouge': problemes_rouge,
-                               'date': date,
+                               'actu': actu,
                                'data': data,
                                'vehicules_table': vehicules_table})
             else:
@@ -101,9 +128,10 @@ def generate(request):
                                'agent': agent,
                                'options': options,
                                'total_vehicules': total_vehicules,
+                               'statuts': statuts,
                                'problemes_orange': problemes_orange,
                                'problemes_rouge': problemes_rouge,
-                               'date': date,
+                               'actu': actu,
                                'data': data,
                                'vehicules_table': vehicules_table})
         else:
@@ -113,9 +141,10 @@ def generate(request):
                            'agent': agent,
                            'options': options,
                            'total_vehicules': total_vehicules,
+                           'statuts': statuts,
                            'problemes_orange': problemes_orange,
                            'problemes_rouge': problemes_rouge,
-                           'date': date,
+                           'actu': actu,
                            'data': data,
                            'vehicules_table': vehicules_table})
     # Vue pour User :
@@ -130,6 +159,32 @@ def fiche(request, id_vehicule):
         ret = Photo.objects.filter(id_vehicule=vehicule)
         for item in ret:
             photos.append(item.url)
+    historiques = Historique.objects.filter(id_vehicule=vehicule)
+    historiques_table = []
+    for item in historiques:
+        if item.date_debut and item.date_fin:
+            date = str(item.date_debut) + ' au ' + str(item.date_fin)
+        else:
+            date = str(item.date_debut) + ' au --/--/--'
+        historiques_table.append({
+            'Dates': date,
+            'Statut': item.id_statut.statut,
+            'Agence': item.id_agence.nom,
+            'Agent': item.id_agent.prenom + ' ' + item.id_agent.nom,
+            'M': '<a href="' + str(item.id) + '"><img alt="acces fiche historique" class="icon" src="../../../static/images/modifier.svg"/></a>'
+        })
+    problemes = Probleme.objects.all()
+    problemes_table = []
+    for item in problemes:
+        # TODO : couleur pour le problème
+        problemes_table.append({
+            'C': '',
+            'Date du sinistre': item.date_signalement,
+            'Agence': item.id_agence.nom,
+            'Agent': item.id_agent_ouverture.prenom + ' ' + item.id_agent_ouverture.nom,
+            'Dernier message': item.probleme,
+            'M': '<a href="' + str(item.id) + '"><img alt="acces fiche probleme" class="icon" src="../../../static/images/modifier.svg"/></a>'
+        })
     if request.user.groups.filter(name="administrateur").exists():
         options = []
         agences = Agence.objects.all()
@@ -153,11 +208,25 @@ def fiche(request, id_vehicule):
             if request.POST.get('agence') and request.POST.get('agence') != vehicule.id_agence.nom:
                 vehicule.id_agence = Agence.objects.get(nom=request.POST.get('agence'))
             vehicule.save()
-            return render(request, '../templates/vehicule/ficheVehiculeAdmin.html', {'confirmation': True, 'vehicule': vehicule, 'photos': photos, 'options': options})
-        #     TODO : message de confirmation de mise à jour du véhicule
-        return render(request, '../templates/vehicule/ficheVehiculeAdmin.html', {'vehicule': vehicule, 'photos': photos, 'options': options})
+            return render(request, '../templates/vehicule/ficheVehiculeAdmin.html',
+                          {'confirmation': True,
+                           'vehicule': vehicule,
+                           'photos': photos,
+                           'options': options,
+                           'historiques_table': historiques_table,
+                       'problemes_table': problemes_table})
+        return render(request, '../templates/vehicule/ficheVehiculeAdmin.html',
+                      {'vehicule': vehicule,
+                       'photos': photos,
+                       'options': options,
+                       'historiques_table': historiques_table,
+                       'problemes_table': problemes_table})
     else:
-        return render(request, '../templates/vehicule/ficheVehiculeUser.html', {'vehicule': vehicule, 'photos': photos})
+        return render(request, '../templates/vehicule/ficheVehiculeUser.html',
+                      {'vehicule': vehicule,
+                       'photos': photos,
+                       'historiques_table': historiques_table,
+                       'problemes_table': problemes_table})
 
 
 @login_required()

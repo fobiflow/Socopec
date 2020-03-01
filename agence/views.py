@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Agence
 from agent.models import Agent
 from vehicule.models import Vehicule
+from historique.models import Historique, Probleme, Statut
 from datetime import date
 
 
@@ -10,37 +11,41 @@ from datetime import date
 def generate(request):
     identifiant = request.user.username
     agent = Agent.objects.get(identifiant=identifiant)
-
     # Pour le tableau :
     data = Agence.objects.all()
     agences_table = []
     for item in data:
         administrateur = ""
+        email = ""
         if Agent.objects.filter(poste_socopec="administrateur", id_agence=item.id).exists():
             ret = Agent.objects.get(poste_socopec="administrateur", id_agence=item.id)
             administrateur = ret.prenom + " " + ret.nom
+            email = ret.email
         if Agent.objects.filter(poste_socopec="Administrateur", id_agence=item.id).exists():
             ret = Agent.objects.get(poste_socopec="Administrateur", id_agence=item.id)
             administrateur = ret.prenom + " " + ret.nom
+            email = ret.email
+        vehicules_vendus = Historique.objects.filter(id_agence=item.id, id_statut=Statut.objects.get(statut="Vendu")).count()
         agences_table.append({
             'Ville': item.ville,
             'Agence': item.nom,
             'Nb de personne': Agent.objects.filter(id_agence=item.id).count(),
-            'Nb de vehicules': Vehicule.objects.filter(id_agence=item.id).count(),
-            'Probleme en cours': '',
-            'Vehicules vendus': '',
+            'Nb de vehicules': Vehicule.objects.filter(id_agence=item.id).count() - vehicules_vendus,
+            'Probleme en cours': Probleme.objects.filter(id_agence=item.id, statut="resolu").count(),
+            'Vehicules vendus': vehicules_vendus,
             'Responsable de l\'agence': administrateur,
             'Telephone': item.telephone,
-            'Mail': '',
+            'Mail': email,
             'Vue': '<a href="' + str(item.id) + '"><img alt="acces fiche agence" class="icon" src="../../../static/images/oeuil.svg"/></a>'
         })
-
     # Vue pour admin :
     if request.user.groups.filter(name="administrateur").exists():
         #  Pour le carré actuellement
-        # TODO : véhicules vendus depuis le début + véhicules vendus le mois dernier
-        # vehicules_vendus =
-        # vehicules_vendus_mois_dernier =
+        vehicules_vendus = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
+                                                     date_debut__year=date.today().year).count()
+        # TODO : erreur de récupération du nombre de véhicules vendus pour le mois en cours (mois?)
+        vehicules_vendus_mois = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
+                                                          date_debut__month=date.today().month).count()
         total_vehicules = Vehicule.objects.all().count()
         this_year = date.today().year
         int_month = date.today().month
@@ -73,6 +78,8 @@ def generate(request):
                                'confirmation_name': request.POST.get('nom'),
                                'agent': agent,
                                'nombre_agences': nombre_agences,
+                               'vehicules_vendus': vehicules_vendus,
+                               'vehicules_vendus_mois': vehicules_vendus_mois,
                                'data': data,
                                'agences_table': agences_table,
                                'this_year': this_year,
@@ -84,6 +91,8 @@ def generate(request):
                               {'error': True,
                                'agent': agent,
                                'nombre_agences': nombre_agences,
+                               'vehicules_vendus': vehicules_vendus,
+                               'vehicules_vendus_mois': vehicules_vendus_mois,
                                'data': data,
                                'agences_table': agences_table,
                                'this_year': this_year,
@@ -96,6 +105,8 @@ def generate(request):
                            'confirmation': False,
                            'agent': agent,
                            'nombre_agences': nombre_agences,
+                           'vehicules_vendus': vehicules_vendus,
+                           'vehicules_vendus_mois': vehicules_vendus_mois,
                            'data': data,
                            'agences_table': agences_table,
                            'this_year': this_year,
@@ -119,6 +130,26 @@ def fiche(request, id_agence):
                 'Prénom': agent.prenom,
                 'E-mail Pro': agent.email
             })
+    problemes = []
+    # TODO : créer un problème et faire en sorte qu'il aparaisse bien que si date résolution est blank)
+    if Probleme.objects.filter(id_agence=agence).exists():
+        data = Probleme.objects.filter(id_agence=agence)
+        for probleme in data:
+            problemes.append({
+                'Date de début': probleme.date_signalement,
+                'Agent ouverture': probleme.id_agent_ouverture.prenom + ' ' + probleme.id_agent_ouverture.nom,
+                'Vehicule': probleme.id_vehicule.immatriculation,
+                'Description': probleme.probleme
+            })
+    historique_ventes = []
+    if Historique.objects.filter(id_agence=agence, id_statut=Statut.objects.get(statut="Vendu")).exists():
+        data = Historique.objects.filter(id_agence=agence, id_statut=Statut.objects.get(statut="Vendu"))
+        for h in data:
+            historique_ventes.append({
+                'Date de vente': str(h.date_debut),
+                'Nom du vendeur': h.id_agent.prenom + ' ' + h.id_agent.nom,
+                'Véhicule': h.id_vehicule.immatriculation
+            })
     if request.user.groups.filter(name="administrateur").exists():
         if request.method == "POST":
             if request.POST.get("nom"):
@@ -136,12 +167,23 @@ def fiche(request, id_agence):
             if request.POST.get("fax"):
                 agence.fax = request.POST.get("fax")
             agence.save()
-            # TODO : message de confirmation de mise à jour d'agence
-
-            return render(request, '../templates/agence/ficheAgenceAdmin.html', {'confirmation': True, 'agence': agence, 'agents': agents})
-        return render(request, '../templates/agence/ficheAgenceAdmin.html', {'agence': agence, 'agents': agents})
+            return render(request, '../templates/agence/ficheAgenceAdmin.html',
+                          {'confirmation': True,
+                           'agence': agence,
+                           'agents': agents,
+                           'problemes': problemes,
+                           'historique_ventes': historique_ventes})
+        return render(request, '../templates/agence/ficheAgenceAdmin.html',
+                      {'agence': agence,
+                       'agents': agents,
+                       'problemes': problemes,
+                       'historique_ventes': historique_ventes})
     else:
-        return render(request, '../templates/agence/ficheAgenceUser.html', {'agence': agence, "agents": agents})
+        return render(request, '../templates/agence/ficheAgenceUser.html',
+                      {'agence': agence,
+                       'agents': agents,
+                       'problemes': problemes,
+                       'historique_ventes': historique_ventes})
 
 
 @login_required()

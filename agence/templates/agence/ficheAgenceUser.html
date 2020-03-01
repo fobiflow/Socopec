@@ -132,11 +132,8 @@
     var demo = new Vue({
         el: '#ficheAgenceProbleme',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de début', 'Agent ouverture', 'Vehicule', 'Description'],
+            gridData: {{ problemes | safe }}
         }
     })
 </script>
@@ -211,11 +208,8 @@
     var demo = new Vue({
         el: '#ficheAgenceHistorique',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de vente', 'Nom du vendeur', 'Véhicule'],
+            gridData: {{ historique_ventes | safe }}
         }
     })
 </script>
@@ -288,7 +282,7 @@
     var demo = new Vue({
         el: '#ficheAgencePersonnel',
         data: {
-            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro', '', ' '],
+            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro'],
             gridData: {{ agents | safe }}
         }
     })
