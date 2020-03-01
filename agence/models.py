@@ -3,7 +3,7 @@ from django.db import models
 
 class Agence(models.Model):
     nom = models.CharField(max_length=30, default="à remplir")
-    adresse = models.TextField(default="à remplis")
+    adresse = models.TextField(default="à remplir")
     complement_adresse = models.TextField(blank=True, null=True, default="null")
     code_postal = models.IntegerField(default=00000)
     ville = models.CharField(max_length=20, default="default_city")

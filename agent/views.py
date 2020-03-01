@@ -182,28 +182,31 @@ def modifier_admin(request, id_agent):
         options.append(item.nom)
     if request.method == "POST":
         user = User.objects.get(username=agent.identifiant)
-        if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get(
-                "poste_socopec") == "administrateur":
-            group_user = Group.objects.get(name="utilisateur")
-            group_user.user_set.remove(user)
-            group_admin = Group.objects.get(name="administrateur")
-            group_admin.user_set.add(user)
-        else:
-            group = Group.objects.get(name="utilisateur")
-            group.user_set.add(user)
+        if request.POST.get("poste_socopec"):
+            if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get(
+                    "poste_socopec") == "administrateur":
+                group_user = Group.objects.get(name="utilisateur")
+                group_user.user_set.remove(user)
+                group_admin = Group.objects.get(name="administrateur")
+                group_admin.user_set.add(user)
+            else:
+                group = Group.objects.get(name="utilisateur")
+                group.user_set.add(user)
 
-        if request.POST.get("nom") != agent.nom:
+        if request.POST.get("nom"):
             agent.nom = request.POST.get("nom")
-        if request.POST.get("prenom") != agent.prenom:
+        if request.POST.get("prenom"):
             agent.prenom = request.POST.get("prenom")
-        if request.POST.get("email") != agent.email:
+        if request.POST.get("email"):
             agent.email = request.POST.get("email")
-        if request.POST.get("poste_socopec") != agent.poste_socopec:
+        if request.POST.get("poste_socopec"):
             agent.poste_socopec = request.POST.get("poste_socopec")
-        if request.POST.get("date_entree_socopec") != agent.date_entree_socopec:
+        # TODO : corriger erreur de format de date pour modifications
+        if request.POST.get("date_entree_socopec"):
             agent.date_entree_socopec = request.POST.get("date_entree_socopec")
-        if request.POST.get("agence") != agent.id_agence.nom:
+        if request.POST.get("agence"):
             agent.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
+        agent.save()
         return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options, 'validation': True})
     return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options})
 

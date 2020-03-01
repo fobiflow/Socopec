@@ -5,38 +5,40 @@
             <div class="row justify-content-around p-2">
                 <section class="border border-secondary p-2 m-2 col">
                     <h3>Ajouter un véhicule</h3>
-                    <form>
+                    <form action="" method="post">
                     {% block bodySection %}
-                        <select id="vehiculesAjoutAgence">
-                            <option value="" selected>Agence gestionnaire</option>
-                            <option value="valeur1">Valeur 1</option>
-                            <option value="valeur2">Valeur 2</option>
-                        </select>
+                        {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                        {% if confirmation %}<div class="alert alert-success" role="alert">Le véhicule a bien été enregistré</div>{% endif %}
+                        {% csrf_token %}
                         <div>
-                            <input id="vehiculesAjoutPlaque" type="text" placeholder="Plaque immatriculation">
-                            <select id="vehiculesAjoutModele">
-                                <option value="" selected>Choisir modèle</option>
-                                <option value="valeur1">Valeur 1</option>
-                                <option value="valeur2">Valeur 2</option>
-                            </select>
+                            <label for="agence">Agence gestionnaire :</label>
+                            <select name="agence" id="vehiculesAjoutAgence">
+                               {% for option in options %}
+                                    <option>{{ option }}</option>
+                               {% endfor %}
+                           </select>
                         </div>
                         <div>
-                            <select id="vehiculesAjoutEtat">
-                                <option value="" selected>État</option>
-                                <option value="valeur1">Valeur 1</option>
-                                <option value="valeur2">Valeur 2</option>
-                            </select>
-                            <input id="vehiculesAjoutDateFab" type="text" placeholder="Date de fabrication _ _/_ _ / _ _">
+                            <input name="immatriculation" id="vehiculesAjoutPlaque" type="text" placeholder="Plaque immatriculation">
+                            <input name="modele" id = vehiculesAjoutModele" type="text" placeholder="Modèle">
                         </div>
                         <div>
-                            <input id="vehiculesAjoutPuissance" type="text" placeholder="Puissance (CV)">
-                            <input id="vehiculesAjoutPoids"  type="text" placeholder="Poids (Kg)">
+                            <label for="date_fabrication">Date de fabrication : </label>
+                            <input name="date_fabrication" id="vehiculesAjoutDateFab" type="date">
                         </div>
                         <div>
-                            <input id="vehiculesAjoutHauteur" type="text" placeholder="Hauteur (cm)">
-                            <input id="vehiculesAjoutLargeur" type="text" placeholder="Largeur (cm)">
+                            <input name="puissance" id="vehiculesAjoutPuissance" type="text" placeholder="Puissance (CV)">
+                            <input name="poids" id="vehiculesAjoutPoids"  type="text" placeholder="Poids (Kg)">
                         </div>
-                           <input id="vehiculesAjoutPhoto" type="file" accept=".png,.jpeg,.jpg,.pdf" multiple>
+                        <div>
+                            <input name="hauteur" id="vehiculesAjoutHauteur" type="text" placeholder="Hauteur (cm)">
+                            <input name="largeur" id="vehiculesAjoutLargeur" type="text" placeholder="Largeur (cm)">
+                        </div>
+                        <input name="photo_1" id="vehiculesAjoutPhoto1" type="text" placeholder="Photo du véhicule">
+                        <input name="photo_2" id="vehiculesAjoutPhoto2" type="text" placeholder="Photo du véhicule">
+                        <input name="photo_3" id="vehiculesAjoutPhoto3" type="text" placeholder="Photo du véhicule">
+
+{#                           <input id="vehiculesAjoutPhoto" type="file" accept=".png,.jpeg,.jpg,.pdf" multiple>#}
                         {% endblock %}
                         {% block footerSection %}
                             <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Ajouter le véhicule{% endblock %}</button>
@@ -46,28 +48,21 @@
 
                 <article>
                 <section id="test" class="border border-secondary p-2 m-2 col">
-                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ date }}</span></h3>
+                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
                     <div class="flexColumn justify-content-center">
-                    {#                  TODO      BOUCLE FOR SUR UN TABLEAU STATUTS                                #}
-                        <div class="ligneProgress">
-                            <p>Démonstration</p>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}"></div>
+                        {% for item in statuts %}
+                            <div class="ligneProgress">
+                                <p>{{ item.statut }}</p>
+                                <div class="progress">
+                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="ligneProgress">
-                            <p>Démonstration</p>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}"></div>
-                            </div>
-                        </div>
-                    {#ENDFOR#}
+                        {% endfor %}
                     </div>
                 </section>
 
                 <section id="test2" class="border border-secondary p-2 m-2 col">
-                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ date }}</span></h3>
+                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
                     <div class="flexRow justify-content-around align-items-center">
                         <div class="flexColumn m0">
                             <span class="vert tailleXXL m-0">{{ total_vehicules }}</span>
@@ -204,7 +199,7 @@
         el: '#demo',
         data: {
             searchQuery: '',
-            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o', 'x'],
+            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o'],
             gridData: {{ vehicules_table | safe }}
         }
     })

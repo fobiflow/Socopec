@@ -22,7 +22,7 @@ class Vehicule(models.Model):
 
 class Photo(models.Model):
     url = models.CharField(max_length=255, default="àremplir")
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_DEFAULT, default=0)
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "photo"

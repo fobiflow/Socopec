@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
+{% block body %}
+<article>
+    <h1>Nouvel historique pour le véhicule {{ vehicule.modele }}: {{ vehicule.immatriculation }}</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+            <div>
+                <label for="agence">Agence : </label><select name="agence" id="histoAgence">
+                {% for option in agences %}
+                    {% if option == vehicule.id_agence.nom %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <label for="Agent">Agent : </label><select name="agent" id="histoAgent">
+                {% for option in agents %}
+                    {% if option == agent %}
+                        <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
+                    {% else %}
+                        <option>{{ option.prenom }} {{ option.nom }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="statut">Statut : </label><select name="statut" id="histoStatut">
+                {% for option in statuts %}
+                    <option>{{ option }}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <div>
+                <label for="date_debut">Date de début :</label><input name="date_debut" id="histoDateDebut" type="date" required>
+                <label for="date_fin">Date de fin :</label><input name="date_fin" id="histoDateFin" type="date">
+            </div>
+            <div>
+                <input name="localisation" id="histoLocalisation" type="text" placeholder="Localisation" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}

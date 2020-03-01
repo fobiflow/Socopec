@@ -178,8 +178,8 @@ label {
 .orange{
     color: #F59A23;
 }
-#vehiculesAjoutPhoto{
-    /*//color: red;*/
+#vehiculesAjoutAgence, #vehiculesAjoutDateFab{
+    max-width: 25vw;
 }
 input[type=file]{
     width: 100%;
