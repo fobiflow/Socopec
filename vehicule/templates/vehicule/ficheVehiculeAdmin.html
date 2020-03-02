@@ -9,46 +9,57 @@
     <h1>Fiche du véhicule</h1>
     <section class="d-flex flex-row align-items-end">
         <div class="d-flex flex-row align-items-end">
-            <img id="photoPrincipale" src="icons/id.png" alt="photo">
+            <img id="photoPrincipale" src="{{ photos.0 }}" alt="">
             <div class="d-flex flex-column conteneurMiniature">
-                <img class="photoMini" src="icons/id.png" alt="photo">
-                <img class="photoMini" src="icons/id.png" alt="photo">
-                <img class="photoMini" src="icons/id.png" alt="photo">
-                <img class="photoMini" src="icons/id.png" alt="photo">
-                <img class="photoMini" src="icons/id.png" alt="photo">
-                <img class="photoMini" src="icons/id.png" alt="photo">
+                {% for item in photos %}
+                    {%  if item != photos.0 %}
+                        <img class="photoMini" src={{ item }} alt="">
+                    {% endif %}
+                {%  endfor %}
             </div>
         </div>
-        <form>
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if confirmation %}<div class="alert alert-success" role="alert">Les modifications du véhicule ont bien été enregistrées</div>{% endif %}
             <div>
-                <input id="vehiculeAgence" type="text" placeholder="Agence :">
-                <img class="icon" src="../../../static/images/modifier.svg">
-                <img class="icon" src="../../../static/images/supprimer.svg">
+                <label id="vehiculeUpdateAgenceLabel" for="agence">Agence : </label>
+                <select name="agence" id="vehiculeUpdateAgence">
+                   {% for option in options %}
+                       {% if option == vehicule.id_agence.nom %}
+                            <option selected>{{ option }}</option>
+                       {% else %}
+                           <option>{{ option }}</option>
+                       {% endif %}
+                   {% endfor %}
+               </select>
+                <button type="submit" style="background-color:white;border:0px"><img class="icon" src="../../../static/images/modifier.svg"></button>
+                <a href="{% url 'supprimer_vehicule' id_vehicule=vehicule.id %}"><img class="icon" src="../../../static/images/supprimer.svg"></a>
             </div>
             <div>
-                <input id="vehiculeModele" type="text" placeholder="Modéle :">
-                <input id="vehiculePlaque" type="text" placeholder="Plaque :">
+                <input name="modele" id="vehiculeModele" type="text" placeholder="Modèle : {{ vehicule.modele }}">
+                <input name="immatriculation" id="vehiculePlaque" type="text" placeholder="Plaque : {{ vehicule.immatriculation }}">
+                <input name="date_fabrication" id="vehiculeDateFabrication" type="text" placeholder="Date de fabrication : {{ vehicule.date_fabrication }}">
             </div>
             <div>
-                <input id="vehiculeHauteur" type="text" placeholder="Hauteur (cm):">
-                <input id="vehiculeLongueur" type="text" placeholder="Longueur (cm) :">
-                <input id="vehiculeLargeur" type="text" placeholder="Largeur (cm) :">
+                <input name="hauteur" id="vehiculeHauteur" type="text" placeholder="Hauteur (cm): {{ vehicule.hauteur }}">
+                <input name="largeur" id="vehiculeLargeur" type="text" placeholder="Largeur (cm) : {{ vehicule.largeur }}">
+                <input name="puissance" id="vehiculePuissance" type="text" placeholder="Puissance (cv) : {{ vehicule.puissance }}">
+                <input name="poids" id="vehiculePoid" type="text" placeholder="Poids (kg) : {{ vehicule.poids }}">
             </div>
-            <div>
-                <input id="vehiculeEtatActuel" type="text" placeholder="État actuel :">
-                <input id="vehiculePuissance" type="text" placeholder="Puissance (cv) :">
-                <input id="vehiculePoid" type="text" placeholder="Poids (kg) :">
-            </div>
-            <div>
-                <input id="vehiculeLocalisationActuel" type="text" placeholder="Localisation actuel :">
-                <input id="vehiculeDepuisLe" type="text" placeholder="Depuis le :">
-                <input id="vehiculeJusquAu" type="text" placeholder="Jusqu'au :">
-            </div>
+{#            <div>#}
+            {#                <input id="vehiculeEtatActuel" type="text" placeholder="État actuel :">#}
+{#                <input id="vehiculeLocalisationActuel" type="text" placeholder="Localisation actuel :">#}
+{#                <input id="vehiculeDepuisLe" type="text" placeholder="Depuis le :">#}
+{#                <input id="vehiculeJusquAu" type="text" placeholder="Jusqu'au :">#}
+{#            </div>#}
         </form>
     </section>
 
     <section>
-        <h3>Historique du véhicule</h3>
+        <div class="d-flex align-items-baseline">
+            <h3 class="mr-5">Historique du véhicule</h3>
+            <a href="{% url 'new_historique' id_vehicule=vehicule.id %}"><button id="vehiculeModifierStatut">Modifier le statut du véhicule</button></a>
+        </div>
         <div id="ficheVehiculeHistorique">
             <historique-grid
                     :heroes="gridData"
@@ -91,7 +102,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -143,11 +154,8 @@
     var demo = new Vue({
         el: '#ficheVehiculeHistorique',
         data: {
-            gridColumns: ['Dates', 'Status', 'Agence', 'Agent', ' ', ''],
-            gridData: [
-                {'Dates': '03-06-19 au __-__-__', 'Status': 'En vente', 'Agence': 'Paris 15eme', 'Agent': 'Mme Martine G.', ' ' :'<img class="icon" src="icons/modifier.svg">', ' ' :'<img class="icon" src="icons/supprimer.svg">'},
-                {'Dates': '01-06-19 au 03-06-19 ', 'Status': 'Démonstration', 'Agence': 'Metz', 'Agent': 'M. Joe J.', ' ' :'<img class="icon" src="icons/modifier.svg">', ' ' :'<img class="icon" src="icons/supprimer.svg">'},
-            ]
+            gridColumns: ['Dates', 'Statut', 'Agence', 'Agent', 'M'],
+            gridData: {{ historiques_table | safe }}
         }
     })
     </script>
@@ -169,7 +177,7 @@
             </thead>
             <tbody>
             <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
+                <td v-for="key in columns"  v-html="entry[key]">
                     {{entry[key]}}
                 </td>
             </tr>
@@ -222,7 +230,7 @@
     var demo = new Vue({
         el: '#ficheVehiculeProbleme',
         data: {
-            gridColumns: [' ','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
+            gridColumns: ['C','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
             gridData: [
                 {' ': 'r', "Date du sinistre": '15-12-19', 'Agence': 'Paris 19eme','Agent': 'M. Martin J',  "Dernier message": 'Réparation longue. Véhicule indisponible pendant 1 mois', '' :'<img class="icon" src="icons/oeuil.svg">'},
                 {' ': 'o', "Date de vente": '05-12-19', 'Agence': 'Nancy', 'Agent': 'Mme Dupont A', "Dernier message": 'Dégradations durant le salon. RDV garage pris en attente du devis', '' :'<img class="icon" src="icons/oeuil.svg">'}
