@@ -1,5 +1,8 @@
 {% extends "template.html" %}
-{% block css %}<link rel="stylesheet" href="../../../static/css/agents.css">{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="../../../static/css/base.css">
+<link rel="stylesheet" href="../../../static/css/agents.css">
+{% endblock %}
 {% block block-corpus %}
     <div class="container-fluid">
         <div class="row justify-content-around p-2">
@@ -15,12 +18,14 @@
                         <input name="nom" id="agentsAjoutNom" type="text" placeholder="Nom">
                         <input name="prenom" id="agentsAjoutPrénom" type="text" placeholder="Prénom">
                     </div>
-                    <div>
-                        <label for="sexe">Sexe : </label><select name="sexe" id="agentsAjoutSexe">
+                    <div class="pleineLargeur">
+                        <label for="sexe">Sexe :</label>
+                        <select name="sexe" id="agentsAjoutSexe">
                                 <option value="H">Homme</option>
                                 <option value="F">Femme</option>
                         </select>
-                        <label for="date_entree_socopec">Date d'entrée : </label><input name="date_entree_socopec" id="agentsAjoutDateEntree" type="date">
+                        <label for="date_entree_socopec">Date d'entrée : </label>
+                        <input name="date_entree_socopec" id="agentsAjoutDateEntree" type="date">
                     </div>
                     <div>
                         <input name="poste_socopec" id="agentsAjoutFonction" type="text" placeholder="Fonction">
@@ -69,6 +74,7 @@
                     </div>
                 </div>
             </section>
+
         </div>
     </div>
 

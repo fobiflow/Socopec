@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +10,7 @@ from agence.models import Agence
 def generate(request):
     identifiant = request.user.username
     agent = Agent.objects.get(identifiant=identifiant)
+
     # Pour le tableau :
     data = Agent.objects.all()
     agents_table = []
