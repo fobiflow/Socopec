@@ -7,7 +7,7 @@
                 <h3>Rechercher une agence</h3>
                 <div id="demo">
                     <form id="search">
-                        <input name="query" v-model="searchQuery" tyope="text" placeholder="Rechercher une agence">
+                        <input name="query" v-model="searchQuery" type="text" placeholder="Rechercher une agence">
                     </form>
                     <demo-grid
                             :heroes="gridData"
@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
+                <td v-for="key in columns" v-html="entry[key]">
                     {{ entry[key] }}
                 </td>
             </tr>
@@ -116,7 +116,7 @@
             el: '#demo',
             data: {
                 searchQuery: '',
-                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de vehicules', 'Probleme en cours', 'Vehicules vendus', 'Responsable de l\'agence', 'Telephone', 'Mail', ''],
+                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de vehicules', 'Probleme en cours', 'Vehicules vendus', 'Responsable de l\'agence', 'Telephone', 'Mail', 'Vue'],
                 gridData: {{ agences_table | safe }}
             }
         })

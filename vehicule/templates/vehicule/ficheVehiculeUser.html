@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_vehicule.css">{% endblock %}
+{% block body %}
+<article>
+    <h1>Fiche du véhicule</h1>
+    <section class="d-flex flex-row align-items-end">
+        <div class="d-flex flex-row align-items-end">
+            <img id="photoPrincipale" src="{{ photos.0 }}" alt="">
+            <div class="d-flex flex-column conteneurMiniature">
+                {% for item in photos %}
+                    {%  if item != photos.0 %}
+                        <img class="photoMini" src={{ item }} alt="">
+                    {% endif %}
+                {%  endfor %}
+            </div>
+        </div>
+        <form>
+           <div>
+                <input id="vehiculeAgence" type="text" placeholder="Agence : {{ vehicule.id_agence.nom }}" readonly>
+            </div>
+            <div>
+                <input id="vehiculeModele" type="text" placeholder="Modèle : {{ vehicule.modele }}" readonly>
+                <input id="vehiculePlaque" type="text" placeholder="Plaque : {{ vehicule.immatriculation }}" readonly>
+                <input id="vehiculeDateFabrication" type="text" placeholder="Date de fabrication : {{ vehicule.date_fabrication }}" readonly>
+            </div>
+            <div>
+                <input id="vehiculeHauteur" type="text" placeholder="Hauteur (cm): {{ vehicule.hauteur }}" readonly>
+                <input id="vehiculeLongueur" type="text" placeholder="Longueur (cm) : {{ vehicule.longueur }}" readonly>
+                <input id="vehiculePuissance" type="text" placeholder="Puissance (cv) : {{ vehicule.puissance }}" readonly>
+                <input id="vehiculePoid" type="text" placeholder="Poids (kg) : {{ vehicule.poids }}" readonly>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <div class="d-flex align-items-baseline">
+            <h3 class="mr-5">Historique du véhicule</h3>
+            <button id="vehiculeModifierStatut">Modifier le statut du véhicule</button>
+        </div>
+        <div id="ficheVehiculeHistorique">
+            <historique-grid
+                    :heroes="gridData"
+                    :columns="gridColumns"
+                    :filter-key="searchQuery">
+            </historique-grid>
+        </div>
+    </section>
+
+    <section>
+        <div class="d-flex align-items-baseline">
+            <h3 class="mr-5">Problème du véhicules</h3>
+            <button id="vehiculeDeclererProbleme">Déclarer un problème</button>
+        </div>
+        <div id="ficheVehiculeProbleme">
+            <probleme-grid
+                    :heroes="gridData"
+                    :columns="gridColumns"
+                    :filter-key="searchQuery">
+            </probleme-grid>
+        </div>
+    </section>
+
+</article>
+
+    <!-- vue.js historique -->
+{% verbatim %}
+    <script type="text/x-template" id="historique-template">
+    <table>
+        <thead>
+        <tr>
+            <th v-for="key in columns"
+                @click="sortBy(key)"
+                :class="{ active: sortKey == key }">
+                {{ key | capitalize }}
+                <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+        </span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="entry in filteredHeroes">
+            <td v-for="key in columns" v-html="entry[key]">
+                {{entry[key]}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</script>
+{% endverbatim %}
+
+<script type="text/javascript">
+    Vue.component('historique-grid', {
+        template: '#historique-template',
+        props: {
+            heroes: Array,
+            columns: Array
+        },
+        data: function () {
+            var sortOrders = {}
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            })
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        computed: {
+            filteredHeroes: function () {
+                var sortKey = this.sortKey
+                var order = this.sortOrders[sortKey] || 1
+                var heroes = this.heroes
+                if (sortKey) {
+                    heroes = heroes.slice().sort(function (a, b) {
+                        a = a[sortKey]
+                        b = b[sortKey]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                return heroes
+            }
+        },
+        methods: {
+            sortBy: function (key) {
+                this.sortKey = key
+                this.sortOrders[key] = this.sortOrders[key] * -1
+            }
+        }
+    })
+
+    var demo = new Vue({
+        el: '#ficheVehiculeHistorique',
+        data: {
+            gridColumns: ['Dates', 'Statut', 'Agence', 'Agent', 'M'],
+            gridData: {{ historiques_table | safe }}
+        }
+    })
+    </script>
+
+    {% verbatim %}
+    <!-- vue.js probleme -->
+    <script type="text/x-template" id="probleme-template">
+        <table>
+            <thead>
+            <tr>
+                <th v-for="key in columns"
+                    @click="sortBy(key)"
+                    :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+              </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="entry in filteredHeroes">
+                <td v-for="key in columns" v-html="entry[key]">
+                    {{entry[key]}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </script>
+    {% endverbatim %}
+
+    <script type="text/javascript">
+    Vue.component('probleme-grid', {
+        template: '#probleme-template',
+        props: {
+            heroes: Array,
+            columns: Array
+        },
+        data: function () {
+            var sortOrders = {}
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            })
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        computed: {
+            filteredHeroes: function () {
+                var sortKey = this.sortKey
+                var order = this.sortOrders[sortKey] || 1
+                var heroes = this.heroes
+                if (sortKey) {
+                    heroes = heroes.slice().sort(function (a, b) {
+                        a = a[sortKey]
+                        b = b[sortKey]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                return heroes
+            }
+        },
+        methods: {
+            sortBy: function (key) {
+                this.sortKey = key
+                this.sortOrders[key] = this.sortOrders[key] * -1
+            }
+        }
+    })
+
+    <!-- bootstrap the demo pour rechercher une agence -->
+    var demo = new Vue({
+        el: '#ficheVehiculeProbleme',
+        data: {
+            gridColumns: [' ','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
+            gridData: [
+                {' ': 'r', "Date du sinistre": '15-12-19', 'Agence': 'Paris 19eme','Agent': 'M. Martin J',  "Dernier message": 'Réparation longue. Véhicule indisponible pendant 1 mois', '' :'<img class="icon" src="icons/oeuil.svg">'},
+                {' ': 'o', "Date de vente": '05-12-19', 'Agence': 'Nancy', 'Agent': 'Mme Dupont A', "Dernier message": 'Dégradations durant le salon. RDV garage pris en attente du devis', '' :'<img class="icon" src="icons/oeuil.svg">'}
+            ]
+        }
+    })
+</script>
+{% endblock %}

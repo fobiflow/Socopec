@@ -29,12 +29,6 @@ h1{
     text-align: center;
     font-size: 24px;
 }
-h3{
-    font-family: 'Segoe UI Semibold', serif;
-    font-weight: 700;
-    margin-bottom: 30px;
-    font-size: 18px;
-}
 article {
     border: 1px solid #797979;
     padding: 25px;
@@ -42,14 +36,6 @@ article {
 }
 section{
     margin: 0 0 75px 0;
-}
-table{
-    width: 100%;
-}
-#photoAgence{
-    height: 175px;
-    width: 175px;
-    border: 1px solid black;
 }
 form{
     width: 100%;
@@ -72,6 +58,9 @@ input{
     line-height: 19px;
     width: 100%;
 }
+#histoDateDebut, #histoDateFin{
+    max-width: 40vw;
+}
 form > input{
     margin: 10px 10px 0 10px;
 }
@@ -81,27 +70,6 @@ form > div > input{
 form > div > input:first-child {
     margin: 0 10px 0 0;
 }
-table{
-    font-size: 14px;
-}
-th{
-    font-size: 16px;
-}
-th, td{
-    border-top: 1px solid #E9ECEF;
-    border-bottom: 1px solid #E9ECEF;
+label{
     color: #868E96;
-}
-th, tr:last-child{
-    border-bottom: 2px solid #E9ECEF;
-}
-th, td:first-child{
-    font-weight: bold;
-    color: #212529;
-
-}
-.icon{
-     width: 25px;
-    height: 25px;
-    margin: 0;
 }

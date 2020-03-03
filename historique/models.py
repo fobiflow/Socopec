@@ -17,12 +17,13 @@ class Statut(models.Model):
 
 
 class Historique(models.Model):
-    id_agence = models.ForeignKey(Agence, on_delete=models.SET_NULL, null=True)
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_NULL, null=True)
-    id_statut = models.ForeignKey(Statut, on_delete=models.SET_NULL, null=True)
-    id_agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True)
+    id_agence = models.ForeignKey(Agence, on_delete=models.SET_DEFAULT, default=0)
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_DEFAULT, default=0)
+    id_statut = models.ForeignKey(Statut, on_delete=models.SET_DEFAULT, default=0)
+    id_agent = models.ForeignKey(Agent, on_delete=models.SET_DEFAULT, default=0)
     date_debut = models.DateTimeField(default=datetime.date.today)
-    date_fin = models.DateTimeField(blank=True, null=True, default="null")
+    date_fin = models.DateTimeField(blank=True, null=True)
+    statut = models.CharField(max_length=20, default="en cours")
     localisation = models.CharField(max_length=50, default="àremplir")
 
     class Meta:
@@ -34,12 +35,14 @@ class Historique(models.Model):
 
 
 class Probleme(models.Model):
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_NULL, null=True)
-    id_agent_ouverture = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, related_name='id_agent_ouverture')
-    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, related_name='id_agent_resolution')
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_DEFAULT, default=0)
+    id_agence = models.ForeignKey(Agence, on_delete=models.SET_DEFAULT, default=0)
+    id_agent_ouverture = models.ForeignKey(Agent, on_delete=models.SET_DEFAULT, default=0, related_name='id_agent_ouverture')
+    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.SET_DEFAULT, default=0, related_name='id_agent_resolution', blank=True, null=True)
     probleme = models.TextField(blank=True, null=True, default="null")
+    statut = models.CharField(max_length=20, default="en cours")
     date_signalement = models.DateTimeField(default=datetime.date.today)
-    date_resolution = models.DateTimeField(blank=True, null=True, default="null")
+    date_resolution = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = "probleme"
@@ -47,5 +50,3 @@ class Probleme(models.Model):
 
     def __str__(self):
         return self.id
-
-

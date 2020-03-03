@@ -10,7 +10,7 @@ class Vehicule(models.Model):
     largeur = models.FloatField(default="àremplir")
     poids = models.FloatField(default="àremplir")
     puissance = models.IntegerField(default="àremplir")
-    id_agence = models.ForeignKey(Agence, on_delete=models.SET_NULL, null=True)
+    id_agence = models.ForeignKey(Agence, on_delete=models.SET_DEFAULT, default=0)
 
     class Meta:
         verbose_name = "vehicule"
@@ -22,7 +22,7 @@ class Vehicule(models.Model):
 
 class Photo(models.Model):
     url = models.CharField(max_length=255, default="àremplir")
-    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_NULL, null=True)
+    id_vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "photo"

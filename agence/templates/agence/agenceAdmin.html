@@ -34,12 +34,12 @@
                 <h3>Actuellement</h3>
                 <div class="flexColumn center">
                     <div>
-                        <p><span class="agencesVehiculesVendusMois orange">1</span><span class="agencesVehiculesVendusMoisPrec"> / {{ total_vehicules }}</span></p>
+                        <p><span class="agencesVehiculesVendusMois orange">{{ vehicules_vendus_mois }}</span><span class="agencesVehiculesVendusMoisPrec"> / {{ total_vehicules }}</span></p>
                         <p class="agencesVehiculesVendusMoisPhrase">Véhicule(s) vendu(s) en {{ this_month }}</p>
                     </div>
                     <div class="flexRow">
                         <div id="first-actu">
-                            <p><span class="agencesVehiculesVendusAnnee vert">15</span><span class="agencesVehiculesVendusAnneePrec"> / {{ total_vehicules }}</span></p>
+                            <p><span class="agencesVehiculesVendusAnnee vert">{{ vehicules_vendus }}</span><span class="agencesVehiculesVendusAnneePrec"> / {{ total_vehicules }}</span></p>
                             <p class="agencesVehiculesVendusAnneePhrase">Véhicule(s) vendu(s) en</br>{{ this_year }}</p>
                         </div>
                         <div>
@@ -78,7 +78,7 @@
                 <th v-for="key in columns"
                     @click="sortBy(key)"
                     :class="{ active: sortKey == key }">
-                    {{ key.key }}
+                    {{ key }}
                     <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
           </span>
                 </th>
@@ -86,8 +86,8 @@
             </thead>
             <tbody>
             <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
-                    {{ entry[key.key] }}
+                <td v-for="key in columns" v-html="entry[key]">
+                    {{ entry[key] }}
                 </td>
             </tr>
             </tbody>
@@ -162,16 +162,7 @@
             el: '#demo',
             data: {
                 searchQuery: '',
-                gridColumns: [{key:'Ville'},
-                              {key: 'Agence'},
-                              {key: 'Nb de personne'},
-                              {key:'Nb de vehicules'},
-                              {key:'Probleme en cours'},
-                              {key: 'Vehicules vendus'},
-                              {key:'Responsable de l\'agence'},
-                              {key:'Telephone'},
-                              {key: 'Mail'},
-                              {key:'Vue', format:'html'}],
+                gridColumns: ['Ville', 'Agence', 'Nb de personne', 'Nb de vehicules', 'Probleme en cours', 'Vehicules vendus', 'Responsable de l\'agence', 'Telephone', 'Mail', 'Vue'],
                 gridData: {{ agences_table | safe }}
             }
         });

@@ -8,20 +8,20 @@
         <form>
             {% csrf_token %}
             <div>
-                <input name="nom" id="agenceNom" type="text" placeholder="Nom : {{ agence.nom }}">
+                <input name="nom" id="agenceNom" type="text" placeholder="Nom : {{ agence.nom }}" readonly>
             </div>
-            <input id="agenceResponsable" type="text" placeholder="Responsable : ">
-            <input name="adresse" id="agenceAdresse" type="text" placeholder="Adresse : {{ agence.adresse }}">
-            <input name="complement_adresse" id="agenceAgenceSuite" type="text" placeholder="Adresse suite : {{ agence.complement_adresse }}">
+            <input id="agenceResponsable" type="text" placeholder="Responsable : " readonly>
+            <input name="adresse" id="agenceAdresse" type="text" placeholder="Adresse : {{ agence.adresse }}" readonly>
+            <input name="complement_adresse" id="agenceAgenceSuite" type="text" placeholder="Adresse suite : {{ agence.complement_adresse }}" readonly>
             <div>
-                <input name="code_postal" id="agenceCP" type="text" placeholder="Code postal :  {{ agence.code_postal }}">
-                <input name="ville" id="agenceVille" type="text" placeholder="Ville : {{ agence.ville }}">
+                <input name="code_postal" id="agenceCP" type="text" placeholder="Code postal :  {{ agence.code_postal }}" readonly>
+                <input name="ville" id="agenceVille" type="text" placeholder="Ville : {{ agence.ville }}" readonly>
             </div>
             <div>
-                <input name="telephone" id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}">
-                <input name="fax" id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}">
+                <input name="telephone" id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}" readonly>
+                <input name="fax" id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}" readonly>
             </div>
-            <input id="agenceEmail" type="text" placeholder="Email :">
+            <input id="agenceEmail" type="text" placeholder="Email :" readonly>
         </form>
     </section>
 
@@ -79,7 +79,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -132,11 +132,8 @@
     var demo = new Vue({
         el: '#ficheAgenceProbleme',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de début', 'Agent ouverture', 'Vehicule', 'Description'],
+            gridData: {{ problemes | safe }}
         }
     })
 </script>
@@ -158,7 +155,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-        <td v-for="key in columns">
+        <td v-for="key in columns" v-html="entry[key]">
         {{entry[key]}}
     </td>
     </tr>
@@ -211,11 +208,8 @@
     var demo = new Vue({
         el: '#ficheAgenceHistorique',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de vente', 'Nom du vendeur', 'Véhicule'],
+            gridData: {{ historique_ventes | safe }}
         }
     })
 </script>
@@ -236,7 +230,7 @@
         </thead>
         <tbody>
         <tr v-for="entry in filteredHeroes">
-            <td v-for="key in columns">
+            <td v-for="key in columns" v-html="entry[key]">
                 {{entry[key]}}
             </td>
         </tr>
@@ -288,11 +282,8 @@
     var demo = new Vue({
         el: '#ficheAgencePersonnel',
         data: {
-            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro', '', ' '],
-            gridData: [
-                {'Fonction': 'Responsable', 'Nom': 'M. Xxxxxx', 'Prénom': 'xxxxxx', "E-mail Pro" : 'xxxxxxx.xxxxxx@socopec.fr', '' :'/', ' ':'x'},
-                {'Fonction': 'Vendeur', 'Nom': 'M. Martin', 'Prénom': 'Jean-jacques', "E-mail Pro" : 'martin.jeanjacques@socopec.fr', '' :'/', ' ':'x'}
-            ]
+            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro'],
+            gridData: {{ agents | safe }}
         }
     })
 </script>

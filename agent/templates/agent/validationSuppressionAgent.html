@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block css %}<link rel="stylesheet" href="../../../static/css/base.css">{% endblock %}
-{% block titre %}Confirmation de suppression de l'agent {{ agence.agent }}{% endblock %}
+{% block titre %}Confirmation de suppression de l'agent {{ agent.prenom }} {{ agent.nom }}{% endblock %}
 {% block body %}
     <section class="container col-sm-9 col-md-7 col-lg-5 mx-auto mt-5" >
         <div class="card card-signin">
@@ -10,12 +10,12 @@
             <form method="post" action="">
                 <div class="card-body">
                     <p>Etes-vous sûr de vouloir supprimer l'agent {{ agent.prenom }} {{ agent.nom }}?</p>
-{#                     <div class="alert alert-danger" role="alert">La suppression d'une agence entraine la suppression de tous les agents, véhicules, et historiques associés à cette agence!</div>#}
+                     <div class="alert alert-danger" role="alert">La suppression est irreversible et entrainera la clôture de tous les évènements sur des véhicules en cours liés à cet agent!</div>
                 </div>
                 <div class="card-footer form-group container m-0">
                     <div class="row align-items-center justify-content-between pr-3 pl-3">
                         {% csrf_token %}
-                        <a href={% url 'fiche_agence' id_agent=agent.id %}><input type="button" class="btn btn-primary" value="Non"></a>
+                        <a href={% url 'agents' %}><input type="button" class="btn btn-primary" value="Non"></a>
                         <button type="submit" class="btn btn-primary">Oui</button>
                     </div>
                  </div>

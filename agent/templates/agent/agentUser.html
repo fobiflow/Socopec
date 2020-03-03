@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <tr v-for="entry in filteredHeroes">
-                <td v-for="key in columns">
+                <td v-for="key in columns" v-html="entry[key]">
                     {{entry[key]}}
                 </td>
             </tr>

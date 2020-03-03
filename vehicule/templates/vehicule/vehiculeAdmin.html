@@ -2,28 +2,134 @@
 {% block css %}<link rel="stylesheet" href="../../../static/css/vehicules.css">{% endblock %}
 {% block block-corpus %}
     <div class="container-fluid">
-        <div class="row justify-content-around p-2">
-            <section class="border border-secondary p-2 m-2 col">
-            </section>
-            <section id="test" class="border border-secondary p-2 m-2 col">
-            </section>
-        </div>
-        <div class="row justify-content-around p-2">
-            <section class="border border-secondary p-2 m-2 col">
-            </section>
-            <section id="test" class="border border-secondary p-2 m-2 col">
-            </section>
-        </div>
-
-    </div>
-    <div class="container-fluid">
             <div class="row justify-content-around p-2">
                 <section class="border border-secondary p-2 m-2 col">
+                    <h3>Ajouter un véhicule</h3>
+                    <form action="" method="post">
+                    {% block bodySection %}
+                        {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                        {% if confirmation %}<div class="alert alert-success" role="alert">Le véhicule a bien été enregistré</div>{% endif %}
+                        {% csrf_token %}
+                        <div>
+                            <label for="agence">Agence gestionnaire :</label>
+                            <select name="agence" id="vehiculesAjoutAgence">
+                               {% for option in options %}
+                                    <option>{{ option }}</option>
+                               {% endfor %}
+                           </select>
+                        </div>
+                        <div>
+                            <input name="immatriculation" id="vehiculesAjoutPlaque" type="text" placeholder="Plaque immatriculation">
+                            <input name="modele" id = vehiculesAjoutModele" type="text" placeholder="Modèle">
+                        </div>
+                        <div>
+                            <label for="date_fabrication">Date de fabrication : </label>
+                            <input name="date_fabrication" id="vehiculesAjoutDateFab" type="date">
+                        </div>
+                        <div>
+                            <input name="puissance" id="vehiculesAjoutPuissance" type="text" placeholder="Puissance (CV)">
+                            <input name="poids" id="vehiculesAjoutPoids"  type="text" placeholder="Poids (Kg)">
+                        </div>
+                        <div>
+                            <input name="hauteur" id="vehiculesAjoutHauteur" type="text" placeholder="Hauteur (cm)">
+                            <input name="largeur" id="vehiculesAjoutLargeur" type="text" placeholder="Largeur (cm)">
+                        </div>
+                        <input name="photo_1" id="vehiculesAjoutPhoto1" type="text" placeholder="Photo du véhicule">
+                        <input name="photo_2" id="vehiculesAjoutPhoto2" type="text" placeholder="Photo du véhicule">
+                        <input name="photo_3" id="vehiculesAjoutPhoto3" type="text" placeholder="Photo du véhicule">
+
+{#                           <input id="vehiculesAjoutPhoto" type="file" accept=".png,.jpeg,.jpg,.pdf" multiple>#}
+                        {% endblock %}
+                        {% block footerSection %}
+                            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Ajouter le véhicule{% endblock %}</button>
+                        {% endblock %}
+                    </form>
+                </section>
+
+                <article>
+                <section id="test" class="border border-secondary p-2 m-2 col">
+                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
+                    <div class="flexColumn justify-content-center">
+                        {% for item in statuts %}
+                            <div class="ligneProgress">
+                                <p>{{ item.statut }}</p>
+                                <div class="progress">
+                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <section id="test2" class="border border-secondary p-2 m-2 col">
+                    <h3 class="d-flex justify-content-between"><span>Actuellement</span><span>{{ actu }}</span></h3>
+                    <div class="flexRow justify-content-around align-items-center">
+                        <div class="flexColumn m0">
+                            <span class="vert tailleXXL m-0">{{ total_vehicules }}</span>
+                            <span>Véhicule(s)<br>dans le parc</span>
+                        </div>
+                        <div class="flexColumn m0">
+                            <span class="orange tailleXXL m-0">{{ problemes_orange }}</span>
+                            <span>Problème(s)<br>non résolus</span>
+                        </div>
+                        <div class="flexColumn m0">
+                            <span class="rouge tailleXXL m-0">{{ problemes_rouge }}</span>
+                            <span>Nouveau(x)<br>problème(s)</span>
+                        </div>
+
+                    </div>
+                </section>
+
+                </article>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row justify-content-around p-2">
+                <section class="border border-secondary p-2 m-2 col">
+                    <h3>Rechercher un véhicule</h3>
+                    <div id="demo" >
+                        <form id="search">
+                            <input name="query" v-model="searchQuery" type="text" placeholder="Rechercher un véhicule">
+                        </form>
+                        <demo-grid
+                                :heroes="gridData"
+                                :columns="gridColumns"
+                                :filter-key="searchQuery">
+                        </demo-grid>
+                    </div>
                 </section>
             </div>
-    </div>
+        </div>
 
-    <script type="text/javascript">
+    {% verbatim %}
+    <!-- vue.js pour rechercher une agence -->
+        <script type="text/x-template" id="grid-template">
+            <table>
+                <thead>
+                <tr>
+                    <th v-for="key in columns"
+                        @click="sortBy(key)"
+                        :class="{ active: sortKey == key }">
+                        {{ key | capitalize }}
+                        <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                  </span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="entry in filteredHeroes">
+                    <td v-for="key in columns" v-html="entry[key]">
+                        {{entry[key]}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </script>
+    {% endverbatim %}
+
+<!-- javascript pour rechercher une agence -->
+<script type="text/javascript">
         var vm = new Vue({
             el: '#menu',
             data: {
@@ -34,5 +140,70 @@
                 compte: false
             }
         });
-    </script>
+
+    Vue.component('demo-grid', {
+        template: '#grid-template',
+        props: {
+            heroes: Array,
+            columns: Array,
+            filterKey: String
+        },
+        data: function () {
+            var sortOrders = {}
+            this.columns.forEach(function (key) {
+                sortOrders[key] = 1
+            })
+            return {
+                sortKey: '',
+                sortOrders: sortOrders
+            }
+        },
+        computed: {
+            filteredHeroes: function () {
+                var sortKey = this.sortKey
+                var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                var order = this.sortOrders[sortKey] || 1
+                var heroes = this.heroes
+                if (filterKey) {
+                    heroes = heroes.filter(function (row) {
+                        return Object.keys(row).some(function (key) {
+                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        })
+                    })
+                }
+                if (sortKey) {
+                    heroes = heroes.slice().sort(function (a, b) {
+                        a = a[sortKey]
+                        b = b[sortKey]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                return heroes
+            }
+        },
+        filters: {
+            capitalize: function (str) {
+                return str.charAt(0).toUpperCase() + str.slice(1)
+            }
+        },
+        methods: {
+            sortBy: function (key) {
+                this.sortKey = key
+                this.sortOrders[key] = this.sortOrders[key] * -1
+            }
+        }
+    })
+
+    <!-- bootstrap pour rechercher une agence -->
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            searchQuery: '',
+            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o'],
+            gridData: {{ vehicules_table | safe }}
+        }
+    })
+
+</script>
+
 {% endblock %}
