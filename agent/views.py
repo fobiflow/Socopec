@@ -23,7 +23,7 @@ def generate(request):
         agents_table.append({
             'Agence': Agence.objects.get(id=item.id_agence.id).nom,
             'Fonction': item.poste_socopec,
-            'Depuis': str(item.date_entree_socopec),
+            'Depuis': item.date_entree_socopec.strftime('%d-%m-%Y'),
             'Nom': item.nom,
             'Prenom': item.prenom,
             'Email pro': item.email,

@@ -47,7 +47,7 @@ section{
 }
 .flexColumn > div , .flexRow > div{
     text-align: center;
-    width: 40vw;
+    /*width: 40vw;*/
 }
 .flexColumn > div > p , .flexRow > div > p{
     margin: 0;
@@ -126,7 +126,7 @@ main, .selectMenu{
     background-color: #F2F2F2;
 }
 main{
-    width: 100%;
+    width: 89.1%;
 }
 
 a, a:hover{

@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% block css %}
-<link rel="stylesheet" href="../../../static/css/base.css">
 <link rel="stylesheet" href="../../../static/css/fiche_vehicule.css">
 {% endblock %}
 {% block body %}
 <article>
-    <img class="icon close" src="../../../static/images/supprimer.svg">
+    <a href="{% url 'vehicules' %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
     <h1>Fiche du véhicule</h1>
     <section class="d-flex flex-row align-items-end">
         <div class="d-flex flex-row align-items-end">

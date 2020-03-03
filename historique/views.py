@@ -41,8 +41,11 @@ def creerHisto(request, id_vehicule):
                     date_debut=request.POST.get("date_debut"),
                     localisation=request.POST.get("localisation")
                 )
+            ancien_histo = Historique.objects.get(id_vehicule=id_vehicule, statut="en cours")
+            ancien_histo.statut = "terminé"
+            ancien_histo.save()
             new_histo.save()
-            return redirect('vehicules', id_vehicule=id_vehicule)
+            return redirect('fiche_vehicule', id_vehicule=id_vehicule)
         else:
             return render(request, '../templates/historique/new_historique.html',
                           {'error': True,
@@ -60,7 +63,36 @@ def creerHisto(request, id_vehicule):
                    'statuts': statuts})
 
 
-
+@login_required
+def updateHisto(request, id_historique):
+    agences = []
+    res_agences = Agence.objects.all()
+    for item in res_agences:
+        agences.append(item.nom)
+    agents = Agent.objects.all()
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
+    historique = Historique.objects.get(id=id_historique)
+    statuts = []
+    res_statuts = Statut.objects.all()
+    for item in res_statuts:
+        statuts.append(item.statut)
+    if request.method == 'POST':
+        if request.POST.get("agence") != historique.id_agence.nom:
+            historique.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
+        if request.POST.get("agent") != historique.id_agent:
+            historique.id_agent = Agent.objects.get(id=request.POST.get("agent"))
+        if request.POST.get("statut") != historique.id_statut.statut:
+            historique.id_statut = Statut.objects.get(statut=request.POST.get("statut"))
+        if request.POST.get("date_debut"):
+            historique.date_debut = request.POST.get("date_debut")
+        if request.POST.get("date_fin"):
+            historique.date_fin = request.POST.get("date_fin")
+        if request.POST.get("localisation"):
+            historique.localisation = request.POST.get("localisation")
+        historique.save()
+        return redirect('fiche_vehicule', id_vehicule=historique.id_vehicule.id)
+    return render(request, '../templates/historique/update_historique.html', {'agences': agences, 'agents': agents, 'statuts': statuts, 'historique': historique})
 
 # def lister(request):
 #     return render(request, 'historique/lister.html')

@@ -136,7 +136,7 @@ def fiche(request, id_agence):
         data = Probleme.objects.filter(id_agence=agence)
         for probleme in data:
             problemes.append({
-                'Date de début': probleme.date_signalement,
+                'Date de début': probleme.date_signalement.strftime('%d/%m/%Y'),
                 'Agent ouverture': probleme.id_agent_ouverture.prenom + ' ' + probleme.id_agent_ouverture.nom,
                 'Vehicule': probleme.id_vehicule.immatriculation,
                 'Description': probleme.probleme
@@ -146,7 +146,7 @@ def fiche(request, id_agence):
         data = Historique.objects.filter(id_agence=agence, id_statut=Statut.objects.get(statut="Vendu"))
         for h in data:
             historique_ventes.append({
-                'Date de vente': str(h.date_debut),
+                'Date de vente': h.date_debut.strftime('%d/%m/%Y'),
                 'Nom du vendeur': h.id_agent.prenom + ' ' + h.id_agent.nom,
                 'Véhicule': h.id_vehicule.immatriculation
             })

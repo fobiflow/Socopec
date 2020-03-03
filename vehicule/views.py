@@ -32,9 +32,10 @@ def generate(request):
             localisation = Historique.objects.get(id_vehicule=item, statut="en cours").localisation
             statut = Historique.objects.get(id_vehicule=item, statut="en cours").id_statut.statut
             if Historique.objects.get(id_vehicule=item, statut="en cours").date_fin:
-                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au " + str(Historique.objects.get(id_vehicule=item, statut="en cours").date_fin)
+                dates = Historique.objects.get(id_vehicule=item, statut="en cours").date_debut.strftime('%d/%m/%Y') + \
+                        " au " + Historique.objects.get(id_vehicule=item, statut="en cours").date_fin.strftime('%d/%m/%Y')
             else:
-                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au --/--/----"
+                dates = Historique.objects.get(id_vehicule=item, statut="en cours").date_debut.strftime('%d/%m/%Y') + " au --/--/----"
         vehicules_table.append({
            'P': '<div style="width:10px;height:25px;background-color:' + color + '"></div>',
            'Plaque': item.immatriculation,
@@ -43,7 +44,7 @@ def generate(request):
            'Statut': statut,
            'Localisation': localisation,
            'Dates': dates,
-           'Date de fab.': str(item.date_fabrication),
+           'Date de fab.': item.date_fabrication.strftime('%d-%m-%Y'),
            'CV': item.puissance,
            'Poids': item.poids,
            'H': item.hauteur,
@@ -163,15 +164,15 @@ def fiche(request, id_vehicule):
     historiques_table = []
     for item in historiques:
         if item.date_debut and item.date_fin:
-            date = str(item.date_debut) + ' au ' + str(item.date_fin)
+            date = item.date_debut.strftime('%d/%m/%Y') + ' au ' + item.date_fin.strftime('%d/%m/%Y')
         else:
-            date = str(item.date_debut) + ' au --/--/--'
+            date = item.date_debut.strftime('%d/%m/%Y') + ' au --/--/--'
         historiques_table.append({
             'Dates': date,
             'Statut': item.id_statut.statut,
             'Agence': item.id_agence.nom,
             'Agent': item.id_agent.prenom + ' ' + item.id_agent.nom,
-            'M': '<a href="' + str(item.id) + '"><img alt="acces fiche historique" class="icon" src="../../../static/images/modifier.svg"/></a>'
+            'M': '<a href="historique/update/' + str(item.id) + '"><img alt="acces fiche historique" class="icon" src="../../../static/images/modifier.svg"/></a>'
         })
     problemes = Probleme.objects.all()
     problemes_table = []
@@ -179,7 +180,7 @@ def fiche(request, id_vehicule):
         # TODO : couleur pour le problème
         problemes_table.append({
             'C': '',
-            'Date du sinistre': item.date_signalement,
+            'Date du sinistre': item.date_signalement.strftime('%d/%m/%Y'),
             'Agence': item.id_agence.nom,
             'Agent': item.id_agent_ouverture.prenom + ' ' + item.id_agent_ouverture.nom,
             'Dernier message': item.probleme,

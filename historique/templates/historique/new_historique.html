@@ -2,6 +2,7 @@
 {% block css %}<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
 {% block body %}
 <article>
+    <a href="{% url 'fiche_vehicule' id_vehicule=vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
     <h1>Nouvel historique pour le véhicule {{ vehicule.modele }}: {{ vehicule.immatriculation }}</h1>
     <section class="d-flex flex-row align-items-end">
         <form action="" method="post">
@@ -22,7 +23,7 @@
                     {% if option == agent %}
                         <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
                     {% else %}
-                        <option>{{ option.prenom }} {{ option.nom }}</option>
+                        <option value={{ option.id }}>{{ option.prenom }} {{ option.nom }}</option>
                     {% endif %}
                 {% endfor %}
                 </select>
