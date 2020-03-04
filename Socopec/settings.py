@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'agence',
     'agent',
     'historique',
+    'probleme',
     'vehicule',
 ]
 

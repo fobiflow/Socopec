@@ -14,8 +14,6 @@ def creerHisto(request, id_vehicule):
         agences.append(item.nom)
     agents = Agent.objects.all()
     vehicule = Vehicule.objects.get(id=id_vehicule)
-    identifiant = request.user.username
-    agent = Agent.objects.get(identifiant=identifiant)
     statuts = []
     res_statuts = Statut.objects.all()
     for item in res_statuts:
@@ -41,9 +39,10 @@ def creerHisto(request, id_vehicule):
                     date_debut=request.POST.get("date_debut"),
                     localisation=request.POST.get("localisation")
                 )
-            ancien_histo = Historique.objects.get(id_vehicule=id_vehicule, statut="en cours")
-            ancien_histo.statut = "terminé"
-            ancien_histo.save()
+            if Historique.objects.filter(id_vehicule=id_vehicule, statut="en cours").exists():
+                ancien_histo = Historique.objects.get(id_vehicule=id_vehicule, statut="en cours")
+                ancien_histo.statut = "terminé"
+                ancien_histo.save()
             new_histo.save()
             return redirect('fiche_vehicule', id_vehicule=id_vehicule)
         else:
@@ -52,14 +51,12 @@ def creerHisto(request, id_vehicule):
                            'agences': agences,
                            'agents': agents,
                            'vehicule': vehicule,
-                           'agent': agent,
                            'statuts': statuts
                            })
     return render(request, '../templates/historique/new_historique.html',
                   {'agences': agences,
                    'agents': agents,
                    'vehicule': vehicule,
-                   'agent': agent,
                    'statuts': statuts})
 
 
@@ -70,8 +67,6 @@ def updateHisto(request, id_historique):
     for item in res_agences:
         agences.append(item.nom)
     agents = Agent.objects.all()
-    identifiant = request.user.username
-    agent = Agent.objects.get(identifiant=identifiant)
     historique = Historique.objects.get(id=id_historique)
     statuts = []
     res_statuts = Statut.objects.all()
@@ -93,23 +88,4 @@ def updateHisto(request, id_historique):
         historique.save()
         return redirect('fiche_vehicule', id_vehicule=historique.id_vehicule.id)
     return render(request, '../templates/historique/update_historique.html', {'agences': agences, 'agents': agents, 'statuts': statuts, 'historique': historique})
-
-# def lister(request):
-#     return render(request, 'historique/lister.html')
-#
-#
-# def creer(request):
-#     return render(request, 'historique/creer.html')
-#
-#
-# def modifier(request, id_historique):
-#     return render(request, 'historique/modifier.html', locals())
-#
-#
-# def supprimer(request, id_historique):
-#     return render(request, 'historique/supprimer.html', locals())
-#
-#
-# def voir(request, id_historique):
-#     return render(request, 'historique/voir.html', locals())
 

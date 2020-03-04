@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
+{% block body %}
+<article>
+    <a href="{% url 'fiche_vehicule' id_vehicule=probleme.id_vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
+    <h1>Modification d'un problème pour le véhicule {{ probleme.id_vehicule.modele }}: {{ probleme.id_vehicule.immatriculation }}</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+            <div>
+                <label for="agence">Agence : </label><select name="agence" id="updateProbAgence">
+                {% for option in agences %}
+                    {% if option == probleme.id_agence.nom %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <label for="agent_ouverture">Agent ouverture : </label><select name="agent_ouverture" id="updateProbAgent">
+                {% for option in agents %}
+                    {% if option == probleme.id_agent_ouverture %}
+                        <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
+                    {% else %}
+                        <option value={{ option.id }}>{{ option.prenom }} {{ option.nom }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                 <input name="probleme" id="updateProbProbleme" type="text" placeholder="Description du problème : {{ probleme.probleme }}">
+                 <label for="date_signalement">Date de signalement : </label><input name="date_signalement" id="updateProbDateSignalement" type="date">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}

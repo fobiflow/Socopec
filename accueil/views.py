@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
@@ -25,7 +25,7 @@ def accueil(request):
     if request.user.groups.filter(name="administrateur").exists():
         #  Pour le carré actuellement 1 :
         problemes_orange = Probleme.objects.filter(statut="en cours").count()
-        problemes_rouge = Probleme.objects.filter(date_signalement__day=date.today().day).count()
+        problemes_rouge = Probleme.objects.filter(date_signalement=date.today().strftime('%Y-%m-%d 00:00:00.00000')).count()
         #  Pour le carré actuellement 2 :
         vehicules_vendus = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
                                                      date_debut__year=date.today().year).count()

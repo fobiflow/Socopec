@@ -38,7 +38,9 @@
     <section>
         <div class="d-flex align-items-baseline">
             <h3 class="mr-5">Historique du véhicule</h3>
-            <button id="vehiculeModifierStatut">Modifier le statut du véhicule</button>
+             {% if historique_en_cours.id_statut.statut != "Vendu" %}
+                 <a href="{% url 'new_historique' id_vehicule=vehicule.id %}"><button id="vehiculeModifierStatut">Modifier le statut du véhicule</button></a>
+             {% endif %}
         </div>
         <div id="ficheVehiculeHistorique">
             <historique-grid
@@ -52,7 +54,9 @@
     <section>
         <div class="d-flex align-items-baseline">
             <h3 class="mr-5">Problème du véhicules</h3>
-            <button id="vehiculeDeclererProbleme">Déclarer un problème</button>
+            {% if historique_en_cours.id_statut.statut != "Vendu" %}
+                <a href="{% url 'new_probleme' id_vehicule=vehicule.id %}"><button id="vehiculeDeclererProbleme">Déclarer un problème</button></a>
+            {% endif %}
         </div>
         <div id="ficheVehiculeProbleme">
             <probleme-grid
@@ -134,7 +138,7 @@
     var demo = new Vue({
         el: '#ficheVehiculeHistorique',
         data: {
-            gridColumns: ['Dates', 'Statut', 'Agence', 'Agent', 'M'],
+            gridColumns: ['Dates', 'Statut', 'Agence', 'Agent', 'Modifier'],
             gridData: {{ historiques_table | safe }}
         }
     })
@@ -210,11 +214,8 @@
     var demo = new Vue({
         el: '#ficheVehiculeProbleme',
         data: {
-            gridColumns: [' ','Date du sinistre', 'Agence', 'Agent', 'Dernier message', ''],
-            gridData: [
-                {' ': 'r', "Date du sinistre": '15-12-19', 'Agence': 'Paris 19eme','Agent': 'M. Martin J',  "Dernier message": 'Réparation longue. Véhicule indisponible pendant 1 mois', '' :'<img class="icon" src="icons/oeuil.svg">'},
-                {' ': 'o', "Date de vente": '05-12-19', 'Agence': 'Nancy', 'Agent': 'Mme Dupont A', "Dernier message": 'Dégradations durant le salon. RDV garage pris en attente du devis', '' :'<img class="icon" src="icons/oeuil.svg">'}
-            ]
+            gridColumns: ['P','Date du sinistre', 'Agence', 'Agent', 'Dernier message', 'Modifier', 'Cloturer'],
+            gridData: {{ problemes_table | safe }}
         }
     })
 </script>

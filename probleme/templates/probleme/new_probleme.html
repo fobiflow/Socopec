@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
+{% block body %}
+<article>
+    <a href="{% url 'fiche_vehicule' id_vehicule=vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
+    <h1>Nouveau problème pour le véhicule {{ vehicule.modele }}: {{ vehicule.immatriculation }}</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+            <div>
+                <label for="agence">Agence : </label><select name="agence" id="probAgence">
+                {% for option in agences %}
+                    {% if option == vehicule.id_agence.nom %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <label for="agent_ouverture">Agent ouverture : </label><select name="agent_ouverture" id="probAgent">
+                {% for option in agents %}
+                    {% if option == agent %}
+                        <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
+                    {% else %}
+                        <option value={{ option.id }}>{{ option.prenom }} {{ option.nom }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                 <input name="probleme" id="probProbleme" type="text" placeholder="Description du problème" required>
+                 <label for="date_signalement">Date de signalement : </label><input name="date_signalement" id="probDateSignalement" type="date">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}
