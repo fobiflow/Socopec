@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +10,7 @@ from agence.models import Agence
 def generate(request):
     identifiant = request.user.username
     agent = Agent.objects.get(identifiant=identifiant)
+
     # Pour le tableau :
     data = Agent.objects.all()
     agents_table = []
@@ -23,7 +23,7 @@ def generate(request):
         agents_table.append({
             'Agence': Agence.objects.get(id=item.id_agence.id).nom,
             'Fonction': item.poste_socopec,
-            'Depuis': str(item.date_entree_socopec),
+            'Depuis': item.date_entree_socopec.strftime('%d-%m-%Y'),
             'Nom': item.nom,
             'Prenom': item.prenom,
             'Email pro': item.email,
@@ -37,7 +37,8 @@ def generate(request):
         total = data.count()
         femmes = Agent.objects.filter(sexe="F").count()
         hommes = Agent.objects.filter(sexe="H").count()
-
+        pourcent_femmes = int((total - hommes) * 100 / total)
+        pourcent_hommes = int((total - femmes) * 100 / total)
         # Pour le formulaire :
         options = []
         agences = Agence.objects.all()
@@ -132,6 +133,8 @@ def generate(request):
                                    'total': total,
                                    'femmes': femmes,
                                    'hommes': hommes,
+                                   'pourcent_femmes': pourcent_femmes,
+                                   'pourcent_hommes': pourcent_hommes,
                                    'agents_table': agents_table,
                                    'options': options
                                    })
@@ -143,6 +146,8 @@ def generate(request):
                                'total': total,
                                'femmes': femmes,
                                'hommes': hommes,
+                               'pourcent_femmes': pourcent_femmes,
+                               'pourcent_hommes': pourcent_hommes,
                                'agents_table': agents_table,
                                'options': options
                                })
@@ -154,6 +159,8 @@ def generate(request):
                            'total': total,
                            'femmes': femmes,
                            'hommes': hommes,
+                           'pourcent_femmes': pourcent_femmes,
+                           'pourcent_hommes': pourcent_hommes,
                            'agents_table': agents_table,
                            'options': options
                            })
@@ -182,28 +189,31 @@ def modifier_admin(request, id_agent):
         options.append(item.nom)
     if request.method == "POST":
         user = User.objects.get(username=agent.identifiant)
-        if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get(
-                "poste_socopec") == "administrateur":
-            group_user = Group.objects.get(name="utilisateur")
-            group_user.user_set.remove(user)
-            group_admin = Group.objects.get(name="administrateur")
-            group_admin.user_set.add(user)
-        else:
-            group = Group.objects.get(name="utilisateur")
-            group.user_set.add(user)
+        if request.POST.get("poste_socopec"):
+            if request.POST.get("poste_socopec") == "Administrateur" or request.POST.get(
+                    "poste_socopec") == "administrateur":
+                group_user = Group.objects.get(name="utilisateur")
+                group_user.user_set.remove(user)
+                group_admin = Group.objects.get(name="administrateur")
+                group_admin.user_set.add(user)
+            else:
+                group = Group.objects.get(name="utilisateur")
+                group.user_set.add(user)
 
-        if request.POST.get("nom") != agent.nom:
+        if request.POST.get("nom"):
             agent.nom = request.POST.get("nom")
-        if request.POST.get("prenom") != agent.prenom:
+        if request.POST.get("prenom"):
             agent.prenom = request.POST.get("prenom")
-        if request.POST.get("email") != agent.email:
+        if request.POST.get("email"):
             agent.email = request.POST.get("email")
-        if request.POST.get("poste_socopec") != agent.poste_socopec:
+        if request.POST.get("poste_socopec"):
             agent.poste_socopec = request.POST.get("poste_socopec")
-        if request.POST.get("date_entree_socopec") != agent.date_entree_socopec:
+        # TODO : corriger erreur de format de date pour modifications
+        if request.POST.get("date_entree_socopec"):
             agent.date_entree_socopec = request.POST.get("date_entree_socopec")
-        if request.POST.get("agence") != agent.id_agence.nom:
+        if request.POST.get("agence"):
             agent.id_agence = Agence.objects.get(nom=request.POST.get("agence"))
+        agent.save()
         return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options, 'validation': True})
     return render(request, '../templates/agent/modifierAgentAdmin.html', {'agent': agent, 'options': options})
 

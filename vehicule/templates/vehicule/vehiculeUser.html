@@ -1,5 +1,7 @@
 {% extends "template.html" %}
-{% block css %}<link rel="stylesheet" href="../../../static/css/vehicules.css">{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="../../../static/css/vehicules.css">
+{% endblock %}
 {% block block-corpus %}
   <div class="container-fluid">
             <div class="row justify-content-around p-2">
@@ -116,7 +118,7 @@
         el: '#demo',
         data: {
             searchQuery: '',
-            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o', 'x'],
+            gridColumns: ['P', 'Plaque', 'Agence', 'Modèle', 'Statut', 'Localisation', 'Dates', 'Date de fab.', 'CV', 'Poids', 'H', 'L', 'o'],
             gridData: {{ vehicules_table | safe }}
         }
     })

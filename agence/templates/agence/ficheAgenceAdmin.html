@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% block css %}
-<link rel="stylesheet" href="/static/css/base.css">
-<link rel="stylesheet" href="/static/css/agence.css">
+<link rel="stylesheet" href="../../../static/css/fiche_agence.css">
 {% endblock %}
 {% block body %}
 <article>
+    <a href="{% url 'agences' %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
     <h1>Fiche agence</h1>
     <section class="d-flex flex-row align-items-end">
         <img id="photoAgence" src="{{ agence.photo }}" alt="photo de l'agence">
         <form action="" method="post">
             {% csrf_token %}
+            {% if confirmation %}<div class="alert alert-success" role="alert">Les modifications de l'agence ont bien été enregistrées</div>{% endif %}
             <div>
                 <input name="nom" id="agenceNom" type="text" placeholder="Nom : {{ agence.nom }}">
-                <button type="submit"><img class="icon" src="../../../static/images/modifier.svg"></button>
+                <button type="submit" style="background-color:white;border:0px"><img class="icon" src="../../../static/images/modifier.svg"></button>
                 <a href="{% url 'supprimer_agence' id_agence=agence.id %}"><img class="icon" src="../../../static/images/supprimer.svg"></a>
             </div>
             <input id="agenceResponsable" type="text" placeholder="Responsable : ">
@@ -26,7 +27,6 @@
                 <input name="telephone" id="agenceTelephone" type="text" placeholder="Téléphone : {{ agence.telephone }}">
                 <input name="fax" id="agenceFax" type="text" placeholder="Fax : {{ agence.fax }}">
             </div>
-            <input id="agenceEmail" type="text" placeholder="Email :">
         </form>
     </section>
 
@@ -137,11 +137,8 @@
     var demo = new Vue({
         el: '#ficheAgenceProbleme',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de début', 'Agent ouverture', 'Vehicule', 'Description'],
+            gridData: {{ problemes | safe }}
         }
     })
 </script>
@@ -216,11 +213,8 @@
     var demo = new Vue({
         el: '#ficheAgenceHistorique',
         data: {
-            gridColumns: ['Date de vente', 'Nom du vendeur', 'Prix', 'Véhicule', ''],
-            gridData: [
-                {"Date de vente": '15-12-19', "Nom du vendeur": 'M. Martin J', 'Prix': 50000, 'Véhicule': 'AB-123-CD', '' :'o'},
-                {"Date de vente": '05-12-19', "Nom du vendeur": 'Mme Dupont A', 'Prix': 43750, 'Véhicule': 'ZY-987-WX', '' :'o'}
-            ]
+            gridColumns: ['Date de vente', 'Nom du vendeur', 'Véhicule'],
+            gridData: {{ historique_ventes | safe }}
         }
     })
 </script>
@@ -293,7 +287,7 @@
     var demo = new Vue({
         el: '#ficheAgencePersonnel',
         data: {
-            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro', '', ' '],
+            gridColumns: ['Fonction', 'Nom', 'Prénom', 'E-mail Pro'],
             gridData: {{ agents | safe }}
         }
     })

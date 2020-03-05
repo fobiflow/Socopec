@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
+{% block body %}
+<article>
+    <a href="{% url 'fiche_vehicule' id_vehicule=historique.id_vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
+    <h1>Mis à jour de l'historique pour le véhicule {{ historique.id_vehicule.modele }}: {{ historique.id_vehicule.immatriculation }}</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                <label for="agence">Agence : </label><select name="agence" id="updateHistoAgence">
+                {% for option in agences %}
+                    {% if option == historique.id_agence.nom %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <label for="Agent">Agent : </label><select name="agent" id="updateHistoAgent">
+                {% for option in agents %}
+                    {% if option == agent %}
+                        <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
+                    {% else %}
+                        <option value={{ option.id }}>{{ option.prenom }} {{ option.nom }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="statut">Statut : </label><select name="statut" id="updateHistoStatut">
+                {% for option in statuts %}
+                    {% if option == historique.id_statut.statut %}
+                        <option selected>{{ option }}</option>
+                    {% else %}
+                        <option>{{ option }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            </div>
+            <div>
+                <label for="date_debut">Date de début :</label><input name="date_debut" id="updateHistoDateDebut" type="date">
+                <label for="date_fin">Date de fin :</label><input name="date_fin" id="updateHistoDateFin" type="date">
+            </div>
+            <div>
+                <input name="localisation" id="updateHistoLocalisation" type="text" placeholder="Localisation : {{ historique.localisation }}">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}
