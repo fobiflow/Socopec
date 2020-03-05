@@ -29,9 +29,8 @@ def accueil(request):
         #  Pour le carré actuellement 2 :
         vehicules_vendus = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
                                                      date_debut__year=date.today().year).count()
-        # TODO : erreur de récupération du nombre de véhicules vendus pour le mois en cours (mois?)
         vehicules_vendus_mois = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
-                                                          date_debut__month=date.today().month).count()
+                                                          date_debut=date.today().strftime("%Y-" + str(int_month) + "-%d 00:00:00.0000")).count()
         total_vehicules = Vehicule.objects.all().count()
         # Pour le carré actuellement 3 :
         statuts = []
@@ -47,6 +46,8 @@ def accueil(request):
         total_agents = Agent.objects.all().count()
         femmes = Agent.objects.filter(sexe="F").count()
         hommes = Agent.objects.filter(sexe="H").count()
+        pourcent_femmes = int((total_agents - hommes) * 100 / total_agents)
+        pourcent_hommes = int((total_agents - femmes) * 100 / total_agents)
         return render(request, '../templates/accueil/accueilAdmin.html',
                       {'agent': agent,
                        'actu': actu,
@@ -61,7 +62,9 @@ def accueil(request):
                        'statuts': statuts,
                        'total_agents': total_agents,
                        'femmes': femmes,
-                       'hommes': hommes})
+                       'hommes': hommes,
+                       'pourcent_femmes': pourcent_femmes,
+                       'pourcent_hommes': pourcent_hommes})
     else:
         #  Pour le carré actuellement 1 :
         problemes_orange = Probleme.objects.filter(statut="en cours", id_agence=agent.id_agence).count()
@@ -70,7 +73,6 @@ def accueil(request):
         vehicules_vendus = Historique.objects.filter(id_agence=agent.id_agence,
                                                      id_statut=Statut.objects.get(statut="Vendu"),
                                                      date_debut__year=date.today().year).count()
-        # TODO : erreur de récupération du nombre de véhicules vendus pour le mois en cours (mois?)
         vehicules_vendus_mois = Historique.objects.filter(id_agence=agent.id_agence,
                                                           id_statut=Statut.objects.get(statut="Vendu"),
                                                           date_debut__month=date.today().month).count()
@@ -90,6 +92,8 @@ def accueil(request):
         total_agents = Agent.objects.filter(id_agence=agent.id_agence).count()
         femmes = Agent.objects.filter(id_agence=agent.id_agence, sexe="F").count()
         hommes = Agent.objects.filter(id_agence=agent.id_agence, sexe="H").count()
+        pourcent_femmes = int((total_agents - hommes) * 100 / total_agents)
+        pourcent_hommes = int((total_agents - femmes) * 100 / total_agents)
         return render(request, '../templates/accueil/accueilUser.html',
                       {'agent': agent,
                        'actu': actu,
@@ -104,7 +108,9 @@ def accueil(request):
                        'statuts': statuts,
                        'total_agents': total_agents,
                        'femmes': femmes,
-                       'hommes': hommes})
+                       'hommes': hommes,
+                       'pourcent_femmes': pourcent_femmes,
+                       'pourcent_hommes': pourcent_hommes})
 
 
 def connect(request):
