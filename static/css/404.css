@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Segoe UI Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Regular'), url('../fonts/Segoe UI.woff') format('woff');
+}
+@font-face {
+    font-family: 'Segoe UI Semibold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Bold'), url('../fonts/Segoe UI Semibold.woff') format('woff');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    margin: auto;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Segoe UI Regular", serif;
+    font-size: 2em;
+}
+
+.vert{
+    color: #28A745;
+}
+.rouge{
+    color: #D9001B;
+}
+.orange{
+    color: #F59A23;
+}
+
+h1{
+    font-family: 'Segoe UI Semibold', serif;
+    font-weight: 900;
+    font-size: 5em;
+}
+
+button{
+    width: 220px;
+    height: 40px;
+    background-color: #5c5fff;
+    border: 0 solid;
+    border-radius: 5px;
+    color: white;
+    font-size: 0.6em;
+    cursor: pointer;
+}

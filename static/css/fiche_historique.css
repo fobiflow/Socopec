@@ -1,34 +1,3 @@
-@font-face {
-    font-family: 'Segoe UI Regular';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Segoe UI Regular'), url('../fonts/Segoe UI.woff') format('woff');
-}
-@font-face {
-    font-family: 'Segoe UI Semibold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Segoe UI Bold'), url('../fonts/Segoe UI Semibold.woff') format('woff');
-}
-
-body{
-    width: 100%;
-    margin : 0;
-    padding: 0;
-    font-family: 'Segoe UI Regular', serif;
-}
-main{
-    width: 100%;
-}
-main article{
-    background-color: white;
-}
-h1{
-    font-family: 'Segoe UI Semibold', serif;
-    font-weight: 900;
-    text-align: center;
-    font-size: 24px;
-}
 article {
     border: 1px solid #797979;
     padding: 25px;
@@ -37,39 +6,10 @@ article {
 section{
     margin: 0 0 75px 0;
 }
+
+
 form{
     width: 100%;
-    margin: 0;
+    margin: 0 0 0 20px;
     padding: 0;
-}
-form > div{
-    margin: 10px 10px 0 10px;
-    padding: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
- }
-input{
-    border-width: 0;
-    border-bottom: 1px solid #868E96;
-    color: #212529;
-    line-height: 19px;
-    width: 100%;
-}
-#histoDateDebut, #histoDateFin{
-    max-width: 40vw;
-}
-form > input{
-    margin: 10px 10px 0 10px;
-}
-form > div > input{
-    align-items: center;
-}
-form > div > input:first-child {
-    margin: 0 10px 0 0;
-}
-label{
-    color: #868E96;
 }

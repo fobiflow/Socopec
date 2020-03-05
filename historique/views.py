@@ -8,6 +8,8 @@ from agent.models import Agent
 
 @login_required
 def creerHisto(request, id_vehicule):
+    identifiant = request.user.username
+    agent = Agent.objects.get(identifiant=identifiant)
     agences = []
     res_agences = Agence.objects.all()
     for item in res_agences:
@@ -49,6 +51,7 @@ def creerHisto(request, id_vehicule):
             return render(request, '../templates/historique/new_historique.html',
                           {'error': True,
                            'agences': agences,
+                           'agent': agent,
                            'agents': agents,
                            'vehicule': vehicule,
                            'statuts': statuts
@@ -56,6 +59,7 @@ def creerHisto(request, id_vehicule):
     return render(request, '../templates/historique/new_historique.html',
                   {'agences': agences,
                    'agents': agents,
+                   'agent': agent,
                    'vehicule': vehicule,
                    'statuts': statuts})
 
