@@ -93,3 +93,49 @@ def updateHisto(request, id_historique):
         return redirect('fiche_vehicule', id_vehicule=historique.id_vehicule.id)
     return render(request, '../templates/historique/update_historique.html', {'agences': agences, 'agents': agents, 'statuts': statuts, 'historique': historique})
 
+
+@login_required
+def creerStatut(request):
+    if request.user.groups.filter(name="administrateur").exists():
+        if request.method == 'POST':
+            statuts = Statut.objects.all()
+            if request.POST.get("statut"):
+                new_statut = Statut(
+                    statut=request.POST.get("statut")
+                )
+                error = False
+                for item in statuts:
+                    if item.statut == request.POST.get("statut"):
+                        error = True
+                if error == True:
+                    return render(request, '../templates/historique/nouveau_statut.html', {'error': True})
+                else:
+                    new_statut.save()
+                    return redirect('vehicules')
+        return render(request, '../templates/historique/nouveau_statut.html')
+
+
+@login_required
+def updateStatut(request, id_statut):
+    if request.user.groups.filter(name="administrateur").exists():
+        statut=Statut.objects.get(id=id_statut)
+        if request.POST.get("statut"):
+            statuts = Statut.objects.all()
+            error = False
+            for item in statuts:
+                if item.statut == request.POST.get("statut"):
+                    error = True
+            if error == True:
+                return render(request, '../templates/historique/update_statut.html', {'error': True})
+            else:
+                statut.statut = request.POST.get("statut")
+                statut.save()
+                return redirect('vehicules')
+        return render(request, '../templates/historique/update_statut.html', {'statut': statut})
+
+
+@login_required
+def deleteStatut(request, id_statut):
+    if request.user.groups.filter(name="administrateur").exists():
+        statut=Statut.objects.get(id=id_statut)
+        return render(request, '../templates/historique/delete_statut.html', {'statut': statut})

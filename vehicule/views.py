@@ -61,13 +61,16 @@ def generate(request):
         total_vehicules = data.count()
         statuts = []
         res = Statut.objects.all()
-        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
+        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", ""]
         i = 0
         for item in res:
             value = Historique.objects.filter(id_statut=item.id).count()
             pourcentage = int((value * 100) / total_vehicules)
+            new = False
+            if item.id > 5:
+                new = True
             statuts.append({
-                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage
+                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage, 'new': new
             })
             i += 1
         problemes_orange = Probleme.objects.filter(statut="en cours").count()

@@ -35,7 +35,7 @@ def accueil(request):
         # Pour le carré actuellement 3 :
         statuts = []
         res = Statut.objects.all()
-        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
+        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", ""]
         i = 0
         for item in res:
             value = Historique.objects.filter(id_statut=item.id).count()

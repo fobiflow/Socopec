@@ -59,8 +59,16 @@
                                 <div class="progress">
                                     <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.pourcentage }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
                                 </div>
+                                {% if item.new %}
+                                    <a href=""><img alt="modification statut" class="icon" src="../../../static/images/modifier.svg"/></a>
+                                    <a href=""><img alt="suppression statut" class="icon" src="../../../static/images/supprimer.svg"/></a>
+                                {% endif %}
                             </div>
                         {% endfor %}
+                    </div>
+                    <div id="newStatut">
+                        {% if confirmationStatut %}<div class="alert alert-success" role="alert">Votre nouveau statut a bien été enregistré</div>{% endif %}
+                        <a href="{% url 'new_statut' %}"><button id="nouveauStatut" class="btn btn-primary btn-lg btn-block btn-sm">Ajouter un nouveau statut</button></a>
                     </div>
                 </section>
 
