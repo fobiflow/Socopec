@@ -40,15 +40,14 @@ def generate(request):
         })
     # Vue pour admin :
     if request.user.groups.filter(name="administrateur").exists():
+        this_year = date.today().year
+        int_month = date.today().month
         #  Pour le carré actuellement
         vehicules_vendus = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
                                                      date_debut__year=date.today().year).count()
-        # TODO : erreur de récupération du nombre de véhicules vendus pour le mois en cours (mois?)
         vehicules_vendus_mois = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
-                                                          date_debut__month=date.today().month).count()
+                                                          date_debut=date.today().strftime("%Y-" + str(int_month) + "-%d 00:00:00.0000")).count()
         total_vehicules = Vehicule.objects.all().count()
-        this_year = date.today().year
-        int_month = date.today().month
         mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
         this_month = mois[int_month - 1]
         nombre_agences = Agence.objects.all().count()
@@ -131,12 +130,11 @@ def fiche(request, id_agence):
                 'E-mail Pro': agent.email
             })
     problemes = []
-    # TODO : créer un problème et faire en sorte qu'il aparaisse bien que si date résolution est blank)
-    if Probleme.objects.filter(id_agence=agence).exists():
-        data = Probleme.objects.filter(id_agence=agence)
+    if Probleme.objects.filter(id_agence=agence, statut="en cours").exists():
+        data = Probleme.objects.filter(id_agence=agence, statut="en cours")
         for probleme in data:
             problemes.append({
-                'Date de début': probleme.date_signalement,
+                'Date de début': probleme.date_signalement.strftime('%d/%m/%Y'),
                 'Agent ouverture': probleme.id_agent_ouverture.prenom + ' ' + probleme.id_agent_ouverture.nom,
                 'Vehicule': probleme.id_vehicule.immatriculation,
                 'Description': probleme.probleme
@@ -146,7 +144,7 @@ def fiche(request, id_agence):
         data = Historique.objects.filter(id_agence=agence, id_statut=Statut.objects.get(statut="Vendu"))
         for h in data:
             historique_ventes.append({
-                'Date de vente': str(h.date_debut),
+                'Date de vente': h.date_debut.strftime('%d/%m/%Y'),
                 'Nom du vendeur': h.id_agent.prenom + ' ' + h.id_agent.nom,
                 'Véhicule': h.id_vehicule.immatriculation
             })

@@ -38,7 +38,7 @@ class Probleme(models.Model):
     id_vehicule = models.ForeignKey(Vehicule, on_delete=models.SET_DEFAULT, default=0)
     id_agence = models.ForeignKey(Agence, on_delete=models.SET_DEFAULT, default=0)
     id_agent_ouverture = models.ForeignKey(Agent, on_delete=models.SET_DEFAULT, default=0, related_name='id_agent_ouverture')
-    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.SET_DEFAULT, default=0, related_name='id_agent_resolution', blank=True, null=True)
+    id_agent_resolution = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name='id_agent_resolution', blank=True, null=True)
     probleme = models.TextField(blank=True, null=True, default="null")
     statut = models.CharField(max_length=20, default="en cours")
     date_signalement = models.DateTimeField(default=datetime.date.today)

@@ -23,7 +23,7 @@ def generate(request):
         agents_table.append({
             'Agence': Agence.objects.get(id=item.id_agence.id).nom,
             'Fonction': item.poste_socopec,
-            'Depuis': str(item.date_entree_socopec),
+            'Depuis': item.date_entree_socopec.strftime('%d-%m-%Y'),
             'Nom': item.nom,
             'Prenom': item.prenom,
             'Email pro': item.email,
@@ -37,7 +37,8 @@ def generate(request):
         total = data.count()
         femmes = Agent.objects.filter(sexe="F").count()
         hommes = Agent.objects.filter(sexe="H").count()
-
+        pourcent_femmes = int((total - hommes) * 100 / total)
+        pourcent_hommes = int((total - femmes) * 100 / total)
         # Pour le formulaire :
         options = []
         agences = Agence.objects.all()
@@ -132,6 +133,8 @@ def generate(request):
                                    'total': total,
                                    'femmes': femmes,
                                    'hommes': hommes,
+                                   'pourcent_femmes': pourcent_femmes,
+                                   'pourcent_hommes': pourcent_hommes,
                                    'agents_table': agents_table,
                                    'options': options
                                    })
@@ -143,6 +146,8 @@ def generate(request):
                                'total': total,
                                'femmes': femmes,
                                'hommes': hommes,
+                               'pourcent_femmes': pourcent_femmes,
+                               'pourcent_hommes': pourcent_hommes,
                                'agents_table': agents_table,
                                'options': options
                                })
@@ -154,6 +159,8 @@ def generate(request):
                            'total': total,
                            'femmes': femmes,
                            'hommes': hommes,
+                           'pourcent_femmes': pourcent_femmes,
+                           'pourcent_hommes': pourcent_hommes,
                            'agents_table': agents_table,
                            'options': options
                            })

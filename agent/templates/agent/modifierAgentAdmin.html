@@ -1,17 +1,17 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block css %}
 <link rel="stylesheet" href="../../../static/css/base.css">
-<link rel="stylesheet" href="../../../static/css/fiche_agence.css">
+<link rel="stylesheet" href="../../../static/css/fiche.css">
 {% endblock %}
 {% block body %}
 <article>
-    <img class="icon close" src="../../../static/images/supprimer.svg">
+    <a href="{% url 'agents' %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
     <h1>Fiche utilisateur</h1>
     <section class="d-flex flex-row align-items-end">
         <form action="" method="post">
             {% csrf_token %}
             {% if validation %}<div class="alert alert-success" role="alert">Vos modifications ont bien été enregistrées</div>{% endif %}
-            <div>
+            <div class="flexRow">
                 <label for="agence">Agence : </label>
                 <select name="agence" id="agentsChangeAgence">
                 {% for option in options %}

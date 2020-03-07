@@ -1,18 +1,17 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block css %}
 <link rel="stylesheet" href="../../../static/css/base.css">
-<link rel="stylesheet" href="../../../static/css/fiche.css">
-{% endblock %}
+<link rel="stylesheet" href="../../../static/css/fiche.css">{% endblock %}
 {% block body %}
 <article>
     <a href="{% url 'fiche_vehicule' id_vehicule=vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
-    <h1>Nouvel historique pour le véhicule {{ vehicule.modele }}: {{ vehicule.immatriculation }}</h1>
+    <h1>Nouveau problème pour le véhicule {{ vehicule.modele }}: {{ vehicule.immatriculation }}</h1>
     <section class="d-flex flex-row align-items-end">
         <form action="" method="post">
             {% csrf_token %}
             {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
             <div>
-                <label for="agence">Agence : </label><select name="agence" id="histoAgence">
+                <label for="agence">Agence : </label><select name="agence" id="probAgence">
                 {% for option in agences %}
                     {% if option == vehicule.id_agence.nom %}
                         <option selected>{{ option }}</option>
@@ -21,7 +20,7 @@
                     {% endif %}
                 {% endfor %}
                 </select>
-                <label for="Agent">Agent : </label><select name="agent" id="histoAgent">
+                <label for="agent_ouverture">Agent ouverture : </label><select name="agent_ouverture" id="probAgent">
                 {% for option in agents %}
                     {% if option == agent %}
                         <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
@@ -32,18 +31,8 @@
                 </select>
             </div>
             <div>
-                <label for="statut">Statut : </label><select name="statut" id="histoStatut">
-                {% for option in statuts %}
-                    <option>{{ option }}</option>
-                {% endfor %}
-            </select>
-            </div>
-            <div>
-                <label for="date_debut">Date de début :</label><input name="date_debut" id="histoDateDebut" type="date" required>
-                <label for="date_fin">Date de fin :</label><input name="date_fin" id="histoDateFin" type="date">
-            </div>
-            <div>
-                <input name="localisation" id="histoLocalisation" type="text" placeholder="Localisation" required>
+                 <input name="probleme" id="probProbleme" type="text" placeholder="Description du problème" required>
+                 <label for="date_signalement">Date de signalement : </label><input name="date_signalement" id="probDateSignalement" type="date">
             </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
         </form>

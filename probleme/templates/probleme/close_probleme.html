@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="../../../static/css/base.css">
+<link rel="stylesheet" href="../../../static/css/fiche.css">
+{% endblock %}
+{% block body %}
+<article>
+    <a href="{% url 'fiche_vehicule' id_vehicule=probleme.id_vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
+    <h1>Cloturer le problème pour le véhicule {{ probleme.id_vehicule.modele }}: {{ probleme.id_vehicule.immatriculation }}</h1>
+    <section class="d-flex flex-row align-items-end">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                <input name="agence" id="rappelprobAgence" type="text" placeholder="Agence : {{ probleme.id_agence.nom }}" readonly>
+                <input name="agent_ouverture" id="rappelprobAgentOuverture" type="text" placeholder="Agent d'ouverture : {{ probleme.id_agent_ouverture.prenom }} {{ probleme.id_agent_ouverture.nom }}" readonly>
+            </div>
+            <div>
+                <label for="agent_fermeture">Agent de fermeture : </label><select name="agent_fermeture" id="closeProbAgent">
+                {% for option in agents %}
+                    {% if option == agent %}
+                        <option value={{ option.id }} selected>{{ option.prenom }} {{ option.nom }}</option>
+                    {% else %}
+                        <option value={{ option.id }}>{{ option.prenom }} {{ option.nom }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <input name="probleme" id="rappelProbProbleme" type="text" placeholder="Description du problème : {{ probleme.probleme }}" readonly>
+            </div>
+            <div>
+                 <input name="date_ouverture" id="rappelProbDateOuverture" type="text" placeholder="Date d'ouverture : {{ date_ouverture }}" readonly>
+                 <label for="date_resolution">Date de résolution : </label><input name="date_resolution" id="closeProbDateRes" type="date">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block btn-sm">{% block nomBouton %}Valider{% endblock %}</button>
+        </form>
+    </section>
+
+</article>
+{% endblock %}

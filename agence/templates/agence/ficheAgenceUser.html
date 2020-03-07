@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block css %}
-<link rel="stylesheet" href="../../../static/css/base.css">
-<link rel="stylesheet" href="../../../static/css/fiche_agence.css">
+<link rel="stylesheet" href="../../../static/css/fiche.css">
 {% endblock %}
 {% block body %}
 <article>
+    <a href="{% url 'agences' %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
     <h1>Fiche agence</h1>
     <section class="d-flex flex-row align-items-end">
         <img id="photoAgence" src="{{ agence.photo }}" alt="photo de l'agence">

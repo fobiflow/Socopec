@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -17,13 +17,11 @@ def generate(request):
     agent = Agent.objects.get(identifiant=identifiant)
     data = Vehicule.objects.all()
     vehicules_table = []
-    # TODO : ajout d'une couleur en fonction de l'historique (problème urgent ou pas, à revoir avec Laurence)
-    # TODO 2 : ajout du statut, de la localisation et des dates
-    color = "white"
     for item in data:
-        if Probleme.objects.filter(statut="en cours").exists():
+        color = "white"
+        if Probleme.objects.filter(id_vehicule=item, statut="en cours").exists():
             color = "orange"
-        if Probleme.objects.filter(statut="en cours", date_signalement__day=date.today().day).exists():
+        if Probleme.objects.filter(id_vehicule=item, statut="en cours", date_signalement=date.today().strftime('%Y-%m-%d 00:00:00.0000')).exists():
             color = "red"
         localisation = ""
         statut = ""
@@ -32,18 +30,19 @@ def generate(request):
             localisation = Historique.objects.get(id_vehicule=item, statut="en cours").localisation
             statut = Historique.objects.get(id_vehicule=item, statut="en cours").id_statut.statut
             if Historique.objects.get(id_vehicule=item, statut="en cours").date_fin:
-                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au " + str(Historique.objects.get(id_vehicule=item, statut="en cours").date_fin)
+                dates = Historique.objects.get(id_vehicule=item, statut="en cours").date_debut.strftime('%d/%m/%Y') + \
+                        " au " + Historique.objects.get(id_vehicule=item, statut="en cours").date_fin.strftime('%d/%m/%Y')
             else:
-                dates = str(Historique.objects.get(id_vehicule=item, statut="en cours").date_debut) + " au --/--/----"
+                dates = Historique.objects.get(id_vehicule=item, statut="en cours").date_debut.strftime('%d/%m/%Y') + " au --/--/----"
         vehicules_table.append({
-           'P': '<div style="width:10px;height:25px;background-color:' + color + '"></div>',
+           'P': '<div style="margin-left:2px;width:12px;height:28px;background-color:' + color + '"></div>',
            'Plaque': item.immatriculation,
            'Agence': item.id_agence.nom,
            'Modèle': item.modele,
            'Statut': statut,
            'Localisation': localisation,
            'Dates': dates,
-           'Date de fab.': str(item.date_fabrication),
+           'Date de fab.': item.date_fabrication.strftime('%d-%m-%Y'),
            'CV': item.puissance,
            'Poids': item.poids,
            'H': item.hauteur,
@@ -65,7 +64,7 @@ def generate(request):
             })
             i += 1
         problemes_orange = Probleme.objects.filter(statut="en cours").count()
-        problemes_rouge = Probleme.objects.filter(date_signalement__day=date.today().day).count()
+        problemes_rouge = Probleme.objects.filter(date_signalement=datetime.today().strftime('%Y-%m-%d 00:00:00.00000')).count()
         options = []
         agences = Agence.objects.all()
         for item in agences:
@@ -161,29 +160,40 @@ def fiche(request, id_vehicule):
             photos.append(item.url)
     historiques = Historique.objects.filter(id_vehicule=vehicule)
     historiques_table = []
+    historique_en_cours = ''
+    if Historique.objects.filter(id_vehicule=vehicule, statut="en cours").exists():
+        historique_en_cours = Historique.objects.get(id_vehicule=vehicule, statut="en cours")
     for item in historiques:
         if item.date_debut and item.date_fin:
-            date = str(item.date_debut) + ' au ' + str(item.date_fin)
+            dt = item.date_debut.strftime('%d/%m/%Y') + ' au ' + item.date_fin.strftime('%d/%m/%Y')
         else:
-            date = str(item.date_debut) + ' au --/--/--'
+            dt = item.date_debut.strftime('%d/%m/%Y') + ' au --/--/--'
         historiques_table.append({
-            'Dates': date,
+            'Dates': dt,
             'Statut': item.id_statut.statut,
             'Agence': item.id_agence.nom,
             'Agent': item.id_agent.prenom + ' ' + item.id_agent.nom,
-            'M': '<a href="' + str(item.id) + '"><img alt="acces fiche historique" class="icon" src="../../../static/images/modifier.svg"/></a>'
+            'Modifier': '<a href="historique/update/' + str(item.id) + '"><img alt="acces fiche historique" class="icon" src="../../../static/images/modifier.svg"/></a>'
         })
-    problemes = Probleme.objects.all()
+    problemes = Probleme.objects.filter(id_vehicule=vehicule)
     problemes_table = []
     for item in problemes:
-        # TODO : couleur pour le problème
+        color = "white"
+        if item.statut == "en cours":
+            color = "orange"
+        if item.date_signalement.strftime('%d/%m/%Y') == date.today().strftime('%d/%m/%Y'):
+            color = "red"
+        close = ''
+        if item.statut == "en cours":
+            close = '<a href="probleme/close/' + str(item.id) + '"><img alt="acces_fiche_fin_probleme" class="icon" src="../../../static/images/supprimer.svg"/></a>'
         problemes_table.append({
-            'C': '',
-            'Date du sinistre': item.date_signalement,
+            'P': '<div style="margin-left:2px;height:28px;width:12px;background-color:' + color + '"></div>',
+            'Date du sinistre': item.date_signalement.strftime('%d/%m/%Y'),
             'Agence': item.id_agence.nom,
             'Agent': item.id_agent_ouverture.prenom + ' ' + item.id_agent_ouverture.nom,
             'Dernier message': item.probleme,
-            'M': '<a href="' + str(item.id) + '"><img alt="acces fiche probleme" class="icon" src="../../../static/images/modifier.svg"/></a>'
+            'Modifier': '<a href="probleme/update/' + str(item.id) + '"><img alt="acces fiche probleme" class="icon" src="../../../static/images/modifier.svg"/></a>',
+            'Cloturer': close
         })
     if request.user.groups.filter(name="administrateur").exists():
         options = []
@@ -214,18 +224,21 @@ def fiche(request, id_vehicule):
                            'photos': photos,
                            'options': options,
                            'historiques_table': historiques_table,
-                       'problemes_table': problemes_table})
+                           'historique_en_cours': historique_en_cours,
+                           'problemes_table': problemes_table})
         return render(request, '../templates/vehicule/ficheVehiculeAdmin.html',
                       {'vehicule': vehicule,
                        'photos': photos,
                        'options': options,
                        'historiques_table': historiques_table,
+                       'historique_en_cours': historique_en_cours,
                        'problemes_table': problemes_table})
     else:
         return render(request, '../templates/vehicule/ficheVehiculeUser.html',
                       {'vehicule': vehicule,
                        'photos': photos,
                        'historiques_table': historiques_table,
+                       'historique_en_cours': historique_en_cours,
                        'problemes_table': problemes_table})
 
 

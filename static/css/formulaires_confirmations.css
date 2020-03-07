@@ -1,0 +1,7 @@
+form > div {
+    display: block;
+}
+
+form input {
+    width: auto;
+}
