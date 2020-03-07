@@ -1,5 +1,6 @@
 {% extends "template.html" %}
 {% block css %}
+<link rel="stylesheet" href="../../../static/css/base.css">
 <link rel="stylesheet" href="../../../static/css/vehicules.css">
 {% endblock %}
 {% block block-corpus %}
@@ -54,11 +55,24 @@
                     <div class="flexColumn justify-content-center">
                         {% for item in statuts %}
                             <div class="ligneProgress">
+                                <p>
+
+                                    {{ item.statut }}
+                                </p>
                                 <div class="progress">
                                     <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
                                 </div>
+                                <span class="ml-2">
+                                    <a href=""><img class="icon" src="../../../static/images/modifier.svg"></a>
+                                </span>
+                                <span>
+                                    <a href=""><img class="icon" src="../../../static/images/supprimer.svg"></a>
+                                </span>
                             </div>
                         {% endfor %}
+                    </div>
+                    <div class="flexRow pleineLargeur mt-2 mb-2">
+                        <a href="" type="button" id="ajouterStatut" class="pleineLargeur">Ajouter un statut</a>
                     </div>
                 </section>
 
