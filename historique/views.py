@@ -103,15 +103,21 @@ def creerStatut(request):
                 new_statut = Statut(
                     statut=request.POST.get("statut")
                 )
-                error = False
-                for item in statuts:
-                    if item.statut == request.POST.get("statut"):
-                        error = True
-                if error == True:
-                    return render(request, '../templates/historique/nouveau_statut.html', {'error': True})
+                plusDeDix = False
+                if Statut.objects.all().count() > 9:
+                    plusDeDix = True
+                if plusDeDix == True:
+                    return render(request, '../templates/historique/nouveau_statut.html', {'plusDeDix': True})
                 else:
-                    new_statut.save()
-                    return redirect('vehicules')
+                    error = False
+                    for item in statuts:
+                        if item.statut == request.POST.get("statut"):
+                            error = True
+                    if error == True:
+                        return render(request, '../templates/historique/nouveau_statut.html', {'error': True})
+                    else:
+                        new_statut.save()
+                        return redirect('vehicules')
         return render(request, '../templates/historique/nouveau_statut.html')
 
 

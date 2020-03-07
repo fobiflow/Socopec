@@ -61,7 +61,7 @@ def generate(request):
         total_vehicules = data.count()
         statuts = []
         res = Statut.objects.all()
-        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", ""]
+        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", "", "bg-success", "bg-warning", "bg-danger", ""]
         i = 0
         for item in res:
             value = Historique.objects.filter(id_statut=item.id).count()
