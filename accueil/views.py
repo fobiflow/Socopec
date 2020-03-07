@@ -38,8 +38,10 @@ def accueil(request):
         boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
         i = 0
         for item in res:
+            value = Historique.objects.filter(id_statut=item.id).count()
+            pourcentage = int((value * 100) / total_vehicules)
             statuts.append({
-                'statut': item.statut, 'value': Historique.objects.filter(id_statut=item.id).count(), "boots": boots[i]
+                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage
             })
             i += 1
         # Pour le carré parité :
@@ -76,18 +78,20 @@ def accueil(request):
         vehicules_vendus_mois = Historique.objects.filter(id_agence=agent.id_agence,
                                                           id_statut=Statut.objects.get(statut="Vendu"),
                                                           date_debut__month=date.today().month).count()
+        #  Pour le carré actuellement 2 :
+        total_vehicules = Vehicule.objects.filter(id_agence=agent.id_agence).count()
         # Pour le carré actuellement 3 :
         statuts = []
         res = Statut.objects.all()
         boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
         i = 0
         for item in res:
+            value = Historique.objects.filter(id_agence=agent.id_agence, id_statut=item.id).count()
+            pourcentage = int((value * 100) / total_vehicules)
             statuts.append({
-                'statut': item.statut, 'value': Historique.objects.filter(id_agence=agent.id_agence, id_statut=item.id).count(), "boots": boots[i]
+                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage
             })
             i += 1
-        #  Pour le carré actuellement 2 :
-        total_vehicules = Vehicule.objects.filter(id_agence=agent.id_agence).count()
         # Pour le carré parité :
         total_agents = Agent.objects.filter(id_agence=agent.id_agence).count()
         femmes = Agent.objects.filter(id_agence=agent.id_agence, sexe="F").count()

@@ -10,6 +10,7 @@
                     <form action="" method="post">
                     {% block bodySection %}
                         {% if error %} <div class="alert alert-danger" role="alert">Certains champs sont obligatoires</div>{% endif %}
+                        {% if already %}<div class="alert alert-danger" role="alert">Un véhicule existe déjà avec cette immatriculation</div>{% endif %}
                         {% if confirmation %}<div class="alert alert-success" role="alert">Le véhicule a bien été enregistré</div>{% endif %}
                         {% csrf_token %}
                         <div>
@@ -54,8 +55,9 @@
                     <div class="flexColumn justify-content-center">
                         {% for item in statuts %}
                             <div class="ligneProgress">
+                            <p>{{ item.statut }}</p>
                                 <div class="progress">
-                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
+                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.pourcentage }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
                                 </div>
                             </div>
                         {% endfor %}

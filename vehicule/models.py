@@ -10,7 +10,7 @@ class Vehicule(models.Model):
     largeur = models.FloatField(default="àremplir")
     poids = models.FloatField(default="àremplir")
     puissance = models.IntegerField(default="àremplir")
-    id_agence = models.ForeignKey(Agence, on_delete=models.SET_DEFAULT, default=0)
+    id_agence = models.ForeignKey(Agence, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "vehicule"

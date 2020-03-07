@@ -48,5 +48,30 @@
       "photo": "https://www.cadre-dirigeant-magazine.com/wp-content/uploads/2014/03/Albert-Einstein-cr%C3%A9dit-photo-phys.org_.jpg",
       "id_agence": 10
     }
+  },
+  {
+    "pk": 3,
+    "model": "agent.agent",
+    "fields": {
+      "id": 3,
+      "nom": "Balayn",
+      "prenom": "Laurence",
+      "sexe": "F",
+      "adresse": "3 rue du Bois de la Champelle",
+      "complement_adresse": "",
+      "code_postal": 54000,
+      "ville": "Nancy",
+      "tel": "06 06 06 06 06",
+      "fax": "",
+      "mobile": "",
+      "email": "laurence.balayn@viacesi.fr",
+      "date_entree_socopec": "2018-09-18",
+      "poste_socopec": "Administrateur",
+      "admin": true,
+      "identifiant": "flow",
+      "mot_de_passe": "rootroot",
+      "photo": "https://cdn.pixabay.com/photo/2017/01/23/19/40/woman-2003647_960_720.jpg",
+      "id_agence": 12
+    }
   }
 ]
