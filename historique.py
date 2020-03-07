@@ -1,4 +1,10 @@
-[
+import datetime
+import json
+
+
+dictionary = []
+
+vehicules = [
     {
         "pk": 1,
         "model": "vehicule.vehicule",
@@ -1200,3 +1206,27 @@
         }
     }
 ]
+
+i = 0
+for x in range(80):
+    dt = datetime.date.today()
+    date = dt.strftime("%Y-%m-%d")
+    new_histo = {
+        "pk": x + 1,
+        "model": "historique.historique",
+        "fields": {
+            "id": x + 1,
+            "id_agence": vehicules[x]["fields"]["id_agence"],
+            "id_vehicule": x + 1,
+            "id_statut": 5,
+            "id_agent": 1,
+            "date_debut": date,
+            "statut": "en cours",
+            "localisation": "null"
+        }
+    }
+    dictionary.append(new_histo)
+
+json_object = json.dumps(dictionary, indent=4)
+with open("fixtures/historique.json", "w") as outfile:
+    outfile.write(json_object)

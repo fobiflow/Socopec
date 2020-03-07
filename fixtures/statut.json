@@ -30,5 +30,13 @@
       "id": 4,
       "statut": "Vendu"
     }
+  },
+  {
+    "pk": 5,
+    "model": "historique.statut",
+    "fields": {
+      "id": 5,
+      "statut": "En stationnement"
+    }
   }
 ]
