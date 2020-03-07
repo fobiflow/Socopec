@@ -20,8 +20,8 @@
         <form action="" method="post">
             {% csrf_token %}
             {% if confirmation %}<div class="alert alert-success" role="alert">Les modifications du véhicule ont bien été enregistrées</div>{% endif %}
-            <div>
-                <label id="vehiculeUpdateAgenceLabel" for="agence">Agence : </label>
+            <div >
+                <label for="vehiculeUpdateAgence">Agence : </label>
                 <select name="agence" id="vehiculeUpdateAgence">
                    {% for option in options %}
                        {% if option == vehicule.id_agence.nom %}
@@ -30,7 +30,7 @@
                            <option>{{ option }}</option>
                        {% endif %}
                    {% endfor %}
-               </select>
+                </select>
                 <button type="submit" style="background-color:white;border:0px"><img class="icon" src="../../../static/images/modifier.svg"></button>
                 <a href="{% url 'supprimer_vehicule' id_vehicule=vehicule.id %}"><img class="icon" src="../../../static/images/supprimer.svg"></a>
             </div>

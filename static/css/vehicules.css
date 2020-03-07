@@ -55,3 +55,7 @@ article{
     text-align: left;
     padding: 0;
 }
+
+#minSize{
+    min-width: 25px;
+}
