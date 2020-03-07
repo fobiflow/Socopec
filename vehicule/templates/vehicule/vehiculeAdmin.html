@@ -54,8 +54,9 @@
                     <div class="flexColumn justify-content-center">
                         {% for item in statuts %}
                             <div class="ligneProgress">
+                            <p>{{ item.statut }}</p>
                                 <div class="progress">
-                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.value }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
+                                    <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.pourcentage }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
                                 </div>
                             </div>
                         {% endfor %}
