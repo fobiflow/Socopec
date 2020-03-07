@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-{% block css %}<link rel="stylesheet" href="../../../static/css/fiche_generique.css">{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="../../../static/css/base.css">
+<link rel="stylesheet" href="../../../static/css/fiche_historique.css">{% endblock %}
 {% block body %}
 <article>
     <a href="{% url 'fiche_vehicule' id_vehicule=vehicule.id %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>

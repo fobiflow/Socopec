@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block css %}
-<link rel="stylesheet" href="../../../static/css/fiche_generique.css">
+<link rel="stylesheet" href="../../../static/css/base.css">
+<link rel="stylesheet" href="../../../static/css/fiche_agence.css">
 {% endblock %}
 {% block body %}
 <article>
@@ -10,7 +11,7 @@
         <form action="" method="post">
             {% csrf_token %}
             {% if validation %}<div class="alert alert-success" role="alert">Vos modifications ont bien été enregistrées</div>{% endif %}
-            <div>
+            <div class="flexRow">
                 <label for="agence">Agence : </label>
                 <select name="agence" id="agentsChangeAgence">
                 {% for option in options %}

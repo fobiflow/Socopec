@@ -1,5 +1,6 @@
 {% extends "template.html" %}
 {% block css %}
+<link rel="stylesheet" href="../../../static/css/base.css">
 <link rel="stylesheet" href="../../../static/css/vehicules.css">
 {% endblock %}
 {% block block-corpus %}
@@ -13,7 +14,7 @@
                         {% if confirmation %}<div class="alert alert-success" role="alert">Le véhicule a bien été enregistré</div>{% endif %}
                         {% csrf_token %}
                         <div>
-                            <label for="agence">Agence gestionnaire :</label>
+                            <label for="vehiculesAjoutAgence">Agence gestionnaire :</label>
                             <select name="agence" id="vehiculesAjoutAgence">
                                {% for option in options %}
                                     <option>{{ option }}</option>
@@ -25,7 +26,7 @@
                             <input name="modele" id = vehiculesAjoutModele" type="text" placeholder="Modèle">
                         </div>
                         <div>
-                            <label for="date_fabrication">Date de fabrication : </label>
+                            <label for="vehiculesAjoutDateFab">Date de fabrication : </label>
                             <input name="date_fabrication" id="vehiculesAjoutDateFab" type="date">
                         </div>
                         <div>
