@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="../../../static/css/base.css">
+    <link rel="stylesheet" href="../../../static/css/fiche.css">
+{% endblock %}
+{% block body %}
+    <article>
+        <a href="{% url 'vehicules' %}"><img class="icon close" src="../../../static/images/supprimer.svg"></a>
+        <h1>Modification du statut {{ statut.statut }}</h1>
+        <section class="d-flex flex-row align-items-end">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% if error %}<div class="alert alert-danger" role="alert">Ce statut existe déjà</div>{% endif %}
+                <input type="text" name="statut" id="historiqueModifStatut" placeholder="Statut : {{ statut.statut }}" required>
+                <button type="submit" id="nouveauStatut" class="btn btn-primary btn-lg btn-block btn-sm">Modifier le statut</button>
+            </form>
+        </section>
+    </article>
+{% endblock %}

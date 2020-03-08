@@ -39,7 +39,7 @@
         <div class="d-flex align-items-baseline">
             <h3 class="mr-5">Historique du véhicule</h3>
              {% if historique_en_cours.id_statut.statut != "Vendu" %}
-                 <a href="{% url 'new_historique' id_vehicule=vehicule.id %}" id="vehiculeModifierStatut" type=button"><button>Modifier le statut du véhicule</button></a>
+                 <a href="{% url 'new_historique' id_vehicule=vehicule.id %}" id="vehiculeModifierStatut" type="button">Modifier le statut du véhicule</a>
              {% endif %}
         </div>
         <div id="ficheVehiculeHistorique">

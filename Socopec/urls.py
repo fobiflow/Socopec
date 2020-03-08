@@ -24,6 +24,7 @@ urlpatterns = [
     path('disconnect', include('accueil.urls')),
     path('vehicule/', include('vehicule.urls')),
     path('vehicule/historique/', include('historique.urls')),
+    path('vehicule/statut/', include('historique.urls')),
     path('vehicule/probleme/', include('probleme.urls')),
     path('agent/', include('agent.urls')),
     path('agence/', include('agence.urls')),
