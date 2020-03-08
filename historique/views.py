@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Statut, Historique
@@ -44,6 +46,7 @@ def creerHisto(request, id_vehicule):
             if Historique.objects.filter(id_vehicule=id_vehicule, statut="en cours").exists():
                 ancien_histo = Historique.objects.get(id_vehicule=id_vehicule, statut="en cours")
                 ancien_histo.statut = "terminé"
+                ancien_histo.date_fin = datetime.date.today()
                 ancien_histo.save()
             new_histo.save()
             return redirect('fiche_vehicule', id_vehicule=id_vehicule)
@@ -143,5 +146,11 @@ def updateStatut(request, id_statut):
 @login_required
 def deleteStatut(request, id_statut):
     if request.user.groups.filter(name="administrateur").exists():
-        statut=Statut.objects.get(id=id_statut)
-        return render(request, '../templates/historique/delete_statut.html', {'statut': statut})
+        stat = Statut.objects.get(id=id_statut)
+        if request.method == 'POST':
+            if Historique.objects.filter(statut="en cours", id_statut=Statut.objects.get(id=id_statut)).exists():
+                return redirect('vehicules')
+            else:
+                stat.delete()
+                return redirect('vehicules')
+        return render(request, '../templates/historique/delete_statut.html', {'statut': stat})

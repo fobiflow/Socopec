@@ -64,13 +64,13 @@ def generate(request):
         boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", "", "bg-success", "bg-warning", "bg-danger", ""]
         i = 0
         for item in res:
-            value = Historique.objects.filter(id_statut=item.id).count()
+            value = Historique.objects.filter(id_statut=item.id, statut="en cours").count()
             pourcentage = int((value * 100) / total_vehicules)
             new = False
             if item.id > 5:
                 new = True
             statuts.append({
-                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage, 'new': new
+                'id': item.id, 'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage, 'new': new
             })
             i += 1
         problemes_orange = Probleme.objects.filter(statut="en cours").count()

@@ -11,6 +11,7 @@ from vehicule.models import Vehicule
 from historique.models import Historique, Statut, Probleme
 import time
 
+
 @login_required
 def accueil(request):
     identifiant = request.user.username
@@ -38,7 +39,7 @@ def accueil(request):
         boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", "", "bg-success", "bg-warning", "bg-danger", ""]
         i = 0
         for item in res:
-            value = Historique.objects.filter(id_statut=item.id).count()
+            value = Historique.objects.filter(id_statut=item.id, statut="en cours").count()
             pourcentage = int((value * 100) / total_vehicules)
             statuts.append({
                 'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage

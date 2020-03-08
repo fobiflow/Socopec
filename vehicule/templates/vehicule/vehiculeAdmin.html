@@ -60,8 +60,16 @@
                                     <div class="progress-bar {{ item.boots }}" role="progressbar" style="width: {{ item.pourcentage }}%" aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="{{ total_vehicules }}">{{ item.value }}</div>
                                 </div>
                                 {% if item.new %}
-                                    <a href=""><img alt="modification statut" class="icon" src="../../../static/images/modifier.svg"/></a>
-                                    <a href=""><img alt="suppression statut" class="icon" src="../../../static/images/supprimer.svg"/></a>
+                                    <span class="ml-2">
+                                        <a href="{% url 'update_statut' id_statut=item.id %}"><img alt="modification statut" class="icon" src="../../../static/images/modifier.svg"/></a>
+                                    </span>
+                                    {% if item.value == 0 %}
+                                        <span id="minSize">
+                                            <a href="{% url 'delete_statut' id_statut=item.id %}"><img alt="suppression statut" class="icon" src="../../../static/images/supprimer.svg"/></a>
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    <span style="width:78px;"></span>
                                 {% endif %}
                             </div>
                         {% endfor %}

@@ -1,9 +1,11 @@
-
+h1 {
+    margin-bottom: 25px !important;
+}
 
 article {
     border: 1px solid #797979;
-    padding: 25px;
-    margin: 0 15px;
+    padding: 25px 100px;
+    margin: 15px;
 }
 section{
     margin: 0 0 75px 0;
@@ -21,8 +23,12 @@ form{
     padding: 0;
 }
 
-
-select{
+form > div > select {
     padding: 2px 5px;
     width: calc(100% - 200px);
+    margin: 10px;
 }
+/*select{*/
+
+/*    margin: 15px;*/
+/*}*/
