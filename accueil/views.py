@@ -31,7 +31,7 @@ def accueil(request):
         vehicules_vendus = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
                                                      date_debut__year=date.today().year).count()
         vehicules_vendus_mois = Historique.objects.filter(id_statut=Statut.objects.get(statut="Vendu"),
-                                                          date_debut=date.today().strftime("%Y-" + str(int_month) + "-%d 00:00:00.0000")).count()
+                                                          date_debut__month=date.today().month).count()
         total_vehicules = Vehicule.objects.all().count()
         # Pour le carré actuellement 3 :
         statuts = []
@@ -41,8 +41,11 @@ def accueil(request):
         for item in res:
             value = Historique.objects.filter(id_statut=item.id, statut="en cours").count()
             pourcentage = int((value * 100) / total_vehicules)
+            new = False
+            if item.id > 5:
+                new = True
             statuts.append({
-                'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage
+                'id': item.id, 'statut': item.statut, 'value': value, "boots": boots[i], "pourcentage": pourcentage, 'new': new
             })
             i += 1
         # Pour le carré parité :
@@ -84,7 +87,7 @@ def accueil(request):
         # Pour le carré actuellement 3 :
         statuts = []
         res = Statut.objects.all()
-        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info"]
+        boots = ["", "bg-success", "bg-warning", "bg-danger", "bg-info", "", "bg-success", "bg-warning", "bg-danger", ""]
         i = 0
         for item in res:
             value = Historique.objects.filter(id_agence=agent.id_agence, id_statut=item.id).count()
